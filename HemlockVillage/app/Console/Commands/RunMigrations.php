@@ -26,7 +26,14 @@ class RunMigrations extends Command
      */
     public function handle()
     {
-        $filenames = [];
+        $filenames = [
+            "2024_11_18_195627_create_roles_table.php",
+            "0001_01_01_000000_create_users_table.php",
+            "0001_01_01_000001_create_cache_table.php",
+            "0001_01_01_000002_create_jobs_table.php",
+            "2024_11_19_203321_create_patients_table.php",
+            "2024_11_19_205527_create_employees_table.php",
+        ];
 
         $this->info("Running migrations:");
 
