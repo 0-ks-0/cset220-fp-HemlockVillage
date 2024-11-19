@@ -2,13 +2,20 @@
 <head>
     <title>Home</title>
     <link rel="stylesheet" href="css/home.css">
+    <style>
+        #home{
+            background-image: url("images/homepic.jpg");
+        }
+    </style>
     
 </head>
 <body>
 
     <header class="header">
-        <a href="#contact" class="contact-us">Contact Us</a>
-        <a href="#services" class="services">Services</a>
+        <div>
+            <a href="#contact" class="contact-us">Contact Us</a>
+            <a href="#services" class="services">Services</a>
+        </div>
         <div class="logo-container">
             <img class="logo" src="{{ asset('images/LOGO.png') }}" alt="logo">
         </div>

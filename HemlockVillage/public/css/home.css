@@ -1,42 +1,42 @@
-/* General Reset */
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #c0bba6; /* Light tan as the main color */
-    color: #481502; /* Dark brown for text */
+    background-color: #c0bba6; 
+    color: #481502; 
 }
 
-/* Header */
+
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #c0bba6; /* Light tan background */
-    color: #481502; /* Dark brown text */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background-color: #c0bba6; 
+    color: #481502; 
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 .header a {
-    color: #481502; /* Dark brown links */
+    color: #481502; 
     text-decoration: none;
     margin: 0 10px;
     font-weight: bold;
 }
 
 .header a:hover {
-    color: #ae370f; /* Accent color on hover */
+    color: #ae370f;
 }
 
 .logo-container .logo {
-    height: 50px;
+    height: 100px;
 }
 
-/* Auth Buttons */
+
 .auth-buttons a {
-    padding: 5px 15px;
-    background-color: #ae370f; /* Accent button color */
-    color: #c0bba6; /* Light button text */
+    padding: 10px 25px;
+    background-color: #ae370f; 
+    color: #c0bba6; 
     border-radius: 5px;
     text-decoration: none;
     margin-left: 10px;
@@ -44,20 +44,19 @@ body {
 }
 
 .auth-buttons a:hover {
-    background-color: #481502; /* Dark brown on hover */
+    background-color: #481502;
 }
 
-/* Sections */
+
 .section {
     padding: 50px 20px;
     text-align: center;
 }
 
 #home {
-    background: url('images/homepic.jpg') no-repeat center center fixed; 
-    background-size: cover; /* Ensures the background image covers the whole section */
-    color: #c0bba6; /* Light tan text for contrast */
-    min-height: 100vh; /* Full screen height */
+    background-size: cover; 
+    color: #c0bba6; 
+    min-height: 100vh; 
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -73,7 +72,7 @@ body {
     font-size: 1.2rem;
 }
 
-/* Services Section */
+
 #services {
     background-color: #c0bba6;
     color: #481502;
