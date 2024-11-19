@@ -7,7 +7,7 @@
             background-image: url("images/homepic.jpg");
         }
     </style>
-    
+
 </head>
 <body>
 

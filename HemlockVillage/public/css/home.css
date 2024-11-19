@@ -2,8 +2,8 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #c0bba6; 
-    color: #481502; 
+    background-color: #c0bba6;
+    color: #481502;
 }
 
 
@@ -12,13 +12,13 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #c0bba6; 
-    color: #481502; 
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+    background-color: #c0bba6;
+    color: #481502;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .header a {
-    color: #481502; 
+    color: #481502;
     text-decoration: none;
     margin: 0 10px;
     font-weight: bold;
@@ -35,8 +35,8 @@ body {
 
 .auth-buttons a {
     padding: 10px 25px;
-    background-color: #ae370f; 
-    color: #c0bba6; 
+    background-color: #ae370f;
+    color: #c0bba6;
     border-radius: 5px;
     text-decoration: none;
     margin-left: 10px;
@@ -54,9 +54,9 @@ body {
 }
 
 #home {
-    background-size: cover; 
-    color: #c0bba6; 
-    min-height: 100vh; 
+    background-size: cover;
+    color: #c0bba6;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
