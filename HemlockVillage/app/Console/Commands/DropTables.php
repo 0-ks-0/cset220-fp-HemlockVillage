@@ -33,11 +33,15 @@ class DropTables extends Command
         $tables = DB::select('SHOW TABLES');
         $s = "Tables_in_".$database;
 
+        Schema::disableForeignKeyConstraints();
+
         foreach($tables as $t)
         {
             $this->info("Dropping table {$t->$s}"); // display in terminal
 
             Schema::drop($t->$s);
         }
+
+        Schema::enableForeignKeyConstraints();
     }
 }
