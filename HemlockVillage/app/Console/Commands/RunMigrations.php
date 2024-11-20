@@ -37,6 +37,7 @@ class RunMigrations extends Command
             "2024_11_20_030837_create_admissions_table.php",
             "2024_11_20_031627_create_groups_table.php",
             "2024_11_20_032725_create_completion_statuses_table.php",
+            "2024_11_20_032232_create_appointments_table.php",
         ];
 
         $this->info("Running migrations:");
