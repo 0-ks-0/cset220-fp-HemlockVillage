@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -31,6 +32,9 @@ return new class extends Migration
                 ->onUpdate("cascade")
                 ->onDelete("set null");
         });
+
+        // Ensures the email is formatted correctly. It does not check for invalid characters
+        DB::statement("ALTER TABLE `users` ADD CONSTRAINT `chk_email` CHECK ( `email` LIKE '_%@_%.__%')");
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
