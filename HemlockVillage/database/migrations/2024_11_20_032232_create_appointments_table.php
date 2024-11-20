@@ -1,0 +1,57 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('appointments', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger("patient_id");
+            $table->date("date_scheduled");
+            $table->date("appointment_date");
+            $table->unsignedBigInteger("doctor_id")->nullable();
+            $table->unsignedTinyInteger("status_id")->nullable();
+            $table->text("comment")->nullable();
+            $table->timestamps();
+
+            $table->foreign("patient_id")
+                ->references("id")
+                ->on("patients")
+                ->onUpdate("cascade")
+                ->onDelete("cascade");
+            $table->foreign("doctor_id")
+                ->references("id")
+                ->on("employees")
+                ->onUpdate("cascade")
+                ->onDelete("set null");
+            $table->foreign("status_id")
+                ->references("id")
+                ->on("completion_statuses")
+                ->onUpdate("cascade")
+                ->onDelete("set null");
+
+            // Prevent a patient from having multiple appointments for the same day
+            $table->unique([ "patient_id", "appointment_date" ]);
+        });
+
+        // Ensure that the appointment date is after the day it was scheduled
+        DB::statement("ALTER TABLE appointments ADD CONSTRAINT CHECK (appointment_date > date_scheduled);");
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('appointments');
+    }
+};
