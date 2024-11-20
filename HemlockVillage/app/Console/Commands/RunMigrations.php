@@ -33,6 +33,7 @@ class RunMigrations extends Command
             "0001_01_01_000002_create_jobs_table.php",
             "2024_11_19_203321_create_patients_table.php",
             "2024_11_19_205527_create_employees_table.php",
+            "2024_11_20_030547_create_families_table.php",
         ];
 
         $this->info("Running migrations:");
