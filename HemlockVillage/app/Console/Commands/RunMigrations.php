@@ -43,6 +43,7 @@ class RunMigrations extends Command
             "2024_11_20_145643_create_meals_table.php",
             "2024_11_20_150724_create_meal_statuses_table.php",
             "2024_11_20_151323_create_salaries_table.php",
+            "2024_11_20_151908_create_rosters_table.php",
         ];
 
         $this->info("Running migrations:");
