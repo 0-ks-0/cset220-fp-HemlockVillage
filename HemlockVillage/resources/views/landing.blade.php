@@ -80,14 +80,13 @@
             </div>
         </div>
     </section>
-
     <section id="contact" class="section">
         <h1>Contact Us</h1>
         <div class="form-container">
             <form>
-                <input type="text" placeholder="Your Name" required><br><br>
-                <input type="email" placeholder="Your Email" required><br><br>
-                <textarea placeholder="Your Message" required></textarea><br><br>
+                <input class="input" type="text" placeholder="Your Name" required><br><br>
+                <input class="input" type="email" placeholder="Your Email" required><br><br>
+                <textarea class="input" placeholder="Your Message" required></textarea><br><br>
                 <button type="submit">Send Message</button>
             </form>
             <h1>Or contact us through:</h1>
