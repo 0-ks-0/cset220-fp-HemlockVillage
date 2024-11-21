@@ -28,7 +28,7 @@
     <section id="home" class="section">
         <div class="home-content">
             <h1>Welcome to Hemlock Village!</h1>
-            <p>Scroll down to explore more.</p>
+            <p>Providing personalized care and support, where dignity and comfort come first.</p>
         </div>
     </section>
 
@@ -80,13 +80,14 @@
             </div>
         </div>
     </section>
+
     <section id="contact" class="section">
         <h1>Contact Us</h1>
         <div class="form-container">
             <form>
-                <input class="input" type="text" placeholder="Your Name" required><br><br>
-                <input class="input" type="email" placeholder="Your Email" required><br><br>
-                <textarea class="input" placeholder="Your Message" required></textarea><br><br>
+                <input type="text" placeholder="Your Name" required><br><br>
+                <input type="email" placeholder="Your Email" required><br><br>
+                <textarea placeholder="Your Message" required></textarea><br><br>
                 <button type="submit">Send Message</button>
             </form>
             <h1>Or contact us through:</h1>
