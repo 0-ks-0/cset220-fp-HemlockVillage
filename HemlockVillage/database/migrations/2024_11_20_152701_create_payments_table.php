@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("patient_id");
+            $table->string("patient_id", 16);
             $table->date("last_updated_date");
             $table->decimal("bill", 8, 2)->default(0);
             $table->timestamps();
