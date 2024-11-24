@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Patient extends Model
 {
     protected $fillable = [
+        "id",
         "user_id",
         "family_code",
         "econtact_name",
@@ -14,4 +15,7 @@ class Patient extends Model
         "econtact_phone",
         "econtact_relation"
     ];
+
+    public $incrementing = false;
+    protected $keyType = 'string';
 }
