@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Helpers\ModelHelper;
+
 class Patient extends Model
 {
     protected $fillable = [
@@ -18,4 +20,9 @@ class Patient extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
+
+    public static function getId($userID)
+    {
+        return ModelHelper::getId(Patient::class, "user_id", $userID);
+    }
 }

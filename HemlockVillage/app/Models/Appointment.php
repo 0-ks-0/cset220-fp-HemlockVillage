@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Helpers\ModelHelper;
+
 class Appointment extends Model
 {
     protected $fillable = [
@@ -14,4 +16,12 @@ class Appointment extends Model
         "status_id",
         "comment"
     ];
+
+    public static function getId($patientID, $appointmentDate)
+    {
+        return ModelHelper::getIdWithConditions(Appointment::class, [
+            [ "patient_id", '=', $patientID ],
+            [ "appointment_date", "=", $appointmentDate ]
+        ]);
+    }
 }
