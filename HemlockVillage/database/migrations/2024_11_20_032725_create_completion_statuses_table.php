@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('completion_statuses', function (Blueprint $table) {
-            $table->unsignedTinyInteger("id");
+            $table->unsignedTinyInteger("id")->autoIncrement();
             $table->string("status", 20)->unique();
             $table->timestamps();
 

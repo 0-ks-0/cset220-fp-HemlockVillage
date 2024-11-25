@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date("date_assigned");
             $table->unsignedBigInteger("supervisor_id")->nullable();
+            $table->unsignedBigInteger("doctor_id")->nullable();
             $table->unsignedBigInteger("caregiver_one_id")->nullable();
             $table->unsignedBigInteger("caregiver_two_id")->nullable();
             $table->unsignedBigInteger("caregiver_three_id")->nullable();
@@ -22,6 +23,11 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign("supervisor_id")
+                ->references("id")
+                ->on("employees")
+                ->onUpdate("cascade")
+                ->onDelete("set null"); // Prevent deletion of record if employee deleted
+            $table->foreign("doctor_id")
                 ->references("id")
                 ->on("employees")
                 ->onUpdate("cascade")
