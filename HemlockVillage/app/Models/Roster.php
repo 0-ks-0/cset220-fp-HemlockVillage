@@ -9,6 +9,7 @@ class Roster extends Model
     protected $fillable = [
         "date_assigned",
         "supervisor_id",
+        "doctor_id",
         "caregiver_one_id",
         "caregiver_two_id",
         "caregiver_three_id",
