@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return ModelHelper::getRow(User::class, "id", $id)->role_id ?? null;
     }
+
+    public static function getId($email)
+    {
+        return ModelHelper::getRow(User::class, "email", $email)->id ?? null;
+    }
 }
