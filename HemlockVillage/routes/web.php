@@ -10,7 +10,9 @@ Route::get('/', function () {
     return view('landing');
 });
 
+// Login
 Route::get("/login", fn() => LoginController::showLoginForm())->name("login.form");
+Route::post("/login", fn() => LoginController::login(request()));
 
 Route::get('/patientshome', function () {
     return view('patientshome');
