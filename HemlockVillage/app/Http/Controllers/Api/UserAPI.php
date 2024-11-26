@@ -101,7 +101,7 @@ class UserAPI extends Controller
                 break;
 
             case Role::getId("Family"):
-                Employee::create([
+                Family::create([
                     "user_id" => $userId
                 ]);
 
