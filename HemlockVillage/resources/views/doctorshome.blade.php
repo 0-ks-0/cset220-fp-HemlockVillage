@@ -1,63 +1,7 @@
 <html>
     <head>
         <title>Doctors Home</title>
-
-
-
-
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-                background-color: #f5f5f5;
-            }
-            .container {
-                max-width: 800px;
-                margin: auto;
-                padding: 20px;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-            
-            .flexbox {
-                margin-bottom: 15px;
-
-            }
-            input, button {
-                width: 100%;
-                padding: 10px;
-                font-size: 16px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-            th, td {
-                padding: 10px;
-                border: 1px solid #ddd;
-                text-align: left;
-            }
-            button {
-                margin-top: 10px;
-                background-color: grey;
-                color: white;
-                cursor: pointer;
-                border: none;
-            }
-            .secondbutton {
-                margin-top: 10px;
-                background-color: grey;
-                color: white;
-                cursor: pointer;
-                border: none;
-            }
-
-
-        </style>
+        <link rel="stylesheet" href="css/doctorshome.css">
     </head>
 
     <body>
