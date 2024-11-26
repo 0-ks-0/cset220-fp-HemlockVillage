@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+require("rapi.php");
+
 Route::get('/', function () {
     return view('landing');
 });
