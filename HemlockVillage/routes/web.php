@@ -14,6 +14,9 @@ Route::get('/', function () {
 Route::get("/login", fn() => LoginController::showLoginForm())->name("login.form");
 Route::post("/login", fn() => LoginController::login(request()));
 
+// Home
+Route::get("/home", fn() => PageController::home())->middleware("auth");
+
 Route::get('/patientshome', function () {
     return view('patientshome');
 });
