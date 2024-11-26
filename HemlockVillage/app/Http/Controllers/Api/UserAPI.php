@@ -122,7 +122,7 @@ class UserAPI extends Controller
         // Save confirmation message for redirecting to login page
         session()->flash("message", "Your account has been created successfully. Please wait for approval to login.");
 
-        return redirect()->route("login");
+        return redirect()->route("login.form");
     }
 
     /**
