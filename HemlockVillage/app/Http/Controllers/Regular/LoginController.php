@@ -33,4 +33,20 @@ class LoginController extends Controller
 
         return redirect()->intended("/home");
     }
+
+    public static function logout(Request $request)
+    {
+        // Logout the authenticated user
+        Auth::logout();
+
+        // Invalidate the session to clear all session data
+        $request->session()->invalidate();
+
+        // Regenerate the session ID for security
+        $request->session()->regenerateToken();
+
+        session()->flash('success', 'Logged out successfully!');
+
+        return redirect()->route("login.form");
+    }
 }
