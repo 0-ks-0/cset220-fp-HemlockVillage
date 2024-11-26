@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Http\Controllers\Regular;
+
 use Illuminate\Support\Facades\Route;
 
 require("rapi.php");
@@ -8,10 +10,7 @@ Route::get('/', function () {
     return view('landing');
 });
 
-Route::get("/login", function ()
-{
-	return view("login");
-})->name("login.form");
+Route::get("/login", fn() => LoginController::showLoginForm())->name("login.form");
 
 Route::get('/patientshome', function () {
     return view('patientshome');
