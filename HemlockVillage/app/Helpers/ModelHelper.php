@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Str;
+
 class ModelHelper
 {
 	/**
@@ -65,5 +67,13 @@ class ModelHelper
 	public static function getIdWithConditions($model, $conditions)
 	{
 		return self::getRowWithConditions($model, $conditions)->id ?? null;
+	}
+
+	/**
+	 * @param int $length
+	 */
+	public static function getRandomString($length = 16)
+	{
+		return Str::random($length);
 	}
 }
