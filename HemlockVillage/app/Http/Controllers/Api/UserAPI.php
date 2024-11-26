@@ -26,6 +26,7 @@ class UserAPI extends Controller
     {
         $familyCode = ModelHelper::getRandomString();
 
+        // Save to display family code in blade
         session(['familyCode' => $familyCode]);
 
         return view("signup")->with([
@@ -41,14 +42,14 @@ class UserAPI extends Controller
     {
          // Validate user info
          $validatedUser = Validator::make($request->all(), [
-            "role" => [ "required", "exists:roles,id" ],
+            "role" => [ "required", "exists:roles,id" ], // Check that role id actually exists
             "first_name" => [ "required", "max:50" ],
             "last_name" => [ "required", "max:50" ],
             "email" => [ "bail", "required", "email", "unique:users", "max:100" ],
-            "date_of_birth" => [ "required", "date", "before:". date("Y-m-d"), "date_format:Y-m-d" ],
+            "date_of_birth" => [ "required", "date", "before:". date("Y-m-d"), "date_format:Y-m-d" ], // Check that date is before current date
             "phone_number" => [ "required", "max:20" ],
-            "password" => [ "bail", "required", "confirmed" ],
-            "family_code" => [ "required_if:role," . Role::getId("Patient"), "in:" . session("familyCode"), "unique:patients", "size:16"],
+            "password" => [ "bail", "required", "confirmed" ], // Check that password matches confirmed password input field
+            "family_code" => [ "required_if:role," . Role::getId("Patient"), "in:" . session("familyCode"), "unique:patients", "size:16"], // Check that family code was not altered
             "econtact_name" => [ "required_if:role," . Role::getId("Patient"), "max:128" ],
             "econtact_phone" => [ "required_if:role," . Role::getId("Patient"), "max:20" ],
             "econtact_relation" => [ "required_if:role," . Role::getId("Patient"), "max:50" ],
@@ -63,6 +64,7 @@ class UserAPI extends Controller
             "password" => Hash::make($request->get("password"))
         ]);
 
+        // Create record in users table
         User::create([
             "first_name" => $request->get("first_name"),
             "last_name" => $request->get("last_name"),
@@ -76,8 +78,10 @@ class UserAPI extends Controller
 
         $userId = User::getId($request->get("email"));
 
+        // Create records in other tables depending on user type
         switch ($request->role)
         {
+            // Employees
             case Role::getId("Admin"):
             case Role::getId("Supervisor"):
             case Role::getId("Doctor"):
@@ -88,6 +92,7 @@ class UserAPI extends Controller
 
                 break;
 
+            // Patient
             case Role::getId("Patient"):
                 Patient::create([
                     "id" => ModelHelper::getRandomString(),
@@ -100,6 +105,7 @@ class UserAPI extends Controller
 
                 break;
 
+            // Family
             case Role::getId("Family"):
                 Family::create([
                     "user_id" => $userId
@@ -110,8 +116,10 @@ class UserAPI extends Controller
             default:
         }
 
+        // No longer needed
         session()->forget("familyCode");
 
+        // Save confirmation message for redirecting to login page
         session()->flash("message", "Your account has been created successfully. Please wait for approval to login.");
 
         return redirect()->route("login");
