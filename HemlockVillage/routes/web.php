@@ -8,6 +8,11 @@ Route::get('/', function () {
     return view('landing');
 });
 
+Route::get("/login", function ()
+{
+	return view("login");
+})->name("login.form");
+
 Route::get('/patientshome', function () {
     return view('patientshome');
 });
