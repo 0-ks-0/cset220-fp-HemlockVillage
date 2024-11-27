@@ -100,6 +100,7 @@
                         <tr>
                             <th>Patient Name</th>
                             <th>Appointment Date</th>
+                            <th>Patient Details</th>
                         </tr>
                     </thead>
                     <tbody>

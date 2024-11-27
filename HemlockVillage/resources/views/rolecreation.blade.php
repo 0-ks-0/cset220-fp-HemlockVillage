@@ -39,6 +39,9 @@
                 cursor: pointer;
                 border: none;
             }
+            td {
+                text-align: center
+            }
             .create-btn {
                 color: white;
                 background-color: grey;
@@ -66,42 +69,15 @@
         <div class="container">
             <h1>Roles</h1>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Employee Name</th>
-                        <th>Role</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Jimmy Butler</td>
-                        <td>Admin</td>
-                        <td><button type="button" class="edit-btn">Edit</button></td>
-                        <td><button type="button" class="delete-btn">Delete</button></td>
-                    </tr>
-                    <tr>
-                        <td>James Butler</td>
-                        <td>Caregiver</td>
-                        <td><button type="button" class="edit-btn">Edit</button></td>
-                        <td><button type="button" class="delete-btn">Delete</button></td>
-                    </tr>
-                    <tr>
-                        <td>Jerome Butler</td>
-                        <td>Patient</td>
-                        <td><button type="button" class="edit-btn">Edit</button></td>
-                        <td><button type="button" class="delete-btn">Delete</button></td>
-                    </tr>
-                </tbody>
-             
-            </table>
-
-
-
             <form action="/create-role" method="POST">
+
+                <div class="flexbox">
+                    <label>Employee Name</label>
+                    <input type="text" id="employee-name" name="employee_name" placeholder="Enter a Name">
+                </div>
                 <div class="flexbox">
                     <label>Role Name</label>
-                <input type="text" id="role-name" name="role_name" placeholder="Enter a Name" required>
+                <input type="text" id="role-name" name="role_name" placeholder="Enter a Role" required>
                 </div>
 
                 <div class="flexbox">
@@ -116,6 +92,42 @@
 
 
             </form> 
+
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Employee Name</th>
+                        <th>Role</th>
+                        <th>Access Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Jimmy Butler</td>
+                        <td>Admin</td>
+                        <td>5</td>
+                        <td><button type="button" class="edit-btn">Edit</button></td>
+                        <td><button type="button" class="delete-btn">Delete</button></td>
+                    </tr>
+                    <tr>
+                        <td>James Butler</td>
+                        <td>Caregiver</td>
+                        <td>2</td>
+                        <td><button type="button" class="edit-btn">Edit</button></td>
+                        <td><button type="button" class="delete-btn">Delete</button></td>
+                    </tr>
+                    <tr>
+                        <td>Jerome Butler</td>
+                        <td>Patient</td>
+                        <td>1</td>
+                        <td><button type="button" class="edit-btn">Edit</button></td>
+                        <td><button type="button" class="delete-btn">Delete</button></td>
+                    </tr>
+                </tbody>
+             
+            </table>
+
         </div>
     </body>
 

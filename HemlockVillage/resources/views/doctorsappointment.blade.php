@@ -69,6 +69,18 @@
             <h1>Doctors Appointment Scheduling</h1>
 
             <form action="/schedule-appointment" method="POST">
+                
+                <div class="flexbox">
+                    <label>Doctor</label>
+                    <select id="doctor" name="doctor" required>
+                        <option value="">Choose a Doctor</option>
+                        <option value="">Dr. Helock</option>
+                        <option value="">Dr. Cooper</option>
+                        <option value="">Dr. America</option>
+                    </select>
+                </div>
+                
+                
                 <div class="flexbox">
                     <label>Patient ID</label>
                     <input type="text" id="patient-id" name="patient_id" placeholder="Enter Patient ID" required>
@@ -80,15 +92,6 @@
                     <input type="text" id="patient-name" name="patient_name" placeholder="James Dunken">
                 </div>
 
-                <div class="flexbox">
-                    <label>Doctor</label>
-                    <select id="doctor" name="doctor" required>
-                        <option value="">Choose a Doctor</option>
-                        <option value="">Dr. Helock</option>
-                        <option value="">Dr. Cooper</option>
-                        <option value="">Dr. America</option>
-                    </select>
-                </div>
 
                 <div class="flexbox">
                     <label>Appointment Date</label>

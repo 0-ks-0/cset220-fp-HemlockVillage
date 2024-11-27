@@ -29,3 +29,56 @@ Route::get('/employeeinfo', function () {
 Route::get('/rolecreation', function () {
     return view('rolecreation');
 });
+
+Route::get('/editroles', function () {
+    return view('editroles');
+});
+
+Route::get('/searchpatient', function () {
+    return view('searchpatient');
+});
+
+Route::get('/registrationapproval', function () {
+    return view('registrationapproval');
+});
+
+Route::get('/newroster', function () {
+    return view('newroster');
+});
+
+Route::get('/rosters', function () {
+    return view('rosters');
+});
+
+Route::get('/editroster', function () {
+    return view('editroster');
+});
+
+Route::get('/payments', function () {
+    return view('payments');
+});
+
+Route::get('/familyhome', function () {
+    return view('familyhome');
+});
+
+Route::get('/adminreport', function () {
+    return view('adminreport');
+});
+
+Route::get('/createprescription', function () {
+    return view('createprescription');
+});
+
+Route::get('/patientofdoc', function () {
+    return view('patientofdoc');
+});
+
+Route::get('/caregivershome', function () {
+    return view('caregivershome');
+});
+
+Route::get('/familypayment', function () {
+    return view('familypayment');
+});
+
