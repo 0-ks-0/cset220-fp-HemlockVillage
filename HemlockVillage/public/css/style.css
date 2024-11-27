@@ -1,0 +1,39 @@
+*
+{
+	margin: 0;
+
+	padding: 0;
+
+	box-sizing: border-box;
+}
+
+.flex
+{
+	display: flex;
+}
+
+.flex_column
+{
+	display: flex;
+	flex-direction: column;
+}
+
+.hidden
+{
+	visibility: hidden;
+}
+
+.hidden_none
+{
+	display: none;
+}
+
+.error
+{
+
+}
+
+.error p
+{
+
+}

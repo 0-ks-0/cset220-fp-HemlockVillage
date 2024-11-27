@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('admissions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("patient_id");
+            $table->string("patient_id", 16);
             $table->date("date_admitted");
             $table->timestamps();
 
