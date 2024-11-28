@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Regular;
 
+use App\Models\Payment;
+
 use Illuminate\Support\Facades\Route;
 
 require("rapi.php");
@@ -19,6 +21,20 @@ Route::get("/logout", fn() => LoginController::logout(request()));
 
 // Home
 Route::get("/home", fn() => PageController::home())->middleware("auth");
+
+// Payment testing
+Route::get("/test/payment", function ()
+{
+    return view("test_payment");
+});
+
+Route::get("/test/payment/{patientId}", function ($patientId)
+{
+    return view("test_payment")->with([
+        "patientId" => $patientId,
+        "bill" => Payment::getBill($patientId)
+    ]);
+});
 
 Route::get('/patientshome', function () {
     return view('patientshome');
@@ -95,4 +111,3 @@ Route::get('/caregivershome', function () {
 Route::get('/familypayment', function () {
     return view('familypayment');
 });
-
