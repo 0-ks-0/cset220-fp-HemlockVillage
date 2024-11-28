@@ -10,6 +10,10 @@
 		<script src="{{ asset("./js/navigator.js") }}"></script>
 	</head>
 	<body>
+		@if(session("success"))
+			<p>{{ session("success") }}</p>
+		@endif
+
 		<form>
 			<input type="text" name="patient_id" placeholder="patient id" id="input_patient_id"
 				@isset($patientId) value="{{ $patientId }}" @endisset
@@ -28,6 +32,7 @@
 				<button type="submit">Pay</button>
 			</form>
 		@endisset
+
 
 		<script>
 			window.onload = () =>
