@@ -36,6 +36,17 @@ Route::get("/test/payment/{patientId}", function ($patientId)
     ]);
 });
 
+Route::patch("/test/payment/{patientId}", function ($patientId)
+{
+    $amount = request()->get("amount");
+
+    Payment::updateBill($patientId, $amount);
+
+    session()->flash("success", "$$amount has been paid");
+
+    return redirect()->back();
+});
+
 Route::get('/patientshome', function () {
     return view('patientshome');
 });
