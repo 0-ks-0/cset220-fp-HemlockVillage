@@ -18,4 +18,16 @@ class Payment extends Model
     {
         return ModelHelper::getRow(Payment::class, "patient_id", $patientId)->bill ?? null;
     }
+
+    public static function updateBill($patientId, $amount)
+    {
+        // TODO validate $amount > 0
+
+        $row = ModelHelper::getRow(Payment::class, "patient_id", $patientId);
+
+        // TODO validate $row
+
+        $row->update([ "bill" => ($row->bill - $amount) ]);
+    }
+
 }
