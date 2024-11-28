@@ -16,9 +16,18 @@
 			>
 		</form>
 
-		@isset($bill) <p>{{ $bill }}</p> @endisset
+		@isset($bill) <p>Bill: ${{ $bill }}</p> @endisset
 
-		@isset($patientId) <input type="number" placeholder="{{ $bill }}" min="0" max="{{ $bill }}" step="1"> @endisset
+		@isset($patientId)
+			<form action="/test/payment/{{ $patientId }}" method="post">
+				@method("patch")
+				@csrf
+
+				<input type="number" name="amount" placeholder="{{ $bill }}" min="0" max="{{ $bill }}" step="1">
+
+				<button type="submit">Pay</button>
+			</form>
+		@endisset
 
 		<script>
 			window.onload = () =>
