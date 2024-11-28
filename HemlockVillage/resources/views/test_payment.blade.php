@@ -17,7 +17,8 @@
 		</form>
 
 		@isset($bill) <p>{{ $bill }}</p> @endisset
-		@isset($patiendId) <input type="number" placeholder="{{ $bill }}" max="{{ $bill }}"> @endisset
+
+		@isset($patientId) <input type="number" placeholder="{{ $bill }}" min="0" max="{{ $bill }}" step="1"> @endisset
 
 		<script>
 			window.onload = () =>
