@@ -9,12 +9,9 @@ use App\Helpers\ModelHelper;
 class Payment extends Model
 {
     protected $fillable = [
-        "date_assigned",
-        "supervisor_id",
-        "caregiver_one_id",
-        "caregiver_two_id",
-        "caregiver_three_id",
-        "caregiver_four_id"
+        "patient_id",
+        "last_updated_date",
+        "bill"
     ];
 
     public static function getBill($patientId)
