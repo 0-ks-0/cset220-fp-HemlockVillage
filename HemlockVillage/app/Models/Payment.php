@@ -18,4 +18,23 @@ class Payment extends Model
     {
         return ModelHelper::getRow(Payment::class, "patient_id", $patientId)->bill ?? null;
     }
+
+    /**
+     * Update the bill for the patient if the patient id exists and the amount is positive
+     *
+     * @param int $patientId
+     * @param float $amount
+     */
+    public static function updateBill($patientId, $amount)
+    {
+        // Do nothing if not a positve amount
+        if ($amount <= 0) return;
+
+        $row = ModelHelper::getRow(Payment::class, "patient_id", $patientId);
+
+        // Row with this patient id does not exist
+        if (!$row) return;
+
+        $row->update([ "bill" => ($row->bill - $amount) ]);
+    }
 }
