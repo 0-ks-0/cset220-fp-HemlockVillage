@@ -60,6 +60,6 @@ class User extends Authenticatable
 
     public static function getId($email)
     {
-        return ModelHelper::getRow(User::class, "email", $email)->id ?? null;
+        return ModelHelper::getId(User::class, "email", $email);
     }
 }
