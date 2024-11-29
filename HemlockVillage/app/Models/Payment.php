@@ -14,6 +14,12 @@ class Payment extends Model
         "bill"
     ];
 
+    /**
+     * Returns the bill of a patient
+     *
+     * @param int $patientId
+     * @return float|null The bill if the patient exists; null otherwise
+     */
     public static function getBill($patientId)
     {
         return ModelHelper::getRow(Payment::class, "patient_id", $patientId)->bill ?? null;
