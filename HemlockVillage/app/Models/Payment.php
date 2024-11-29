@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Helpers\ModelHelper;
+
 class Payment extends Model
 {
     protected $fillable = [
@@ -11,4 +13,9 @@ class Payment extends Model
         "last_updated_date",
         "bill"
     ];
+
+    public static function getBill($patientId)
+    {
+        return ModelHelper::getRow(Payment::class, "patient_id", $patientId)->bill ?? null;
+    }
 }
