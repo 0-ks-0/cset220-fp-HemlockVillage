@@ -113,3 +113,25 @@ body
 {
 	background-color: darkgrey;
 }
+
+/*
+*
+*	Pagination
+*
+*/
+.pagination span,
+.pagination a
+{
+	padding: 0.3rem 0.5rem;
+
+	background-color: darkgrey;
+
+	height: max-content;
+
+	border: 1px solid lightgray;
+}
+
+.pagination a:hover
+{
+	background-color: lightgray;
+}
