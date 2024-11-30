@@ -65,7 +65,7 @@ class UserAPI extends Controller
         ]);
 
         // Create record in users table
-        User::create([
+       $user = User::create([
             "first_name" => $request->get("first_name"),
             "last_name" => $request->get("last_name"),
             "email" => $request->get("email"),
@@ -76,7 +76,7 @@ class UserAPI extends Controller
             "approved" => 0
         ]);
 
-        $userId = User::getId($request->get("email"));
+        $userId = $user->id;
 
         // Create records in other tables depending on user type
         switch ($request->role)
