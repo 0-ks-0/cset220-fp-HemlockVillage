@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 require("rapi.php");
 
-Route::get('/', function () {
-    return view('landing');
-});
+Route::get('/', fn() => PageController::landing());
 
 // Login
 Route::get("/login", fn() => LoginController::showLoginForm())->name("login.form");
@@ -95,4 +93,3 @@ Route::get('/caregivershome', function () {
 Route::get('/familypayment', function () {
     return view('familypayment');
 });
-
