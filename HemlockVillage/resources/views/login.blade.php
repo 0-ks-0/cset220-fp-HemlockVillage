@@ -14,6 +14,7 @@
 
 	<body>
 		<div>
+			{{-- Error section --}}
 			@if ($errors->any())
 				<div class="error">
 					@foreach ($errors->all() as $error)
@@ -22,12 +23,14 @@
 				</div>
 			@endif
 
+			{{-- Logout redirecting message --}}
 			@if (session("success"))
 				<div class="success">
 					{{ session("success") }}
 				</div>
 			@endif
 
+			{{-- Login form --}}
 			<form action="/login" method="post">
 				@csrf
 

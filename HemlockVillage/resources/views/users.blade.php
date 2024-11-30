@@ -13,6 +13,8 @@
 	<body>
 		<div class="container">
 			<h2 class="page_title">Users</h2>
+
+			{{-- Table --}}
 			<table class="info_table center_horizontal">
 				<thead class="sticky">
 					<tr>
@@ -39,6 +41,7 @@
 				</tbody>
 			</table>
 
+			{{-- Pagination --}}
 			<div class="pagination">
 				{!! $data->withQueryString()->links() !!}
 			</div>
