@@ -8,6 +8,10 @@ require("rapi.php");
 
 Route::get('/', fn() => PageController::landing());
 
+// Signup
+Route::get("/signup", fn() => SignupController::index());
+Route::post("/signup", fn() => SignupController::store(request()));
+
 // Login
 Route::get("/login", fn() => LoginController::showLoginForm())->name("login.form");
 Route::post("/login", fn() => LoginController::login(request()));
