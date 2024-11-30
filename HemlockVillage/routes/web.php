@@ -15,6 +15,9 @@ Route::post("/login", fn() => LoginController::login(request()));
 // Logout
 Route::get("/logout", fn() => LoginController::logout(request()));
 
+// Users
+Route::get("/users", fn() => PageController::users());
+
 // Home
 Route::get("/home", fn() => PageController::home())->middleware("auth");
 
