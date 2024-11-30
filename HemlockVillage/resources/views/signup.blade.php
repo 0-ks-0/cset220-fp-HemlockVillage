@@ -21,7 +21,7 @@
 		@endif
 
 		{{-- Sign up Form --}}
-		<form action="/api/signup" method="post">
+		<form action="/signup" method="post">
 			@csrf
 
 			<label for="role_selection">Role</label>
