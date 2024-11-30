@@ -46,7 +46,7 @@
 
 				<div>
 					<button type="submit">Login</button>
-					<a href="/api/signup">Sign up</a>
+					<a href="/signup">Sign up</a>
 				</div>
 			</form>
 		</div>
