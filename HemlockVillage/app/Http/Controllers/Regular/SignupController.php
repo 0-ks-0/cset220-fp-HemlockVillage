@@ -33,7 +33,7 @@ class SignupController extends Controller
         session()->forget("familyCode");
 
         // Save confirmation message for redirecting to login page
-        session()->flash("message", "Your account has been created successfully. Please wait for approval to login.");
+        session()->flash("success", "Your account has been created successfully. Please wait for approval to login.");
 
         return redirect()->route("login.form");
     }
