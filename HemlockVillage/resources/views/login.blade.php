@@ -8,6 +8,8 @@
 		<title>Login</title>
 
 		<link rel="stylesheet" href="{{ asset("./css/style.css>") }}">
+
+		<script src="{{ asset("./js/navigator.js") }}"></script>
 	</head>
 
 	<body>
@@ -39,7 +41,10 @@
 					<input type="password" name="password" id="password" required>
 				</div>
 
-				<button type="submit">Login</button>
+				<div>
+					<button type="submit">Login</button>
+					<a href="/api/signup">Sign up</a>
+				</div>
 			</form>
 		</div>
 	</body>
