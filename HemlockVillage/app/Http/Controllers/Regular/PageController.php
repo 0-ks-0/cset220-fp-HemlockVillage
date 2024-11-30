@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Regular;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Http\Controllers\Api\UsersAPI;
+use App\Http\Controllers\Api\UserAPI;
 
 class PageController extends Controller
 {
@@ -17,7 +17,7 @@ class PageController extends Controller
     public static function users()
     {
         return view("users")->with([
-            "data" => UsersAPI::index()
+            "data" => UserAPI::index()
         ]);
     }
 
