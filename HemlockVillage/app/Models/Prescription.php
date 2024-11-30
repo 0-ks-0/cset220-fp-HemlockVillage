@@ -12,4 +12,9 @@ class Prescription extends Model
         "afternoon",
         "night"
     ];
+
+    public function appointment()
+    {
+        return $this->belongsTo(Appointment::class, "appointment_id");
+    }
 }

@@ -12,6 +12,16 @@ class Employee extends Model
         "user_id"
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, "user_id");
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'doctor_id');
+    }
+
     public static function getId($userID)
     {
         return ModelHelper::getId(Employee::class, "user_id", $userID);

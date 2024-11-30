@@ -17,6 +17,21 @@ class Appointment extends Model
         "comment"
     ];
 
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, "patient_id");
+    }
+
+    public function doctor()
+    {
+        return $this->belongsTo(Employee::class, 'doctor_id');
+    }
+
+    public function prescriptions()
+    {
+        return $this->hasOne(Prescription::class, "appointment_id");
+    }
+
     public static function getId($patientID, $appointmentDate)
     {
         return ModelHelper::getIdWithConditions(Appointment::class, [

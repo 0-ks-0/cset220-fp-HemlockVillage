@@ -53,6 +53,16 @@ class User extends Authenticatable
         ];
     }
 
+    public function patient()
+    {
+        return $this->hasOne(Patient::class, 'user_id', 'id');
+    }
+
+    public function employee()
+    {
+        return $this->hasOne(Employee::class, 'user_id', 'id');
+    }
+
     public static function getRoleId($id)
     {
         return ModelHelper::getRow(User::class, "id", $id)->role_id ?? null;
