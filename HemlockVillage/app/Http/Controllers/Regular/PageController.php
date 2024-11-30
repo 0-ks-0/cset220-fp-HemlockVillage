@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\UserAPI;
+use App\Http\Controllers\Api\HomeAPI;
 
 use App\Helpers\ControllerHelper;
 
@@ -40,7 +41,10 @@ class PageController extends Controller
                 return redirect("/users");
 
             case 3: // Doctor
-                return view("doctorshome");
+                // TODO dynamically generate page with data
+                return view("doctorshome")->with([
+                    "data" => HomeAPI::indexDoctor($userId)
+                ]);
 
             case 4: // Caregiver
                 return view("caregivershome");
