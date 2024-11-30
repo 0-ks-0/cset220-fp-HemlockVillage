@@ -81,12 +81,19 @@ body
 
 }
 
+/*
+*
+*	Table
+*
+*/
 .info_table
 {
 	border: 1px solid gray;
 	border-collapse: collapse;
 
 	width: 100%;
+
+	margin-bottom: 20px;
 }
 
 .info_table th,
