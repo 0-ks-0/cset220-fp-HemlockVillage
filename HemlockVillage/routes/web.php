@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Regular;
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Middleware\CheckRole;
+
 require("rapi.php");
 
 Route::get('/', fn() => PageController::landing());
@@ -20,10 +22,17 @@ Route::post("/login", fn() => LoginController::login(request()));
 Route::get("/logout", fn() => LoginController::logout(request()));
 
 // Users
-Route::get("/users", fn() => PageController::users());
+Route::middleware([CheckRole::class . ':1,2'])->group( function ()
+{
+    Route::get("/users", fn() => PageController::users());
+});
 
-// Home
-Route::get("/home", fn() => PageController::home())->middleware("auth");
+Route::middleware("auth")->group( function ()
+{
+    // Home
+    Route::get("/home", fn() => PageController::home());
+});
+
 
 Route::get('/patientshome', function () {
     return view('patientshome');
