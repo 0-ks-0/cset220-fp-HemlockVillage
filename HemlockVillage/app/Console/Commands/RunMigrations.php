@@ -33,18 +33,10 @@ class RunMigrations extends Command
             "0001_01_01_000002_create_jobs_table.php",
             "2024_11_19_203321_create_patients_table.php",
             "2024_11_19_205527_create_employees_table.php",
-            "2024_11_20_030547_create_families_table.php",
-            "2024_11_20_030837_create_admissions_table.php",
-            "2024_11_20_031627_create_groups_table.php",
-            "2024_11_20_032725_create_completion_statuses_table.php",
             "2024_11_20_032232_create_appointments_table.php",
-            "2024_11_20_143434_create_prescriptions_table.php",
             "2024_11_20_144059_create_prescription_statuses_table.php",
             "2024_11_20_145643_create_meals_table.php",
-            "2024_11_20_150724_create_meal_statuses_table.php",
-            "2024_11_20_151323_create_salaries_table.php",
-            "2024_11_20_151908_create_rosters_table.php",
-            "2024_11_20_152701_create_payments_table.php"
+            "2024_11_20_151908_create_rosters_table.php"
         ];
 
         $this->info("Running migrations:");

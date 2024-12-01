@@ -21,7 +21,7 @@
 		@endif
 
 		{{-- Sign up Form --}}
-		<form action="/api/signup" method="post">
+		<form action="/signup" method="post">
 			@csrf
 
 			<label for="role_selection">Role</label>
@@ -68,7 +68,10 @@
 				<input type="text" name="econtact_relation" id="econtact_relation" placeholder="Relation to Patient" maxlength="50">
 			</div>
 
-			<button type="submit">Sign Up!</button>
+			<div class="flex_column">
+				<button type="submit">Sign Up!</button>
+				<button type="reset">Cancel</button>
+			</div>
 		</form>
 
 		<script>

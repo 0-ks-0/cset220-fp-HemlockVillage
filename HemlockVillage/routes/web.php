@@ -6,9 +6,11 @@ use Illuminate\Support\Facades\Route;
 
 require("rapi.php");
 
-Route::get('/', function () {
-    return view('landing');
-});
+Route::get('/', fn() => PageController::landing());
+
+// Signup
+Route::get("/signup", fn() => SignupController::index());
+Route::post("/signup", fn() => SignupController::store(request()));
 
 // Login
 Route::get("/login", fn() => LoginController::showLoginForm())->name("login.form");
@@ -16,6 +18,9 @@ Route::post("/login", fn() => LoginController::login(request()));
 
 // Logout
 Route::get("/logout", fn() => LoginController::logout(request()));
+
+// Users
+Route::get("/users", fn() => PageController::users());
 
 // Home
 Route::get("/home", fn() => PageController::home())->middleware("auth");
@@ -95,4 +100,3 @@ Route::get('/caregivershome', function () {
 Route::get('/familypayment', function () {
     return view('familypayment');
 });
-

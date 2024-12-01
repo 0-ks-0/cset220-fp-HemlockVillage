@@ -53,6 +53,21 @@ class User extends Authenticatable
         ];
     }
 
+    public function patients()
+    {
+        return $this->hasMany(Patient::class);
+    }
+
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
     public static function getRoleId($id)
     {
         return ModelHelper::getRow(User::class, "id", $id)->role_id ?? null;
@@ -60,6 +75,6 @@ class User extends Authenticatable
 
     public static function getId($email)
     {
-        return ModelHelper::getRow(User::class, "email", $email)->id ?? null;
+        return ModelHelper::getId(User::class, "email", $email);
     }
 }

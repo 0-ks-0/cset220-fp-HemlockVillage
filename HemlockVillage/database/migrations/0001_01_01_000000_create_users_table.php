@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id()->unsigned();
+            $table->id();
             $table->string('first_name', 50);
             $table->string("last_name", 50);
             $table->string('email', 100)->unique();
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string("phone_number", 20);
             $table->string('password');
             $table->rememberToken();
-            $table->unsignedBigInteger("role_id")->unsigned()->nullable();
+            $table->unsignedBigInteger("role_id")->nullable();
             $table->boolean("approved")->default(0);
             $table->timestamps();
 

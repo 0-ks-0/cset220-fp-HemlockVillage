@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("user_id")->unique();
+            $table->decimal("salary", 8, 2)->default(0);
             $table->timestamps();
 
             $table->foreign("user_id")
