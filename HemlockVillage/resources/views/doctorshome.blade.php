@@ -13,6 +13,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th>Patient ID</th>
                         <th>Name</th>
                         <th>Date</th>
                         <th>Comment</th>
@@ -24,12 +25,13 @@
 
                 <tbody>
                     <tr>
+                        <td>1</td>
                         <td>Nicholas Hemlock</td>
                         <td>2024-01-03</td>
                         <td>-This dude is going to be zooted</td>
-                        <td><input type="checkbox" name="morning-meds" id="morning_meds"></td>
-                        <td><input type="checkbox" name="afternoon-meds" id="afternoon_meds"></td>
-                        <td><input type="checkbox" name="night-meds" id="night_meds"></td>
+                        <td>Perc 30</td>
+                        <td>Pepto</td>
+                        <td>Dogwater</td>
 
                     </tr>
                 </tbody>
@@ -37,6 +39,7 @@
 
             <h2>Upcoming Appointments</h2>
             <div class="flexbox">
+                <label>-Displays all appointments up until that date</label>
                 <input type="date" id="date" name="date">
 
                 <table>

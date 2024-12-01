@@ -9,6 +9,17 @@
 
             <form action="/schedule-appointment" method="POST">
                 
+
+                <div class="flexbox">
+                    <label>Appointment Date</label>
+                    <input type="date" id="appointment-date" name="appointment_date" required>
+                </div>
+
+                <div class="flexbox">
+                    <label>Patient ID</label>
+                    <input type="text" id="patient-id" name="patient_id" placeholder="Enter Patient ID" required>
+                </div>
+
                 <div class="flexbox">
                     <label>Doctor</label>
                     <select id="doctor" name="doctor" required>
@@ -19,11 +30,7 @@
                     </select>
                 </div>
                 
-                
-                <div class="flexbox">
-                    <label>Patient ID</label>
-                    <input type="text" id="patient-id" name="patient_id" placeholder="Enter Patient ID" required>
-                </div>
+            
 
                 <!--Patients name only pops up when id is entered-->
                 <div class="flexbox">
@@ -32,14 +39,10 @@
                 </div>
 
 
-                <div class="flexbox">
-                    <label>Appointment Date</label>
-                    <input type="date" id="appointment-date" name="appointment_date" required>
-                </div>
 
                 <div class="flexbox">
                     <button type="submit">Schedule Appointment</button><br>
-                    <button type="btn-cancel">Cancel</button>
+                    <button type="btn-cancel">Home</button>
                 </div>
 
             </form>
@@ -50,7 +53,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Patients</th>
+                        <th>Patient</th>
                         <th>Doctor</th>
                         <th>Date</th>
                     </tr>

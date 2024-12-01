@@ -96,3 +96,7 @@ Route::get('/familypayment', function () {
     return view('familypayment');
 });
 
+Route::get('/searchemployee', function () {
+    return view('searchemployee');
+});
+
