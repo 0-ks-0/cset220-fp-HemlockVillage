@@ -9,9 +9,13 @@ use App\Http\Controllers\Controller;
 
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Employee;
 use App\Models\Appointment;
 use App\Models\Patient;
+use App\Models\PrescriptionStatus;
+use App\Models\Roster;
 
 class HomeAPI extends Controller
 {
@@ -73,6 +77,85 @@ class HomeAPI extends Controller
         });
 
         return response()->json($data);
+    }
+
+    public static function showPatient($patientId, $date)
+    {
+        $patient = Patient::find($patientId);
+
+        if (!$patient) return response()->json([ "error" => "Patient could not be found" ], 404);
+
+        $appointment = Appointment::with([
+            "doctor.user"
+        ])
+        ->where("patient_id", "=", $patientId)
+        ->whereDate("appointment_date", $date)
+        ->first();
+
+        $patientGroup = $patient->group_num ?? null;
+
+        // Find the correct caregiver for patient
+        $caregiverString = "";
+        switch ($patientGroup)
+        {
+            case "1":
+                $caregiverString = "one";
+                break;
+            case "2":
+                $caregiverString = "two";
+                break;
+            case "3":
+                $caregiverString = "three";
+                break;
+            case "4":
+                $caregiverString = "four";
+                break;
+            default:
+                $caregiverString = null;
+        }
+
+        // Dynamically determine which caregiver number is associated with patient group num
+        $caregiverString = "caregiver_{$caregiverString}_id" ?? null;
+
+        // Find caregiver info from users table
+        $caregiver = DB::table("rosters")
+            ->join("employees", "rosters.{$caregiverString}", "=", "employees.id")
+            ->join("users", "employees.user_id", "=", "users.id")
+            ->where("rosters.date_assigned", "=", $date)
+            ->select("users.first_name", "users.last_name")
+            ->first();
+
+        /**
+         *  Find prescription status of a patient for a date
+         *  Add `::with(["appointment.patient"])` to get the appointment details
+         */
+        $prescriptionStatus = PrescriptionStatus::where("prescription_date", $date)
+        ->whereHas("appointment", function ($query) use ($patientId)
+        {
+            $query->where("patient_id", "=", $patientId);
+        })->first();
+
+        // Find meal status of a patient for a date
+        $mealStatus = DB::table("meals")->where([
+            [ "patient_id", "=", $patientId ],
+            [ "meal_date", "=", $date ]
+        ])->first();
+
+        return [
+            "doctor_name" => $appointment ? "{$appointment->doctor->user->first_name} {$appointment->doctor->user->last_name}" : null, // Not null if there is an appointment that date
+            "appointment_status" => $appointment ? $appointment->status : null, // Not null if there is an appointment that date
+            "caregiver_name" => $caregiver ? "{$caregiver->first_name} {$caregiver->last_name}" : null,
+            "prescription_status" => [
+                "morning" => $prescriptionStatus->morning ?? null,
+                "afternoon" => $prescriptionStatus->afternoon ?? null,
+                "night" => $prescriptionStatus->night ?? null,
+                ],
+            "meal_status" => [
+                "breakfast" => $mealStatus->breakfast ?? null,
+                "lunch" => $mealStatus->lunch ?? null,
+                "dinner" => $mealStatus->dinner ?? null,
+                ]
+        ];
     }
 
     /**
