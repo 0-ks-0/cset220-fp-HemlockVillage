@@ -19,8 +19,11 @@ return new class extends Migration
             $table->date("date_scheduled");
             $table->date("appointment_date");
             $table->unsignedBigInteger("doctor_id")->nullable();
-            $table->unsignedTinyInteger("status_id")->nullable();
+            $table->enum('status', ['Missing', 'Pending', 'Completed'])->default('Pending');
             $table->text("comment")->nullable();
+            $table->text("morning")->nullable();
+            $table->text("afternoon")->nullable();
+            $table->text("night")->nullable();
             $table->timestamps();
 
             $table->foreign("patient_id")
@@ -31,11 +34,6 @@ return new class extends Migration
             $table->foreign("doctor_id")
                 ->references("id")
                 ->on("employees")
-                ->onUpdate("cascade")
-                ->onDelete("set null");
-            $table->foreign("status_id")
-                ->references("id")
-                ->on("completion_statuses")
                 ->onUpdate("cascade")
                 ->onDelete("set null");
 

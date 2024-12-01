@@ -8,10 +8,13 @@
 		<title>Login</title>
 
 		<link rel="stylesheet" href="{{ asset("./css/style.css>") }}">
+
+		<script src="{{ asset("./js/navigator.js") }}"></script>
 	</head>
 
 	<body>
 		<div>
+			{{-- Error section --}}
 			@if ($errors->any())
 				<div class="error">
 					@foreach ($errors->all() as $error)
@@ -20,12 +23,14 @@
 				</div>
 			@endif
 
+			{{-- Logout redirecting message --}}
 			@if (session("success"))
 				<div class="success">
 					{{ session("success") }}
 				</div>
 			@endif
 
+			{{-- Login form --}}
 			<form action="/login" method="post">
 				@csrf
 
@@ -39,7 +44,10 @@
 					<input type="password" name="password" id="password" required>
 				</div>
 
-				<button type="submit">Login</button>
+				<div>
+					<button type="submit">Login</button>
+					<a href="/signup">Sign up</a>
+				</div>
 			</form>
 		</div>
 	</body>

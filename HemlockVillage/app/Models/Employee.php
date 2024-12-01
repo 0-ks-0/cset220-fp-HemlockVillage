@@ -9,8 +9,24 @@ use App\Helpers\ModelHelper;
 class Employee extends Model
 {
     protected $fillable = [
-        "user_id"
+        "user_id",
+        "salary"
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, "user_id");
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, "doctor_id");
+    }
+
+    public function rosters()
+    {
+        return $this->hasMany(Roster::class);
+    }
 
     public static function getId($userID)
     {

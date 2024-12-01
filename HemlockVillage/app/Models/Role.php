@@ -13,6 +13,11 @@ class Role extends Model
         "access_level"
     ];
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
     /**
      * @param string $role
      * @return int|null The id; null if the record can not be found

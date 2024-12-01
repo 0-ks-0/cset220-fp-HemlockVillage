@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string("econtact_name", 128);
             $table->string("econtact_phone", 20);
             $table->string("econtact_relation", 50);
+            $table->date("admission_date")->nullable();
+            $table->enum("group_num", ["1", "2", "3", "4"])->nullable();
+            $table->date("last_updated_date")->nullable();
+            $table->decimal("bill", 8, 2)->default(0);
             $table->timestamps();
 
             $table->primary("id");
