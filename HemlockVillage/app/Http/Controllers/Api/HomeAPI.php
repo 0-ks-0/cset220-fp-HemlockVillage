@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\ModelHelper;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
@@ -10,6 +11,7 @@ use Carbon\Carbon;
 
 use App\Models\Employee;
 use App\Models\Appointment;
+use App\Models\Patient;
 
 class HomeAPI extends Controller
 {
@@ -43,20 +45,30 @@ class HomeAPI extends Controller
         $doctorId = Employee::getId($userId);
 
         // Get all past appointments for the doctor
-        $appointments = Appointment::with([ "patient", "patient.user", "prescriptions" ])
-            ->where("doctor_id", $doctorId)
-            ->where("appointment_date", "<", Carbon::today())
-            ->get();
+        $appointments = Appointment::with([
+            "patient",
+            "patient.user"
+        ])
+        ->where("doctor_id", $doctorId)
+        ->where("appointment_date", "<", Carbon::today())
+        ->get();
 
         // return response()->json($appointments);
 
         $data = $appointments->map(function ($a)
         {
+            $user = $a->patient->user;
+
             return [
-                "patient_name" => "{$a->patient->user->first_name} {$a->patient->user->last_name}",
+                "patient_id" => $a->patient->id,
+                "patient_name" => "{$user->first_name} {$user->last_name}",
                 "appointment_date" => $a->appointment_date,
                 "comment" => $a->comment,
-                "prescription" => $a->prescriptions ?? []
+                "prescription" => [
+                    "morning" => $a->morning ?? null,
+                    "afternoon" => $a->afternoon ?? null,
+                    "night" => $a->night ?? null,
+                ]
             ];
         });
 
