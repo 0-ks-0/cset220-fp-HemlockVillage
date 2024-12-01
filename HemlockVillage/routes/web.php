@@ -27,8 +27,12 @@ Route::middleware([CheckRole::class . ':1,2'])->group( function ()
     Route::get("/users", fn() => PageController::users());
 });
 
-// Home
-Route::get("/home", fn() => PageController::home())->middleware("auth");
+Route::middleware("auth")->group( function ()
+{
+    // Home
+    Route::get("/home", fn() => PageController::home());
+});
+
 
 Route::get('/patientshome', function () {
     return view('patientshome');
