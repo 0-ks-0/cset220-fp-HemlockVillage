@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 use App\Helpers\ModelHelper;
@@ -15,7 +15,6 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Employee;
 use App\Models\Patient;
-use App\Models\Family;
 
 class SignupAPI extends Controller
 {
@@ -93,14 +92,6 @@ class SignupAPI extends Controller
                     "econtact_name" => $request->get("econtact_name"),
                     "econtact_phone" => $request->get("econtact_phone"),
                     "econtact_relation" => $request->get("econtact_relation")
-                ]);
-
-                break;
-
-            // Family
-            case Role::getId("Family"):
-                Family::create([
-                    "user_id" => $userId
                 ]);
 
                 break;
