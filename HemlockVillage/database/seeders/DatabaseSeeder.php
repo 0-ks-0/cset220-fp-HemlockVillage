@@ -21,18 +21,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             EmployeeSeeder::class,
             PatientSeeder::class,
-            FamilySeeder::class,
-            AdmissionSeeder::class,
-            GroupSeeder::class,
-            CompletionStatusSeeder::class,
             AppointmentSeeder::class,
-            PrescriptionSeeder::class,
             PrescriptionStatusSeeder::class,
             MealSeeder::class,
-            MealStatusSeeder::class,
-            SalarySeeder::class,
             RosterSeeder::class,
-            PaymentSeeder::class
         ]);
     }
 }

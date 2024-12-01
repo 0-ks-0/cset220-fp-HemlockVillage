@@ -15,7 +15,11 @@ class Patient extends Model
         "econtact_name",
         "econtact_phone",
         "econtact_phone",
-        "econtact_relation"
+        "econtact_relation",
+        "admission_date",
+        "group_num",
+        "last_updated_date",
+        "bill"
     ];
 
     public $incrementing = false;

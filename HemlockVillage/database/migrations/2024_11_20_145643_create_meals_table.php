@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string("patient_id", 16);
             $table->date("meal_date");
+            $table->enum("breakfast", ["Missing", "Pending", "Completed"])->default("Pending");
+            $table->enum("lunch", ["Missing", "Pending", "Completed"])->default("Pending");
+            $table->enum("dinner", ["Missing", "Pending", "Completed"])->default("Pending");
             $table->timestamps();
 
             $table->foreign("patient_id")

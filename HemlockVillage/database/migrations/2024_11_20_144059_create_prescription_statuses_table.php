@@ -13,34 +13,20 @@ return new class extends Migration
     {
         Schema::create('prescription_statuses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("prescription_id");
-            $table->unsignedTinyInteger("morning");
-            $table->unsignedTinyInteger("afternoon");
-            $table->unsignedTinyInteger("night");
+            $table->unsignedBigInteger("appointment_id");
+            $table->date("prescription_date");
+            $table->enum('morning', ['Missing', 'Pending', 'Completed'])->default('Pending');
+            $table->enum('afternoon', ['Missing', 'Pending', 'Completed'])->default('Pending');
+            $table->enum('night', ['Missing', 'Pending', 'Completed'])->default('Pending');
             $table->timestamps();
 
-            $table->foreign("prescription_id")
+            $table->foreign("appointment_id")
                 ->references("id")
-                ->on("prescriptions")
+                ->on("appointments")
                 ->onUpdate("cascade")
                 ->onDelete("cascade");
-            $table->foreign("morning")
-                ->references("id")
-                ->on("completion_statuses")
-                ->onUpdate("cascade")
-                ->onDelete("restrict"); // Prevent prescription status to be lost if completion status deleted
-            $table->foreign("afternoon")
-                ->references("id")
-                ->on("completion_statuses")
-                ->onUpdate("cascade")
-                ->onDelete("restrict");
-            $table->foreign("night")
-                ->references("id")
-                ->on("completion_statuses")
-                ->onUpdate("cascade")
-                ->onDelete("restrict");
 
-            $table->unique("prescription_id");
+            $table->unique("appointment_id");
         });
     }
 

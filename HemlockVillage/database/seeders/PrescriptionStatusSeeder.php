@@ -14,13 +14,14 @@ class PrescriptionStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        self::insertData(1, 1, 2, 3);
+        self::insertData(1, "2024-11-03", "Completed", "Completed", "Completed");
     }
 
-    private static function insertData($prescriptionID, $morning, $afternoon, $night): void
+    private static function insertData($appointmentId, $date, $morning, $afternoon, $night): void
     {
         PrescriptionStatus::create([
-            "prescription_id" => $prescriptionID,
+            "appointment_id" => $appointmentId,
+            "prescription_date" => $date,
             "morning" => $morning,
             "afternoon" => $afternoon,
             "night" => $night,

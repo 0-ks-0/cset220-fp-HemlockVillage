@@ -9,7 +9,8 @@ use App\Helpers\ModelHelper;
 class Employee extends Model
 {
     protected $fillable = [
-        "user_id"
+        "user_id",
+        "salary"
     ];
 
     public function user()

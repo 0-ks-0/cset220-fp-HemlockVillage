@@ -15,10 +15,10 @@ class PatientSeeder extends Seeder
      */
     public function run(): void
     {
-        self::insertData(Str::random(16), 5, Str::random(16), "John Doe", '111-111-1111', "Brother");
+        self::insertData(Str::random(16), 5, Str::random(16), "John Doe", '111-111-1111', "Brother", "2024-11-01", "1", "2024-11-02", 15);
     }
 
-    private static function insertData($id, $userID, $familyCode, $econtactName, $econtactPhone, $relation): void
+    private static function insertData($id, $userID, $familyCode, $econtactName, $econtactPhone, $relation, $admissionDate, $groupNum, $lastUpdatedDate, $bill): void
     {
         Patient::create([
             "id" => $id,
@@ -26,7 +26,11 @@ class PatientSeeder extends Seeder
             "family_code" => $familyCode,
             "econtact_name" => $econtactName,
             "econtact_phone" => $econtactPhone,
-            "econtact_relation" => $relation
+            "econtact_relation" => $relation,
+            "admission_date" => $admissionDate ?? null,
+            "group_num" => $groupNum ?? null,
+            "last_updated_date" => $lastUpdatedDate ?? date("Y-m-d"),
+            "bill" => $bill ?? 0
         ]);
     }
 }

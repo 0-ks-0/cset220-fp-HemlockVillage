@@ -2,12 +2,37 @@
 
 namespace App\Models;
 
+use App\Helpers\ModelHelper;
 use Illuminate\Database\Eloquent\Model;
 
 class Meal extends Model
 {
     protected $filalble = [
         "patient_id",
-        "meal_date"
+        "meal_date",
+        "breakfast",
+        "lunch",
+        "dinner"
     ];
+
+    /**
+     * Get the row associated with a patient and meal date
+     */
+    public static function getRow($patientId, $date)
+    {
+        return ModelHelper::getRowWithConditions(Meal::class, [
+            [ "patient_id", "=", $patientId ],
+            [ "meal_date", "=", $date ]
+        ]);
+    }
+
+    /**
+     * Get all the meals of a patient
+     */
+    public static function getRows($patientId)
+    {
+        return ModelHelper::getRowWithConditions(Meal::class, [
+            [ "patient_id", "=", $patientId ]
+        ]);
+    }
 }

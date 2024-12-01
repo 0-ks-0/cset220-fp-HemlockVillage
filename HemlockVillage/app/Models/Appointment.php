@@ -13,8 +13,11 @@ class Appointment extends Model
         "date_scheduled",
         "appointment_date",
         "doctor_id",
-        "status_id",
-        "comment"
+        "status",
+        "comment",
+        "morning",
+        "afternoon",
+        "night"
     ];
 
     public function patient()
@@ -27,16 +30,42 @@ class Appointment extends Model
         return $this->belongsTo(Employee::class, 'doctor_id');
     }
 
-    public function prescriptions()
-    {
-        return $this->hasOne(Prescription::class, "appointment_id");
-    }
-
     public static function getId($patientID, $appointmentDate)
     {
         return ModelHelper::getIdWithConditions(Appointment::class, [
             [ "patient_id", '=', $patientID ],
             [ "appointment_date", "=", $appointmentDate ]
+        ]);
+    }
+
+    /**
+     * Get all the appointments of a patient
+     */
+    public static function getPatientAppointments($patientId)
+    {
+        return ModelHelper::getRowsWithConditions(Appointment::class, [
+            ["patient_id", '=', $patientId]
+        ]);
+    }
+
+    /**
+     * Get the appointment for a patient on a specific date
+     */
+    public static function getPatientAppointment($patientId, $appointmentDate)
+    {
+        return ModelHelper::getRowWithConditions(Appointment::class, [
+            ["patient_id", '=', $patientId],
+            [ "appointment_date", "=", $appointmentDate ]
+        ]);
+    }
+
+    /**
+     * Get all the appointments of a doctor
+     */
+    public static function getDoctorAppointments($doctorId)
+    {
+        return ModelHelper::getRowsWithConditions(Appointment::class, [
+            ["doctor_id", '=', $doctorId]
         ]);
     }
 }
