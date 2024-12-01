@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 
+use Carbon\Carbon;
+
 use App\Models\Employee;
 use App\Models\Appointment;
 
@@ -40,9 +42,10 @@ class HomeAPI extends Controller
         // get employee id of user
         $doctorId = Employee::getId($userId);
 
-        // Get all the appointments for the doctor
+        // Get all past appointments for the doctor
         $appointments = Appointment::with([ "patient", "patient.user", "prescriptions" ])
             ->where("doctor_id", $doctorId)
+            ->where("appointment_date", "<", Carbon::today())
             ->get();
 
         // return response()->json($appointments);
