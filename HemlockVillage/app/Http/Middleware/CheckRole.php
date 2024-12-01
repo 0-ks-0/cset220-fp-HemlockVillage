@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CheckRole
 {
@@ -15,7 +16,7 @@ class CheckRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public static function handle(Request $request, Closure $next, ...$roles): Response
+    public static function handle(Request $request, Closure $next, ...$accessLevels): Response
     {
         // Not logged in
         if (!Auth::check())
@@ -25,8 +26,10 @@ class CheckRole
             return redirect("login");
         }
 
-        // Not a role that can access
-        if (!in_array(Auth::user()->role_id, $roles))
+        $accessLevel = DB::table("roles")->find(Auth::user()->role_id);
+
+        // Not an access level that can access
+        if (!in_array($accessLevel, $accessLevels))
             abort(403, "You do not have permission to view this page");
 
         return $next($request);
