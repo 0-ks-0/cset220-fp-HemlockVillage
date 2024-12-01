@@ -23,17 +23,28 @@ class Patient extends Model
     ];
 
     public $incrementing = false;
-    protected $keyType = 'string';
+    protected $keyType = "string";
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, "user_id");
     }
 
     public function appointments()
     {
         return $this->hasMany(Appointment::class, "patient_id");
     }
+
+    public function meals()
+    {
+        return $this->hasMany(Meal::class, "patient_id");
+    }
+
+    public function prescriptions()
+    {
+        return $this->hasMany(PrescriptionStatus::class, "appointment_id");
+    }
+
 
     public static function getId($userID)
     {

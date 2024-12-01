@@ -20,7 +20,12 @@ class Employee extends Model
 
     public function appointments()
     {
-        return $this->hasMany(Appointment::class, 'doctor_id');
+        return $this->hasMany(Appointment::class, "doctor_id");
+    }
+
+    public function rosters()
+    {
+        return $this->hasMany(Roster::class);
     }
 
     public static function getId($userID)

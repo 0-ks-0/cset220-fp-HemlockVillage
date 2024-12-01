@@ -15,6 +15,11 @@ class PrescriptionStatus extends Model
         "night"
     ];
 
+    public function appointment()
+    {
+        return $this->belongsTo(Appointment::class);
+    }
+
     /**
      * Get the row associated with the prescription id
      */

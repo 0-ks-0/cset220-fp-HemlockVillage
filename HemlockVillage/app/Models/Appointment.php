@@ -27,13 +27,18 @@ class Appointment extends Model
 
     public function doctor()
     {
-        return $this->belongsTo(Employee::class, 'doctor_id');
+        return $this->belongsTo(Employee::class, "doctor_id");
+    }
+
+    public function prescriptions()
+    {
+        return $this->hasMany(PrescriptionStatus::class);
     }
 
     public static function getId($patientID, $appointmentDate)
     {
         return ModelHelper::getIdWithConditions(Appointment::class, [
-            [ "patient_id", '=', $patientID ],
+            [ "patient_id", "=", $patientID ],
             [ "appointment_date", "=", $appointmentDate ]
         ]);
     }
@@ -44,7 +49,7 @@ class Appointment extends Model
     public static function getPatientAppointments($patientId)
     {
         return ModelHelper::getRowsWithConditions(Appointment::class, [
-            ["patient_id", '=', $patientId]
+            ["patient_id", "=", $patientId]
         ]);
     }
 
@@ -54,7 +59,7 @@ class Appointment extends Model
     public static function getPatientAppointment($patientId, $appointmentDate)
     {
         return ModelHelper::getRowWithConditions(Appointment::class, [
-            ["patient_id", '=', $patientId],
+            ["patient_id", "=", $patientId],
             [ "appointment_date", "=", $appointmentDate ]
         ]);
     }
@@ -65,7 +70,7 @@ class Appointment extends Model
     public static function getDoctorAppointments($doctorId)
     {
         return ModelHelper::getRowsWithConditions(Appointment::class, [
-            ["doctor_id", '=', $doctorId]
+            ["doctor_id", "=", $doctorId]
         ]);
     }
 }

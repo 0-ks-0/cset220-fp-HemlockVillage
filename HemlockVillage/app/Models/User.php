@@ -53,14 +53,19 @@ class User extends Authenticatable
         ];
     }
 
-    public function patient()
+    public function patients()
     {
-        return $this->hasOne(Patient::class, 'user_id', 'id');
+        return $this->hasMany(Patient::class);
     }
 
-    public function employee()
+    public function employees()
     {
-        return $this->hasOne(Employee::class, 'user_id', 'id');
+        return $this->hasMany(Employee::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 
     public static function getRoleId($id)

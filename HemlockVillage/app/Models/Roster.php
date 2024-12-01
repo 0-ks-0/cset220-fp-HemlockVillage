@@ -17,6 +17,16 @@ class Roster extends Model
         "caregiver_four_id"
     ];
 
+    public function supervisor()
+    {
+        return $this->belongsTo(Employee::class, "supervisor_id");
+    }
+
+    public function doctor()
+    {
+        return $this->belongsTo(Employee::class, "doctor_id");
+    }
+
     /**
      * Get the roster for a specific date
      */

@@ -15,6 +15,11 @@ class Meal extends Model
         "dinner"
     ];
 
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
     /**
      * Get the row associated with a patient and meal date
      */
