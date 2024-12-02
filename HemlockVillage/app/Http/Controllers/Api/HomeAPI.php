@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\ControllerHelper;
 use App\Helpers\ModelHelper;
 use Illuminate\Http\Request;
 
@@ -156,6 +157,84 @@ class HomeAPI extends Controller
                 "dinner" => $mealStatus->dinner ?? null,
                 ]
         ];
+    }
+
+    public static function showCaregiver($caregiverId, $date)
+    {
+        /**
+         * Get roster
+         */
+        // To test, set date 2024-11-03
+        $roster = Roster::whereDate("date_assigned", $date)->first();
+
+        // No roster created
+        // --- Comment out for testing bypass
+        if (!$roster)
+            return response()->json("No roster has been created for today { " . Carbon::today()->format("Y-m-d") . " }");
+
+        /**
+         * Find group num that caregiver is assigned for
+         */
+        $groupNum = null;
+
+        // Find which column the caregiver is under in the roster
+        // --- Comment out for testing bypass of no roster
+        foreach ($roster->getAttributes() as $col => $val)
+        {
+            if ($val === $caregiverId) $groupNum = $col;
+        }
+
+        // Get group num
+        $groupNum = ControllerHelper::convertRosterCaregiverToNumeric($groupNum);
+
+        // Caregiver is not on the roster
+        // --- Comment out for testing bypass
+        if (!$groupNum)
+            return response()->json("You are not assigned on the roster today { " . Carbon::today()->format("Y-m-d") . " }");
+
+        /**
+         * Find all the patients under this group num
+         */
+        // --- Hard-code group_num value as 1 to test if needed to bypass
+        $patients = Patient::join("users", "patients.user_id", "users.id")->where("group_num", $groupNum)->get();
+
+        foreach ($patients as $p)
+        {
+            // To test, set date to 2024-11-03
+            $PrescriptionStatusAppointment = ControllerHelper::getPatientPrescriptionStatusAppointmentByDate(Patient::getId($p->id), $date);
+
+            $appointment = $PrescriptionStatusAppointment->appointment ?? null; // Appointment and doctor info
+
+            $doctor = $PrescriptionStatusAppointment->appointment->doctor->user ?? null; // Doctor info specifically
+
+            // To test, set date to 2024-11-01
+            $meal = ControllerHelper::getPatientMealStatusByDate(Patient::getId($p->id), $date);
+
+            $data[] = [
+                "patient_id" => $p->id,
+                "prescription_status_id" => $PrescriptionStatusAppointment->id ?? null,
+                "meal_id" => $meal->id ?? null,
+                "patient_name" => "{$p->first_name} {$p->last_name}",
+                "doctor_name" => $doctor ? "{$doctor->first_name} {$doctor->last_name}" : null,
+                "appointment_status" => $appointment->status ?? null,
+                "prescriptions" => [
+                    "morning" => $appointment->morning ?? null,
+                    "afternoon" => $appointment->afternoon ?? null,
+                    "night" => $appointment->night ?? null,
+                    ],
+                "prescription_status" => [
+                    "morning" => $PrescriptionStatusAppointment->morning ?? null,
+                    "afternoon" => $PrescriptionStatusAppointment->afternoon ?? null,
+                    "night" => $PrescriptionStatusAppointment->night ?? null,
+                    ],
+                "meal_status" => [
+                    "breakfast" => $meal->breakfast ?? null,
+                    "lunch" => $meal->lunch ?? null,
+                    "dinner" => $meal->dinner ?? null,
+                    ]
+            ];
+        }
+        return $data;
     }
 
     /**
