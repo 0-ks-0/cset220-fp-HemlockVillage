@@ -77,9 +77,12 @@ class ControllerHelper
         ])->first();
 
 		return [
-			"breakfast" => $meal->breakfast ?? null,
-			"lunch" => $meal->lunch ?? null,
-			"dinner" => $meal->dinner ?? null,
+			"meal_id" => $meal->id ?? null,
+			"status_data" => [
+				"breakfast" => $meal->breakfast ?? null,
+				"lunch" => $meal->lunch ?? null,
+				"dinner" => $meal->dinner ?? null,
+				]
 		];
 	}
 
