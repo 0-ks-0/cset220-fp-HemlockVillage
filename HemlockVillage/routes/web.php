@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Regular;
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\RosterController;
 
 use App\Http\Middleware\CheckRole;
 
@@ -32,6 +35,19 @@ Route::middleware("auth")->group( function ()
     // Home
     Route::get("/home", fn() => PageController::home());
 });
+
+
+Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
+Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search');
+
+
+
+Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
+Route::post('/patients/{patientId}/approve', [PatientController::class, 'approveRegistration'])->name('patients.approve');
+
+
+Route::get('/rosters', [RosterController::class, 'viewRoster'])->name('rosters.view');
+
 
 
 Route::get('/patientshome', function () {
