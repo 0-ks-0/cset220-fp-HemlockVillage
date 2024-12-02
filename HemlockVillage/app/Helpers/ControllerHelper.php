@@ -55,6 +55,20 @@ class ControllerHelper
 		];
 	}
 
+	/**
+	 * Get the prescription info from the appointments table
+	 *
+	 * @param model $patientPrescriptionStatusAppointment The result of the function getPatientPrescriptionStatusAppointmentByDate($patientId, $date)
+	 */
+	public static function getPatientPrescriptionStatusByDate($patientPrescriptionStatusAppointment)
+	{
+		return [
+			"morning" => $patientPrescriptionStatusAppointment->morning ?? null,
+			"afternoon" => $patientPrescriptionStatusAppointment->afternoon ?? null,
+			"night" => $patientPrescriptionStatusAppointment->night ?? null,
+		];
+	}
+
 	public static function getPatientMealStatusByDate($patientId, $date)
 	{
 		$meal = DB::table("meals")->where([
