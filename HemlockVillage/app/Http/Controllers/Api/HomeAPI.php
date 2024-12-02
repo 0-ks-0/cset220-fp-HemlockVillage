@@ -205,8 +205,6 @@ class HomeAPI extends Controller
 
             $appointment = $PrescriptionStatusAppointment->appointment ?? null; // Appointment and doctor info
 
-            // To test, set date to 2024-11-01
-            $meal = ControllerHelper::getPatientMealStatusByDate(Patient::getId($p->id), $date);
 
             $data[] = [
                 "patient_id" => $p->id,
@@ -224,11 +222,7 @@ class HomeAPI extends Controller
                     "afternoon" => $PrescriptionStatusAppointment->afternoon ?? null,
                     "night" => $PrescriptionStatusAppointment->night ?? null,
                     ],
-                "meal_status" => [
-                    "breakfast" => $meal->breakfast ?? null,
-                    "lunch" => $meal->lunch ?? null,
-                    "dinner" => $meal->dinner ?? null,
-                    ]
+                "meal_status" => ControllerHelper::getPatientMealStatusByDate(Patient::getId($p->id), $date) // To test, set date to 2024-11-01
             ];
         }
         return $data;
