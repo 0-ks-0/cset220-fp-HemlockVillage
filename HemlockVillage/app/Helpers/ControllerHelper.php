@@ -41,10 +41,16 @@ class ControllerHelper
 
 	public static function getPatientMealStatusByDate($patientId, $date)
 	{
-		return DB::table("meals")->where([
+		$meal = DB::table("meals")->where([
             [ "patient_id", "=", $patientId ],
             [ "meal_date", "=", $date ]
         ])->first();
+
+		return [
+			"breakfast" => $meal->breakfast ?? null,
+			"lunch" => $meal->lunch ?? null,
+			"dinner" => $meal->dinner ?? null,
+		];
 	}
 
 	/**
