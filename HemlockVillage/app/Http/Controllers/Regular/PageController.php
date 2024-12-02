@@ -66,7 +66,8 @@ class PageController extends Controller
             case 5: // Patient
                 $patientId = Patient::getId($userId);
 
-                return HomeAPI::showPatient($patientId, Carbon::today());
+                // return HomeAPI::showPatient($patientId, Carbon::today());
+                // return HomeAPI::showPatient($patientId, "2024-11-03");
 
                 return view("patientshome")->with([
                     "data" => HomeAPI::showPatient($patientId, Carbon::today())
