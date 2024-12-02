@@ -28,6 +28,8 @@ class ControllerHelper
 	 */
 	public static function getPatientPrescriptionStatusAppointmentByDate($patientId, $date)
 	{
+		// ======== TODO if there is no prescription status for today, create a default one using the most recent appointment id that is marked as completed
+
 		return PrescriptionStatus::with(["appointment.doctor.user"])
         ->where("prescription_date", $date)
         ->whereHas("appointment", function ($query) use ($patientId)
