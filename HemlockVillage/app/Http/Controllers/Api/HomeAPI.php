@@ -212,11 +212,7 @@ class HomeAPI extends Controller
                 "patient_name" => "{$p->first_name} {$p->last_name}",
                 "appointment_status" => $appointment->status ?? null,
                 "prescriptions" => ControllerHelper::getPatientPrescriptionByDate($PrescriptionStatusAppointment),
-                "prescription_status" => [
-                    "morning" => $PrescriptionStatusAppointment->morning ?? null,
-                    "afternoon" => $PrescriptionStatusAppointment->afternoon ?? null,
-                    "night" => $PrescriptionStatusAppointment->night ?? null,
-                    ],
+                "prescription_status" => ControllerHelper::getPatientPrescriptionStatusByDate($PrescriptionStatusAppointment),
                 "meal_status" => ControllerHelper::getPatientMealStatusByDate(Patient::getId($p->id), $date) // To test, set date to 2024-11-01
             ];
         }
