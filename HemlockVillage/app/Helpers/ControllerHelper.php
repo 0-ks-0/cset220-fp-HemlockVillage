@@ -44,4 +44,20 @@ class ControllerHelper
             [ "meal_date", "=", $date ]
         ])->first();
 	}
+
+	/**
+	 * Translates the caregiver column name in the rosters table into the group number as a numeric string
+	 * To be used to identify which group number a caregiver is responsible for
+	 */
+	public static function convertRosterCaregiverToNumeric($caregiverColumn)
+	{
+		switch ($caregiverColumn)
+		{
+			case "caregiver_one_id": return "1";
+			case "caregiver_two_id": return "2";
+			case "caregiver_three_id": return "3";
+			case "caregiver_four_id": return "4";
+			default: return null;
+		}
+	}
 }
