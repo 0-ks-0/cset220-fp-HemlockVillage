@@ -205,8 +205,6 @@ class HomeAPI extends Controller
 
             $appointment = $PrescriptionStatusAppointment->appointment ?? null; // Appointment and doctor info
 
-            $doctor = $PrescriptionStatusAppointment->appointment->doctor->user ?? null; // Doctor info specifically
-
             // To test, set date to 2024-11-01
             $meal = ControllerHelper::getPatientMealStatusByDate(Patient::getId($p->id), $date);
 
@@ -215,7 +213,6 @@ class HomeAPI extends Controller
                 "prescription_status_id" => $PrescriptionStatusAppointment->id ?? null,
                 "meal_id" => $meal->id ?? null,
                 "patient_name" => "{$p->first_name} {$p->last_name}",
-                "doctor_name" => $doctor ? "{$doctor->first_name} {$doctor->last_name}" : null,
                 "appointment_status" => $appointment->status ?? null,
                 "prescriptions" => [
                     "morning" => $appointment->morning ?? null,
