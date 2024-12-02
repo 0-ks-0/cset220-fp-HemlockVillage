@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\UserAPI;
 use App\Http\Controllers\Api\HomeAPI;
 
 use App\Models\Patient;
+use App\Models\Employee;
 
 use App\Helpers\ControllerHelper;
 use Carbon\Carbon;
@@ -54,7 +55,13 @@ class PageController extends Controller
                 ]);
 
             case 4: // Caregiver
-                return view("caregivershome");
+                // return HomeAPI::showCaregiver(4, "2024-11-03");
+
+                $caregiverId = Employee::getId($userId);
+
+                return view("caregivershome")->with([
+                    "data" => HomeAPI::showCaregiver($caregiverId, Carbon::today())
+                ]);
 
             case 5: // Patient
                 $patientId = Patient::getId($userId);
