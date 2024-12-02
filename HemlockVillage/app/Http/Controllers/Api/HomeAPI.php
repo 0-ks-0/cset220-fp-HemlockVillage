@@ -205,18 +205,13 @@ class HomeAPI extends Controller
 
             $appointment = $PrescriptionStatusAppointment->appointment ?? null; // Appointment and doctor info
 
-
             $data[] = [
                 "patient_id" => $p->id,
                 "prescription_status_id" => $PrescriptionStatusAppointment->id ?? null,
                 "meal_id" => $meal->id ?? null,
                 "patient_name" => "{$p->first_name} {$p->last_name}",
                 "appointment_status" => $appointment->status ?? null,
-                "prescriptions" => [
-                    "morning" => $appointment->morning ?? null,
-                    "afternoon" => $appointment->afternoon ?? null,
-                    "night" => $appointment->night ?? null,
-                    ],
+                "prescriptions" => ControllerHelper::getPatientPrescriptionByDate($PrescriptionStatusAppointment),
                 "prescription_status" => [
                     "morning" => $PrescriptionStatusAppointment->morning ?? null,
                     "afternoon" => $PrescriptionStatusAppointment->afternoon ?? null,
