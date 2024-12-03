@@ -48,7 +48,13 @@ class SignupAPI extends Controller
 
         // Fails validation for user
         if ($validatedUser->fails())
-            return redirect()->back()->withErrors([ "Invalid input(s). Please try again."]);
+        {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid input(s). Please try again.',
+                'errors' => $validatedUser->errors()
+            ], 400);
+        }
 
         // Hash the password
         $request->merge([
@@ -99,7 +105,11 @@ class SignupAPI extends Controller
             default:
         }
 
-        return $user;
+        return response()->json([
+            'success' => true,
+            'message' => 'User account successfully created.',
+            'user' => $user
+        ]);
     }
 
     /**
