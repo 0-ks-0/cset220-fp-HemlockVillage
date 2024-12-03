@@ -222,6 +222,22 @@ class HomeAPI extends Controller
         return $data;
     }
 
+    public static function showFamily($patientId, $familyCode, $date)
+    {
+        $prescriptionStatusAppointment = ControllerHelper::getPatientPrescriptionStatusAppointmentByDate($patientId, $date);
+
+        $appointment = $prescriptionStatusAppointment->appointment ?? null;
+
+        return [
+            "doctor_name" => $appointment ? "{$appointment->doctor->user->first_name} {$appointment->doctor->user->last_name}" : null,
+            "appointment_status" => $appointment ? $appointment->status : null,
+            "caregiver_name" => "someone",
+            "prescriptions" => ControllerHelper::getPatientPrescriptionByDate($prescriptionStatusAppointment),
+            "prescription_status" => ControllerHelper::getPatientPrescriptionStatusByDate($prescriptionStatusAppointment),
+            "meal_status" => ControllerHelper::getPatientMealStatusByDate($patientId, $date)["status_data"]
+            ];
+    }
+
     /**
      * Update the specified resource in storage.
      */
