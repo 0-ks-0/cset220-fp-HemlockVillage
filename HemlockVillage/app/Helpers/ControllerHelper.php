@@ -5,6 +5,7 @@ namespace App\Helpers;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\PrescriptionStatus;
+use App\Models\Appointment;
 
 class ControllerHelper
 {
@@ -24,19 +25,25 @@ class ControllerHelper
 	}
 
 	/**
-	 * Get the prescription status, appointment info for prescriptions, and the doctor info
+	 * Get the prescription status, appointment info for prescriptions, and the doctor info for a patient on a given date
+	 * @param string $patienId The id of hte patient
+	 * @param string $date The date of the appointment
 	 */
 	public static function getPatientPrescriptionStatusAppointmentByDate($patientId, $date)
 	{
 		// ======== TODO if there is no prescription status for today, create a default one using the most recent appointment id that is marked as completed
 
-		return PrescriptionStatus::with(["appointment.doctor.user"])
+		return PrescriptionStatus::with([
+			"appointment" => fn($q) => $q->select("id", "patient_id", "doctor_id", "status", "comment", "morning", "afternoon", "night"),
+			"appointment.doctor.user" => fn($q) => $q->select("id", "first_name", "last_name")
+		])
         ->where("prescription_date", $date)
         ->whereHas("appointment", function ($query) use ($patientId)
         {
             $query->where("patient_id", "=", $patientId);
-        })->first();
-
+        })
+		->select("id", "appointment_id", "morning", "afternoon", "night")
+		->first();
 	}
 
 	/**
