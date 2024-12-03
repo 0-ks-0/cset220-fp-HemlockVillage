@@ -108,4 +108,16 @@ class ControllerHelper
 			default: return null;
 		}
 	}
+
+	public static function convertGroupNumToRosterCaregiverColumn($groupNum)
+	{
+		switch ($groupNum)
+		{
+			case "1": return "caregiver_one_id";
+			case "2": return "caregiver_two_id";
+			case "3": return "caregiver_three_id";
+			case "4": return "caregiver_four_id";
+			default: return null;
+		}
+	}
 }
