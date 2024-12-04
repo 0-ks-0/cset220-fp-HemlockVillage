@@ -253,14 +253,18 @@ class HomeAPI extends Controller
 
         $caregiver = ControllerHelper::getPatientCaregiverByDate($patientId, $date);
 
-        return [
-            "doctor_name" => $appointment ? "{$appointment->doctor->user->first_name} {$appointment->doctor->user->last_name}" : null,
-            "appointment_status" => $appointment ? $appointment->status : null,
-            "caregiver_name" => $caregiver["caregiver_name"],
-            "prescriptions" => ControllerHelper::getPatientPrescriptionByDate($prescriptionStatusAppointment),
-            "prescription_status" => ControllerHelper::getPatientPrescriptionStatusByDate($prescriptionStatusAppointment),
-            "meal_status" => ControllerHelper::getPatientMealStatusByDate($patientId, $date)["status_data"]
-            ];
+        return response()->json([
+            "success" => true,
+            "message" => "Data has been retrieved",
+            "data" => [
+                "doctor_name" => $appointment ? "{$appointment->doctor->user->first_name} {$appointment->doctor->user->last_name}" : null,
+                "appointment_status" => $appointment ? $appointment->status : null,
+                "caregiver_name" => $caregiver["caregiver_name"],
+                "prescriptions" => ControllerHelper::getPatientPrescriptionByDate($prescriptionStatusAppointment),
+                "prescription_status" => ControllerHelper::getPatientPrescriptionStatusByDate($prescriptionStatusAppointment),
+                "meal_status" => ControllerHelper::getPatientMealStatusByDate($patientId, $date)["status_data"]
+            ]
+        ], 200);
     }
 
     /**
