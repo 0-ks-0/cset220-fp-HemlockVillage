@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Regular;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\UserAPI;
@@ -74,7 +75,53 @@ class PageController extends Controller
                 ]);
 
             case 6: // Family
-                return view("familyhome")->with("date", Carbon::today()->format("Y-m-d"));
+                /**
+                 * Default home page with inputs only
+                 */
+                if (empty(request()->query()))
+                    // return Carbon::today()->format("Y-m-d");
+                    return view("familyhome")->with("date", Carbon::today()->format("Y-m-d"));
+
+                /**
+                 * Validate that both patient id and family code are submitted
+                 */
+                $validatedPatient = Validator::make(request()->all(), [
+                    "patient_id" => [ "required", "exists:patients,id" ],
+                    "family_code" => [ "required", "exists:patients,family_code" ],
+                ]);
+
+                // Fails validation
+                if ($validatedPatient->fails())
+                    return redirect()->back()->withErrors($validatedPatient->errors());
+
+                /**
+                 * Data retrieval
+                 */
+                $patientId = request()->get("patient_id");
+                $familyCode = request()->get("family_code");
+
+                // --- To test, set date to 2024-11-03
+                // $date = "2024-11-03";
+
+                // http://127.0.0.1:8000/home?family_code=i0G6Go5kXoZtbvoN&patient_id=4i8x59jTnu7uNAo7
+                /**
+                 * Retrieve response to check if success or failure
+                 */
+                $response = HomeAPI::showFamily($patientId, $familyCode, Carbon::today()->format("Y-m-d"));
+                $jsonContent = json_decode($response->getContent(), true);
+
+                // Fails Validation
+                if ($response->getStatusCode() !== 200)
+                {
+                    $errors = $jsonContent["errors"] ?? ["Invalid input(s). Please try again."];
+
+                    return redirect()->back()->withErrors($errors);
+                }
+
+                // Success
+                // return $jsonContent["data"];
+
+                return view("familyhome")->with("data", $jsonContent["data"]);
 
             case null:
                 return response()->json(['error' => 'Could not find user id or access level'], 404);
