@@ -130,4 +130,34 @@ class PageController extends Controller
                 return "No home page for your access level";
         }
     }
+
+    public static function homeWithDate($date)
+    {
+        $userId = Auth::user()->id;
+        $accessLevel = ControllerHelper::getUserAccessLevel($userId);
+
+        switch ($accessLevel)
+        {
+            case 3: // Doctor
+
+                $doctorId = Employee::getId($userId);
+
+                if (!$doctorId)
+                    abort(500, "Could not find an employee id associated with your user id");
+
+                // --- Uncomment to see the data only
+                // return [
+                //     "old" => HomeAPI::indexDoctor($userId),
+                //     "upcoming" =>HomeAPI::showDoctor($doctorId, $date)
+                // ];
+
+                return view("doctorshome")->with([
+                    "old" => HomeAPI::indexDoctor($userId),
+                    "upcoming" =>HomeAPI::showDoctor($doctorId, $date)
+                ]);
+
+            default:
+                return "You should not have access to this page otherwise";
+        }
+    }
 }
