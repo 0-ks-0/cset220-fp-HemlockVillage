@@ -126,5 +126,8 @@
                         <button type="button" class="btn-secondary">Dashboard</button>
                     </div>
                 </div>
+
+                @includes('navbar')
+
             </body>
 </html>

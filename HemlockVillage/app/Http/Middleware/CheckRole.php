@@ -4,17 +4,19 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  mixed  ...$accessLevels
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public static function handle(Request $request, Closure $next, ...$accessLevels): Response
     {
@@ -28,6 +30,7 @@ class CheckRole
 
         $role = DB::table("roles")->find(Auth::user()->role_id);
 
+        // Invalid role id
         if (!$role) abort(400, "This role does not exist");
 
         // Not an access level that can access

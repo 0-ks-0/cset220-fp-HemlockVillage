@@ -56,10 +56,7 @@
                     <h1>Family Payments</h1>
 
                     <div id="id-section">
-                        <div class="form-group">
-                            <label for="family-id">Family ID:</label>
-                            <input type="text" id="family-id" placeholder="Enter Family ID">
-                        </div>
+                    
 
                         <div class="form-group">
                             <label for="patient-id">Patient ID:</label>
@@ -89,6 +86,7 @@
                     </div>
                 </div>
 
-                
+                @includes('navbar')
+
             </body>
 </html>

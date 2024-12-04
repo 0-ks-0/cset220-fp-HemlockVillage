@@ -72,5 +72,9 @@
                     <button type="button">Dashboard</button>
                 </div>
             </div>
+
+
+            @includes('navbar')
+
         </body>
 </html>
