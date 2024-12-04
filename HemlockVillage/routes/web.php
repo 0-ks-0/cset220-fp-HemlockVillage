@@ -21,18 +21,21 @@ Route::post("/login", fn() => LoginController::login(request()));
 // Logout
 Route::get("/logout", fn() => LoginController::logout(request()));
 
-// Users
+
+// Admin and supervisor access
 Route::middleware([CheckRole::class . ':1,2'])->group( function ()
 {
+    // Users
     Route::get("/users", fn() => PageController::users());
 });
 
+// All users access
 Route::middleware("auth")->group( function ()
 {
     // Home
     Route::get("/home", fn() => PageController::home());
-});
 
+});
 
 Route::get('/patientshome', function () {
     return view('patientshome');
