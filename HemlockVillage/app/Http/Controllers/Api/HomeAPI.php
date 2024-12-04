@@ -78,7 +78,7 @@ class HomeAPI extends Controller
             ];
         });
 
-        return response()->json($data);
+        return $data;
     }
 
     public static function showPatient($patientId, $date)
