@@ -126,5 +126,8 @@
                 </form>
             @endforeach
         </div>
+
+        @includes('navbar')
+
     </body>
 </html>

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Regular;
 
 use App\Http\Controllers\Controller;
@@ -31,7 +30,17 @@ class LoginController extends Controller
         // Success
         $Request->session()->regenerate();
 
-        return redirect()->intended("/home");
+        // Redirect based on role
+        $user = Auth::user();
+        if ($user->role->access_level === 3) {
+            return redirect()->route('doctorshome.index'); // Doctor's homepage
+        } else if ($user->role->access_level === 1) {
+            return redirect()->route('admin.home'); // Admin homepage
+        } else if ($user->role->access_level === 2) {
+            return redirect()->route('supervisor.home'); // Supervisor homepage
+        } else {
+            return redirect()->route('home'); // Default redirection for other roles
+        }
     }
 
     public static function logout(Request $request)
@@ -50,3 +59,4 @@ class LoginController extends Controller
         return redirect()->route("login.form");
     }
 }
+

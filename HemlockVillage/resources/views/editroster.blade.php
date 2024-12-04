@@ -94,6 +94,8 @@
                 </div>
             </form>
         </div>
+        
+        @includes('navbar')
 
         
     </body>

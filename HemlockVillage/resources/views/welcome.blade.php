@@ -172,5 +172,8 @@
                 </div>
             </div>
         </div>
+
+        @includes('navbar')
+
     </body>
 </html>

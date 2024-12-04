@@ -54,6 +54,7 @@
                 </div>
             </div>
         </form>
+        @includes('navbar')
 
 
     </body>

@@ -116,5 +116,8 @@
                     </tbody>
                 </table>
         </div>
+
+        @includes('navbar')
+
     </body>
 </html>

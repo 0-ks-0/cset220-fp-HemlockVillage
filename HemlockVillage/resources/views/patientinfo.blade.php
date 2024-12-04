@@ -116,5 +116,8 @@
                 </div>
             </div>
         </form>
+
+        @includes('navbar')
+
     </body>
 </html>

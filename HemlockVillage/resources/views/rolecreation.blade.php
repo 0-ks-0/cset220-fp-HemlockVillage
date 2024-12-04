@@ -61,6 +61,9 @@
                 window.location.href = '/dashboard'; 
             }
         </script>
+
+    @includes('navbar')
+
     </body>
 
 </html>

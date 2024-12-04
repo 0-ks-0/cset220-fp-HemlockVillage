@@ -1,120 +1,81 @@
-<html >
-    <head>
-        <title>Patient Info</title>
-        <link rel="stylesheet" href="css/patientinfo.css">
-        <style>
-            .container {
-                max-width: 800px;
-                margin: auto;
-                padding: 20px;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                font-family: Arial, sans-serif;
-            }
 
-            .flexbox {
-                margin-bottom: 15px;
-                display: flex;
-                flex-direction: column;
-            }
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\RosterController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Middleware\CheckRole;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\SignupController;
+use App\Http\Controllers\LoginController;
 
-            label {
-                font-weight: bold;
-                margin-bottom: 5px;
-            }
+require("rapi.php");
 
-            input, select, button {
-                padding: 10px;
-                font-size: 16px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                width: 100%;
-            }
+// Nav bar routes
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-            button {
-                margin-top: 10px;
-                color: black;
-                cursor: pointer;
-                border: none;
-            }
+// Define routes for patients, employees, and rosters
+Route::get('/patients', [PatientController::class, 'index'])->name('patientinfo.index');
+Route::get('/employees', [EmployeeController::class, 'index'])->name('employeeinfo.index');
+Route::get('/roster', [RosterController::class, 'index'])->name('roster.index');
 
-            
-        </style>
-    </head>
+// API routes for fetching patients
+Route::get('/api/patients', [PatientController::class, 'getPatients'])->name('api.patients');
 
-    <body>
-        <form action="/submit-patient-info" method="POST">
-            <div class="container">
-                <h1>Patient Information</h1>
+// Public routes (landing, signup, login)
+Route::get('/', fn() => PageController::landing());
+Route::get("/signup", fn() => SignupController::index());
+Route::post("/signup", fn() => SignupController::store(request()));
+Route::get("/login", fn() => LoginController::showLoginForm())->name("login.form");
+Route::post("/login", fn() => LoginController::login(request()));
+Route::get("/logout", fn() => LoginController::logout(request()));
 
-                <div class="flexbox">
-                    <label>User ID</label>
-                    <input type="text" id="user-id" name="user_id" readonly value="1001">
-                </div>
+// Users route for specific access levels (Admin and Supervisor)
+Route::middleware([CheckRole::class . ':1,2'])->group(function () {
+    Route::get("/users", fn() => PageController::users());
+});
 
-                <div class="flexbox">
-                    <label>Patient ID</label>
-                    <input type="text" id="patient-id" name="patient_id" readonly value="1" required>
-                </div>
+// Role-specific routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/home', fn() => view('admin.home'))->name('admin.home');
+    Route::get('/supervisor/home', fn() => view('supervisor.home'))->name('supervisor.home');
+    Route::get('/doctor/home', [DoctorController::class, 'index'])->name('doctorshome.index'); // Doctor home route
+    Route::get('/caregiver/home', fn() => view('caregiver.home'))->name('caregiver.home');
+    Route::get('/family/home', fn() => view('family.home'))->name('family.home');
+});
 
-                <div class="flexbox">
-                    <label>Patient Name</label>
-                    <input type="text" id="patient-name" readonly value="Nicholas Helock">
-                </div>
 
-                <div class="flexbox">
-                    <label>Date of Birth</label>
-                    <input type="text" id="dob" readonly value="1995-04-15">
-                </div>
 
-                <div class="flexbox">
-                    <label>Email</label>
-                    <input type="text" id="email" readonly value="nicholas@gmail.com">
-                </div>
+// Route to show doctor-specific pages
+Route::middleware(['auth'])->group(function () {
+    // Doctor's homepage
+    Route::get('/doctorshome', [DoctorController::class, 'index'])->name('doctorshome.index');
+});
 
-                <div class="flexbox">
-                    <label>Phone Number</label>
-                    <input type="text" id="phone" readonly value="717-234-1636">
-                </div>
 
-                <div class="flexbox">
-                    <label>Emergency Contact Name</label>
-                    <input type="text" id="econtact-name" readonly value="Dog Helock">
-                </div>
+// Additional specific routes for patients, roster, etc.
+Route::post('/patients/{patientId}/approve', [PatientController::class, 'approveRegistration'])->name('patients.approve');
+Route::get('/rosters', [RosterController::class, 'viewRoster'])->name('rosters.view');
 
-                <div class="flexbox">
-                    <label>Emergency Contact Phone</label>
-                    <input type="text" id="econtact-phone" readonly value="717-666-6543">
-                </div>
-
-                <div class="flexbox">
-                    <label>Family Code</label>
-                    <input type="text" id="family-code" readonly value="34534">
-                </div>
-
-                <div class="flexbox">
-                    <label>Group</label>
-                    <select id="group" name="group" required>
-                        <option value="">Select a Group</option>
-                        <option value="Group 1">Group 1</option>
-                        <option value="Group 2">Group 2</option>
-                        <option value="Group 3">Group 3</option>
-                        <option value="Group 4">Group 4</option>
-                    </select>
-                </div>
-
-                <div class="flexbox">
-                    <label>Admission Date</label>
-                    <input type="text" id="admission-date" readonly value="2024-02-12">
-                </div>
-
-                <div class="flexbox">
-                    <button type="submit">Submit</button>
-                    <button type="button">Cancel</button>
-                    <button type="button">Schedule Appointment</button>
-                </div>
-            </div>
-        </form>
-    </body>
-</html>
+// Routes for various views like patient info, employee info, etc.
+Route::get('/patientshome', fn() => view('patientshome'));
+Route::get('/patientinfo', fn() => view('patientinfo'));
+Route::get('/doctorsappointment', fn() => view('doctorsappointment'));
+Route::get('/employeeinfo', fn() => view('employeeinfo'));
+Route::get('/rolecreation', fn() => view('rolecreation'));
+Route::get('/editroles', fn() => view('editroles'));
+Route::get('/searchpatient', fn() => view('searchpatient'));
+Route::get('/registrationapproval', fn() => view('registrationapproval'));
+Route::get('/newroster', fn() => view('newroster'));
+Route::get('/rosters', fn() => view('rosters'));
+Route::get('/editroster', fn() => view('editroster'));
+Route::get('/payments', fn() => view('payments'));
+Route::get('/familyhome', fn() => view('familyhome'));
+Route::get('/adminreport', fn() => view('adminreport'));
+Route::get('/createprescription', fn() => view('createprescription'));
+Route::get('/patientofdoc', fn() => view('patientofdoc'));
+Route::get('/caregivershome', fn() => view('caregivershome'));
+Route::get('/familypayment', fn() => view('familypayment'));
+Route::get('/searchemployee', fn() => view('searchemployee'));

@@ -150,5 +150,8 @@
                         });
                 }
             </script>
+
+        @includes('navbar')
+
         </body>
 </html>

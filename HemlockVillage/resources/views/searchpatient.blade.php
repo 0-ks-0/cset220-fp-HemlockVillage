@@ -1,3 +1,4 @@
+
 <html>
     <head>
         <title>Search for Patients</title>
@@ -43,60 +44,98 @@
                 margin: 0;
                 font-size: 18px;
             }
+            .search-button {
+                padding: 10px 20px;
+                background-color: gray;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            }
         </style>
     </head>
-
-
-
         <body>
             <div class="container">
                 <h1>Search for a Patient</h1>
-                
-                <form method="GET" action="{{ route('patients.index') }}">
-                    <div class="search-bar">
-                        <div>
-                            <label for="patient-id">Patient ID</label>
-                            <input type="text" id="patient-id" name="patient_id" value="{{ request('patient_id') }}">
-                        </div>
-                        <div>
-                            <label for="user-id">User ID</label>
-                            <input type="text" id="user-id" name="user_id" value="{{ request('user_id') }}">
-                        </div>
-                        <div>
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" value="{{ request('name') }}">
-                        </div>
-                        <div>
-                            <label for="DOB">Date of Birth</label>
-                            <input type="date" id="DOB" name="DOB" value="{{ request('DOB') }}">
-                        </div>
-                        <div>
-                            <label for="emergency-contact">Emergency Contact</label>
-                            <input type="text" id="emergency-contact" name="emergency_contact" value="{{ request('emergency_contact') }}">
-                        </div>
-                        <div>
-                            <label for="admission-date">Admission Date</label>
-                            <input type="date" id="admission-date" name="admission_date" value="{{ request('admission_date') }}">
-                        </div>
-                    </div>
-                    <button type="submit">Search</button>
-                </form>
 
-                <div id="patient-list">
-                    @forelse($patients as $patient)
-                        <div class="patient-card">
-                            <h3>Patient Name: {{ $patient->user->name }}</h3>
-                            <p>User ID: {{ $patient->user->id }}</p>
-                            <p>Patient ID: {{ $patient->id }}</p>
-                            <p>Date of Birth: {{ $patient->user->date_of_birth }}</p>
-                            <p>Emergency Contact: {{ $patient->emergency_contact }}</p>
-                            <p>Admission Date: {{ $patient->admission_date }}</p>
-                        </div>
-                    @empty
-                        <p>No patients found. Please try a different search.</p>
-                    @endforelse
+                <div class="search-bar">
+                    <div>
+                        <label for="patient-id">Patient ID</label>
+                        <input type="text" id="patient-id">
+                    </div>
+                    <div>
+                        <label for="user-id">User ID</label>
+                        <input type="text" id="user-id">
+                    </div>
+                    <div>
+                        <label for="name">Name</label>
+                        <input type="text" id="name">
+                    </div>
+                    <div>
+                        <label for="DOB">Date of Birth</label>
+                        <input type="date" id="DOB">
+                    </div>
+                    <div>
+                        <label for="emergency-contact">Emergency Contact</label>
+                        <input type="text" id="emergency-contact">
+                    </div>
+                    <div>
+                        <label for="admission-date">Admission Date</label>
+                        <input type="date" id="admission-date">
+                    </div>
                 </div>
-                
+                <button class="search-button" onclick="searchPatients()">Search</button>
+
+                <div id="patient-list"></div>
             </div>
+
+            <script>
+                async function searchPatients() {
+                    const patientId = document.getElementById('patient-id').value;
+                    const userId = document.getElementById('user-id').value;
+                    const name = document.getElementById('name').value;
+                    const dob = document.getElementById('DOB').value;
+                    const emergencyContact = document.getElementById('emergency-contact').value;
+                    const admissionDate = document.getElementById('admission-date').value;
+
+                    const queryString = new URLSearchParams({
+                        patient_id: patientId,
+                        user_id: userId,
+                        name: name,
+                        DOB: dob,
+                        emergency_contact: emergencyContact,
+                        admission_date: admissionDate
+                    }).toString();
+
+                    const response = await fetch(`/api/patients?${queryString}`);
+                    const patients = await response.json();
+                    renderPatients(patients);
+                }
+
+                function renderPatients(patients) {
+                    const patientList = document.getElementById('patient-list');
+                    patientList.innerHTML = '';
+
+                    if (patients.length === 0) {
+                        patientList.innerHTML = '<p>No patients found</p>';
+                        return;
+                    }
+
+                    patients.forEach(patient => {
+                        const patientCard = document.createElement('div');
+                        patientCard.className = 'patient-card';
+                        patientCard.innerHTML = `
+                            <h3>Patient Name: ${patient.user.name}</h3>
+                            <p>User ID: ${patient.user.id}</p>
+                            <p>Patient ID: ${patient.id}</p>
+                            <p>Date of Birth: ${patient.user.date_of_birth}</p>
+                            <p>Emergency Contact: ${patient.emergency_contact || 'N/A'}</p>
+                            <p>Admission Date: ${patient.admission_date}</p>
+                        `;
+                        patientList.appendChild(patientCard);
+                    });
+                }
+            </script>
         </body>
 </html>

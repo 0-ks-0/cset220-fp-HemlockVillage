@@ -37,6 +37,8 @@ class PatientController extends Controller
             }
 
             $patients = $query->get(); 
+
+            
         }
 
         return view('patients.index', compact('patients'));
@@ -57,6 +59,16 @@ class PatientController extends Controller
         $patient->approval_status = $request->approval_status;
         $patient->save();
 
-        return redirect()->route('patients.index')->with('success', 'Patient approval status updated successfully.');
+        return redirect()->route('patients.index');
     }
+
+
+    public function getPatients(Request $request)
+        {
+            $patients = Patient::with('user')->get();
+    
+            return response()->json($patients);
+        }
+
+    
 }

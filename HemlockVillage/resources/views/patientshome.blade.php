@@ -74,5 +74,7 @@
                 <button type="button">View Roster</button>
             </div>
         </div>
+        @includes('navbar')
+
     </body>
 </html>

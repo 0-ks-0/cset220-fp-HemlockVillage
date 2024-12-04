@@ -75,5 +75,8 @@
                 window.location.href = '/doctorshome';
             }
         </script>
+
+        @includes('navbar')
+
     </body>
 </html>
