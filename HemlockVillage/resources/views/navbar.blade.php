@@ -116,6 +116,7 @@
 
 
                 {{-- MOST TO ALL OF THESE ARE BROKEN BECAUSE YOUR `route` ARE INCORRECT --}}
+                {{-- Suggestion: Instead of repeating info, add generic buttons first. then add buttons specific to each access level using if statements --}}
                 @if ($accessLevel === 1) {{-- Admin --}}
                     <li><a href="{{ route('patientinfo.index') }}">Patients</a></li>
                     <li><a href="{{ route('employeeinfo.index') }}">Employees</a></li>
