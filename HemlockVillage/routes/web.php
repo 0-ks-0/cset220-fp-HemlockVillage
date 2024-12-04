@@ -37,6 +37,13 @@ Route::middleware("auth")->group( function ()
 
 });
 
+// Doctor and Patient Access
+Route::middleware([ CheckRole::class . ":3,5"])->group( function ()
+{
+    // Home
+    Route::get("/home/{date}", fn($date) => PageController::homeWithDate($date));
+});
+
 Route::get('/patientshome', function () {
     return view('patientshome');
 });
