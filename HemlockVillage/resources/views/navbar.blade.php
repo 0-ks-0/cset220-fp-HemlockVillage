@@ -114,6 +114,8 @@
                     $accessLevel = Auth::user()->role->access_level;
                 @endphp
 
+
+                {{-- MOST TO ALL OF THESE ARE BROKEN BECAUSE YOUR `route` ARE INCORRECT --}}
                 @if ($accessLevel === 1) {{-- Admin --}}
                     <li><a href="{{ route('patientinfo.index') }}">Patients</a></li>
                     <li><a href="{{ route('employeeinfo.index') }}">Employees</a></li>
@@ -128,8 +130,8 @@
                     <li><a href="{{ route('roster.index') }}">Roster</a></li>
 
                 @elseif ($accessLevel === 3) {{-- Doctor --}}
-                <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li>
-                <li><a href="{{ route('roster.index') }}">Roster</a></li>
+                    <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li>
+                    <li><a href="{{ route('roster.index') }}">Roster</a></li>
                     <li><a href="{{ route('doctorshome.index') }}">Doctor Home</a></li>
 
                 @elseif ($accessLevel === 4) {{-- Caregiver --}}
@@ -146,10 +148,13 @@
                     <li><a href="{{ route('payments.index') }}">Make Payment</a></li>
                 @endif
 
-                <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+                <li><a href="/logout">Logout</a></li>
+
+
+                {{-- <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
-                </form>
+                </form> --}}
             </ul>
         </nav>
     @endauth
