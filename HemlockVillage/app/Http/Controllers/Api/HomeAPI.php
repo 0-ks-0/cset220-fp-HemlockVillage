@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Helpers\ControllerHelper;
-use App\Helpers\ModelHelper;
+
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
@@ -228,10 +228,12 @@ class HomeAPI extends Controller
 
         $appointment = $prescriptionStatusAppointment->appointment ?? null;
 
+        $caregiver = ControllerHelper::getPatientCaregiverByDate($patientId, $date);
+
         return [
             "doctor_name" => $appointment ? "{$appointment->doctor->user->first_name} {$appointment->doctor->user->last_name}" : null,
             "appointment_status" => $appointment ? $appointment->status : null,
-            "caregiver_name" => "someone",
+            "caregiver_name" => $caregiver["caregiver_name"],
             "prescriptions" => ControllerHelper::getPatientPrescriptionByDate($prescriptionStatusAppointment),
             "prescription_status" => ControllerHelper::getPatientPrescriptionStatusByDate($prescriptionStatusAppointment),
             "meal_status" => ControllerHelper::getPatientMealStatusByDate($patientId, $date)["status_data"]
