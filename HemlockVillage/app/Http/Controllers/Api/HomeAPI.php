@@ -11,7 +11,6 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 use App\Models\Employee;
 use App\Models\Appointment;
@@ -19,7 +18,9 @@ use App\Models\Patient;
 use App\Models\PrescriptionStatus;
 use App\Models\Roster;
 
-use DateTime;
+use Datetime;
+
+use App\Helpers\ValidationHelper;
 
 class HomeAPI extends Controller
 {
@@ -119,6 +120,8 @@ class HomeAPI extends Controller
         $patient = Patient::find($patientId);
 
         if (!$patient) return response()->json([ "error" => "Patient could not be found" ], 404);
+
+        ValidationHelper::validateDateFormat($date);
 
         $appointment = Appointment::with([
             "doctor.user"
