@@ -19,6 +19,8 @@ use App\Models\Patient;
 use App\Models\PrescriptionStatus;
 use App\Models\Roster;
 
+use DateTime;
+
 class HomeAPI extends Controller
 {
     /**
@@ -79,6 +81,37 @@ class HomeAPI extends Controller
         });
 
         return $data;
+    }
+
+    public static function showDoctor($doctorId, $date)
+    {
+        /**
+         * Validation
+         */
+        // Doctor does not exist
+        if (!Appointment::where("doctor_id", $doctorId)->first())
+			abort(400, "Doctor does not exist");
+
+        // Invalid date format
+        if (!strtotime($date))
+            abort(400, "Invalid date format");
+
+        $currentDate = new DateTime();
+        $inputDate = DateTime::createFromFormat("Y-m-d", $date);
+
+        // Check if DateTime obj can be created successfullly and the formatted date matches the date passed in
+        if (!$inputDate || !$inputDate->format("Y-m-d") === $date)
+            abort(400, "Invalid date format");
+
+        // Set the time component to 00:00:00 so time does not affect date comparision
+        $currentDate->setTime(0, 0);
+        $inputDate->setTime(0, 0);
+
+        // Check if inputDate is before currentDate
+        if ($inputDate < $currentDate)
+            abort(400, "Date cannot be before the today {$currentDate->format('Y-m-d')}");
+
+        return ControllerHelper::getDoctorPatientsUpToDate($doctorId, $date);
     }
 
     public static function showPatient($patientId, $date)
