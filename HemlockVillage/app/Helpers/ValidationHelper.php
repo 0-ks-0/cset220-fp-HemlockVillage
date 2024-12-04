@@ -56,6 +56,11 @@ class ValidationHelper
 	 */
 	public static function validateDateFormat($date, $return = "date")
 	{
+		// Reformat date string
+		if (!is_string($date))
+			$date = $date->format('Y-m-d');
+
+		// Check if it is date
 		if (!strtotime($date))
 			abort(400, "Not a date");
 
