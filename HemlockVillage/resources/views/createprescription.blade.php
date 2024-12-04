@@ -40,11 +40,11 @@
                 cursor: pointer;
                 border: none;
             }
-            
+
             .btn-secondary {
                 background-color: #6c757d;
             }
-           
+
         </style>
     </head>
         <body>
@@ -87,7 +87,7 @@
                 </form>
             </div>
 
-            @includes('navbar')
+            @include('navbar')
 
         </body>
 </html>

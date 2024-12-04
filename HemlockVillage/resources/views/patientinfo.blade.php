@@ -39,7 +39,7 @@
                 border: none;
             }
 
-            
+
         </style>
     </head>
 
@@ -117,7 +117,7 @@
             </div>
         </form>
 
-        @includes('navbar')
+        @include('navbar')
 
     </body>
 </html>

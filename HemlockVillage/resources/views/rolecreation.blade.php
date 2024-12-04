@@ -8,24 +8,24 @@
     <body>
         <div class="container">
             <h1>Roles</h1>
-    
+
             <form action="/create-role" method="POST">
                 <div class="flexbox">
                     <label>Role Name</label>
                     <input type="text" id="role-name" name="role_name" placeholder="Enter a Role Name" required>
                 </div>
-    
+
                 <div class="flexbox">
                     <label>Access Level</label>
                     <input type="number" id="access-level" name="access_level" placeholder="Enter Access Level" required>
                 </div>
-    
+
                 <div class="flexbox">
                     <button type="submit">Create Role</button>
                     <button type="button" onclick="cancelAction()">Cancel</button>
                 </div>
             </form>
-    
+
             <div class="table-container">
                 <table>
                     <thead>
@@ -55,14 +55,14 @@
                 </table>
             </div>
         </div>
-    
+
         <script>
             function cancelAction() {
-                window.location.href = '/dashboard'; 
+                window.location.href = '/dashboard';
             }
         </script>
 
-    @includes('navbar')
+    @include('navbar')
 
     </body>
 

@@ -43,11 +43,11 @@
                     cursor: pointer;
                     border: none;
                 }
-                
+
                 .btn-danger {
                     background-color: red;
                 }
-                
+
             </style>
         </head>
             <body>
@@ -56,7 +56,7 @@
 
                     <form action="/update-role" method="POST">
 
-                        
+
                         <div class="flexbox">
                             <label for="employee-name">Employee Name:</label>
                             <input type="text" id="employee-name" name="employee_name" value="Jimmy Butler" readonly>
@@ -79,7 +79,7 @@
                         </div>
                     </form>
                 </div>
-                @includes('navbar')
+                @include('navbar')
 
             </body>
 </html>

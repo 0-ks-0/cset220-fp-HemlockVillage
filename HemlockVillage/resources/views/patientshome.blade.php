@@ -2,7 +2,7 @@
     <head>
         <title>Patients Home</title>
         <link rel="stylesheet" href="css/app.css">
-        
+
     </head>
 
 
@@ -74,7 +74,7 @@
                 <button type="button">View Roster</button>
             </div>
         </div>
-        @includes('navbar')
+        @include('navbar')
 
     </body>
 </html>

@@ -127,7 +127,7 @@
             @endforeach
         </div>
 
-        @includes('navbar')
+        @include('navbar')
 
     </body>
 </html>

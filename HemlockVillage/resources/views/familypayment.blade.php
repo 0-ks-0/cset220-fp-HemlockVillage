@@ -2,7 +2,7 @@
         <head>
             <title>Family Payments</title>
 
-            
+
             <style>
                 body {
                     font-family: Arial, sans-serif;
@@ -56,7 +56,7 @@
                     <h1>Family Payments</h1>
 
                     <div id="id-section">
-                    
+
 
                         <div class="form-group">
                             <label for="patient-id">Patient ID:</label>
@@ -86,7 +86,7 @@
                     </div>
                 </div>
 
-                @includes('navbar')
+                @include('navbar')
 
             </body>
 </html>

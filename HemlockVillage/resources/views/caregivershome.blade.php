@@ -2,7 +2,7 @@
         <head>
             <title>Caregiver's Home</title>
 
-            
+
             <style>
                 body {
                     font-family: Arial, sans-serif;
@@ -49,17 +49,17 @@
                     background-color: gray;
                     color: white;
                 }
-               
+
                 .btn-secondary {
                     background-color: #6c757d;
                     color: white;
                 }
-                
+
                 .btn-success {
                     background-color: green;
                     color: white;
                 }
-                
+
             </style>
         </head>
 
@@ -119,7 +119,7 @@
                     </div>
                 </div>
 
-                @includes('navbar')
+                @include('navbar')
 
 
             </body>

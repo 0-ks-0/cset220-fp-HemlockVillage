@@ -1,7 +1,7 @@
 <html>
         <head>
             <title>Patient of Doctor</title>
-            
+
             <style>
                 body {
                     font-family: Arial, sans-serif;
@@ -55,11 +55,11 @@
                     cursor: pointer;
                     border: none;
                 }
-                
+
                 .btn-secondary {
                     background-color: #6c757d;
                 }
-                
+
             </style>
         </head>
             <body>
@@ -127,7 +127,7 @@
                     </div>
                 </div>
 
-                @includes('navbar')
+                @include('navbar')
 
             </body>
 </html>

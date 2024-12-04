@@ -173,7 +173,7 @@
             </div>
         </div>
 
-        @includes('navbar')
+        @include('navbar')
 
     </body>
 </html>

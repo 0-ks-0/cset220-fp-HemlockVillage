@@ -41,13 +41,13 @@
                 cursor: pointer;
                 border: none;
             }
-            
+
             .hidden {
                 display: none;
             }
         </style>
     </head>
-    
+
         <body>
             <div class="container">
                 <h1>Payments</h1>
@@ -74,7 +74,7 @@
             </div>
 
 
-            @includes('navbar')
+            @include('navbar')
 
         </body>
 </html>

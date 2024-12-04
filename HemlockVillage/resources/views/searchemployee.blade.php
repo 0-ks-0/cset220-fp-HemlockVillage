@@ -132,7 +132,7 @@
                         .then(response => response.json())
                         .then(data => {
                             const employeeList = document.getElementById('employee-list');
-                            employeeList.innerHTML = ''; 
+                            employeeList.innerHTML = '';
 
                             data.forEach(employee => {
                                 const card = document.createElement('div');
@@ -151,7 +151,7 @@
                 }
             </script>
 
-        @includes('navbar')
+        @include('navbar')
 
         </body>
 </html>
