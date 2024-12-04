@@ -48,6 +48,7 @@ Route::middleware([CheckRole::class . ':1,2'])->group( function ()
 {
     // Users
     Route::get("/users", fn() => PageController::users());
+
 });
 
 // All Users Access
@@ -72,10 +73,17 @@ Route::middleware("auth")->group( function ()
 
   //
 Route::get('/patients', [PatientController::class, 'index'])->name('patientinfo.index');
+Route::get('/employeeinfo', [EmployeeController::class, 'index'])->name('employeeinfo.index');
+Route::get('/registrationapproval', [LoginController::class, 'index'])->name('registrationapproval.index');
+// Route::get('/rolecreation', [LoginController::class, 'index'])->name('registrationapproval.index');
+Route::get('/adminreport', [LoginController::class, 'index'])->name('adminreport.index');
+
+
 Route::get('/rosters', [RosterController::class, 'index'])->name('rosters.index');
 Route::get('/rosters/view', [RosterController::class, 'viewRoster'])->name('rosters.view');
 Route::get('/doctorshome', [DoctorController::class, 'index'])->name('doctorshome.index');
 Route::get('/patientofdoc', [DoctorController::class, 'patients'])->name('patientofdoc.index');
+Route::get('/caregivershome', [DoctorController::class, 'patients'])->name('patientofdoc.index');
 
 
 
@@ -120,9 +128,9 @@ Route::post('/patients/{patientId}/approve', [PatientController::class, 'approve
 //     return view('editroles');
 // });
 
-// Route::get('/searchpatient', function () {
-//     return view('searchpatient');
-// });
+Route::get('/searchpatient', function () {
+    return view('searchpatient');
+});
 
 // Route::get('/registrationapproval', function () {
 //     return view('registrationapproval');
@@ -168,6 +176,6 @@ Route::post('/patients/{patientId}/approve', [PatientController::class, 'approve
 //     return view('familypayment');
 // });
 
-// Route::get('/searchemployee', function () {
-//     return view('searchemployee');
-// });
+Route::get('/searchemployee', function () {
+    return view('searchemployee');
+});

@@ -13,7 +13,9 @@ class RosterController extends Controller
     public function index()
     {
         // Return the roster index page where the user can select a date
-        return view('rosters.index');
+        // return view('rosters.index');
+
+        return "sdf";
     }
 
     /**
@@ -21,6 +23,7 @@ class RosterController extends Controller
      */
     public function viewRoster(Request $request)
     {
+        return 'slr';
         // Validate that a valid date is provided
         $validated = $request->validate([
             'date' => 'required|date',

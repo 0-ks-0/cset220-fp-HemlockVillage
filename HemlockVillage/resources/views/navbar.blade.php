@@ -121,7 +121,7 @@
                     <li><a href="{{ route('patientinfo.index') }}">Patients</a></li>
                     <li><a href="{{ route('employeeinfo.index') }}">Employees</a></li>
                     <li><a href="{{ route('registrationapproval.index') }}">Registration Approval</a></li>
-                    <li><a href="{{ route('rolecreation.index') }}">Roles</a></li>
+                    <li><a href="">Roles</a></li>
                     <li><a href="{{ route('roster.index') }}">Roster</a></li>
                     <li><a href="{{ route('adminreport.index') }}">Admin Report</a></li>
 
@@ -136,9 +136,9 @@
                     <li><a href="{{ route('doctorshome.index') }}">Doctor Home</a></li>
 
                 @elseif ($accessLevel === 4) {{-- Caregiver --}}
-                    <li><a href="{{ route('patientinfo.index') }}">Patients</a></li>
+                    <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li>
                     <li><a href="{{ route('roster.index') }}">Roster</a></li>
-                    <li><a href="{{ route('caregivershome.index') }}">Caregivers Home</a></li>
+                    <li><a href="">Caregivers Home</a></li>
 
                 @elseif ($accessLevel === 5) {{-- Patient --}}
                     <li><a href="{{ route('patientshome.index') }}">Home</a></li>
@@ -146,7 +146,7 @@
 
                 @elseif ($accessLevel === 6) {{-- Family Member --}}
                     <li><a href="{{ route('roster.index') }}">Roster</a></li>
-                    <li><a href="{{ route('payments.index') }}">Make Payment</a></li>
+                    <li><a href="">Make Payment</a></li>
                 @endif
 
                 <li><a href="/logout">Logout</a></li>

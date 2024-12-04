@@ -54,7 +54,7 @@ class PatientController extends Controller
         $patient = Patient::find($patientId);
 
         if (!$patient) {
-            return redirect()->route('patients.index')->with('error', 'Patient not found');
+            return redirect()->route('patientinfo.index')->with('error', 'Patient not found');
         }
 
         $request->validate([
