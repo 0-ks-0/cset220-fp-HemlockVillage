@@ -74,7 +74,7 @@ class PageController extends Controller
                 ]);
 
             case 6: // Family
-                return view("familyhome");
+                return view("familyhome")->with("date", Carbon::today()->format("Y-m-d"));
 
             case null:
                 return response()->json(['error' => 'Could not find user id or access level'], 404);
