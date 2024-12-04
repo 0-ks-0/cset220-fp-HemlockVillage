@@ -5,7 +5,7 @@ namespace App\Helpers;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\PrescriptionStatus;
-use App\Models\Appointment;
+use App\Models\Patient;
 
 class ControllerHelper
 {
@@ -119,5 +119,38 @@ class ControllerHelper
 			case "4": return "caregiver_four_id";
 			default: return null;
 		}
+	}
+
+	/**
+	 * Get the caregiver id and name for a patient on a given date
+	 */
+	public static function getPatientCaregiverByDate($patientId, $date)
+	{
+		$patient = ModelHelper::getRow(Patient::class, "id", $patientId);
+
+		// Patient could not be found
+		if (!$patient) abort(404);
+
+		// Column to get the employee id in the rosters table
+		$column = self::convertGroupNumToRosterCaregiverColumn($patient->group_num);
+
+		// Invalid group number
+		if (!$column)
+			return [
+				"caregiver_id" => "Patient group number is invalid",
+				"caregiver_name" => "Patient group number is invalid"
+			];
+
+		$caregiver = DB::table("rosters")
+			->join("employees", "rosters.$column", "employees.id")
+			->join("users", "employees.user_id", "users.id")
+			->whereDate("date_assigned", "=", $date)
+			->select("$column","users.first_name", "users.last_name")
+			->first();
+
+		return [
+			"caregiver_id" => $caregiver->$column ?? null,
+			"caregiver_name" => $caregiver ? "{$caregiver->first_name} {$caregiver->last_name}" : null
+		];
 	}
 }
