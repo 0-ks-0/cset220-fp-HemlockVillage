@@ -26,10 +26,12 @@ class CheckRole
             return redirect("login");
         }
 
-        $accessLevel = DB::table("roles")->find(Auth::user()->role_id);
+        $role = DB::table("roles")->find(Auth::user()->role_id);
+
+        if (!$role) abort(400, "This role does not exist");
 
         // Not an access level that can access
-        if (!in_array($accessLevel, $accessLevels))
+        if (!in_array($role->access_level, $accessLevels))
             abort(403, "You do not have permission to view this page");
 
         return $next($request);

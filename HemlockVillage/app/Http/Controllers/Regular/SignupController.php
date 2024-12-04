@@ -27,7 +27,15 @@ class SignupController extends Controller
 
     public static function store(Request $request)
     {
-        SignupAPI::store($request);
+        $response = SignupAPI::store($request);
+
+        // Fails signup validation
+        if ($response->getStatusCode() !== 200)
+        {
+            $errors = json_decode($response->getContent(), true)["errors"] ?? ["Invalid input(s). Please try again."];
+
+            return redirect()->back()->withErrors($errors);
+        }
 
         // No longer needed
         session()->forget("familyCode");
@@ -37,5 +45,4 @@ class SignupController extends Controller
 
         return redirect()->route("login.form");
     }
-
 }

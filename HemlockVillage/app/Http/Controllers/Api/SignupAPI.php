@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 use App\Helpers\ModelHelper;
-
+use App\Helpers\ValidationHelper;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Employee;
@@ -44,11 +44,17 @@ class SignupAPI extends Controller
             "econtact_name" => [ "required_if:role," . Role::getId("Patient"), "max:128" ],
             "econtact_phone" => [ "required_if:role," . Role::getId("Patient"), "max:20" ],
             "econtact_relation" => [ "required_if:role," . Role::getId("Patient"), "max:50" ],
-        ]);
+        ], ValidationHelper::$signup);
 
         // Fails validation for user
         if ($validatedUser->fails())
-            return redirect()->back()->withErrors([ "Invalid input(s). Please try again."]);
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Invalid input(s). Please try again.",
+                "errors" => $validatedUser->errors()
+            ], 400);
+        }
 
         // Hash the password
         $request->merge([
@@ -99,7 +105,11 @@ class SignupAPI extends Controller
             default:
         }
 
-        return $user;
+        return response()->json([
+            "success" => true,
+            "message" => "User account successfully created.",
+            "user" => $user
+        ]);
     }
 
     /**
