@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\PrescriptionStatus;
 use App\Models\Patient;
+use App\Models\Appointment;
+
+use Carbon\Carbon;
 
 class ControllerHelper
 {
@@ -23,6 +26,51 @@ class ControllerHelper
 				$query->select("role_id")->from("users")->where("id", $userId);
 			})->value("access_level");
 	}
+
+	/**
+	 * @return Illuminate\Support\Collection Collection of appointments with patient details
+	 */
+	public static function getDoctorPatientsUpToDate($doctorId, $date)
+	{
+		/**
+         * Validation
+         */
+        // Invalid date format
+        if (!strtotime($date))
+            abort(400, "Invalid date format");
+
+		// Doctor does not exist
+		if (!Appointment::where("doctor_id", $doctorId)->first())
+			abort(400, "Doctor does not exist");
+
+		/**
+		 * Data retrieval
+		 */
+
+		$appointments = Appointment::with([
+			"doctor" => fn($q) => $q->select("id"),
+			"patient"=> fn($q) => $q->select("id", "user_id"),
+			"patient.user" => fn($q) => $q->select("id", "first_name", "last_name")
+		])
+		->where("doctor_id", $doctorId)
+		->whereDate("appointment_date", "<=", $date)
+		->whereDate("appointment_date", ">=", Carbon::today()->format("Y-m-d"))
+		->select("id", "appointment_date", "doctor_id", "patient_id")
+		->get();
+
+		return $appointments->map( function ($a)
+		{
+			$user = $a->patient->user;
+
+			return [
+				"appointment_id" => $a->id,
+				"patient_id" => $a->patient->id,
+				"patient_name" => "{$user->first_name} {$user->last_name}",
+				"appointment_date" => $a->appointment_date
+			];
+		});
+	}
+
 
 	/**
 	 * Get the prescription status, appointment info for prescriptions, and the doctor info for a patient on a given date
