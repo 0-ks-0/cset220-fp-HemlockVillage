@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use DateTime;
+
 class ValidationHelper
 {
 	public static $signup = [
@@ -44,4 +46,24 @@ class ValidationHelper
 		"econtact_relation.required_if" => "Emergency contact relation is required if the role is Patient.",
 		"econtact_relation.max" => "Emergency contact relation cannot exceed 50 characters.",
 	];
+
+	/**
+	 * Validate the date format. Aborts if not valid
+	 *
+	 * @param string $date
+	 * @param string $return date or datetime
+	 * @return string|DateTime
+	 */
+	public static function validateDateFormat($date, $return = "date")
+	{
+		if (!strtotime($date))
+			abort(400, "Not a date");
+
+		$datetime = DateTime::createFromFormat("Y-m-d", $date);
+
+		if (!$datetime || !$datetime->format("Y-m-d") === $date)
+			abort(400, "Invalid date format");
+
+		return $return === "date" ? $date : $datetime;
+	}
 }
