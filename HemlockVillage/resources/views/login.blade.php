@@ -6,14 +6,14 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 		<title>Login</title>
-
+		<link rel="stylesheet" href="css/login.css">
 		<link rel="stylesheet" href="{{ asset("./css/style.css>") }}">
 
 		<script src="{{ asset("./js/navigator.js") }}"></script>
 	</head>
 
 	<body>
-		<div>
+		<div class="section">
 			{{-- Error section --}}
 			@if ($errors->any())
 				<div class="error">
@@ -31,15 +31,15 @@
 			@endif
 
 			{{-- Login form --}}
-			<form action="/login" method="post">
+			<form action="/login" method="post" class="form">
 				@csrf
-
-				<div>
+				<h1>Log In</h1>
+				<div class="input">
 					<label for="email">Email</label>
 					<input type="email" name="email" id="email" required maxlength="100">
 				</div>
 
-				<div>
+				<div class="input">
 					<label for="password">Password</label>
 					<input type="password" name="password" id="password" required>
 				</div>
