@@ -1,66 +1,7 @@
 <html>
         <head>
             <title>Caregiver's Home</title>
-
-            
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 20px;
-                    background-color: #f5f5f5;
-                }
-                .container {
-                    max-width: 800px;
-                    margin: auto;
-                    padding: 20px;
-                    background: white;
-                    border-radius: 8px;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                }
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin-top: 20px;
-                }
-                th, td {
-                    padding: 10px;
-                    border: 1px solid #ddd;
-                    text-align: left;
-                }
-                th {
-                    background-color: gray;
-                    color: white;
-                }
-                .form-group {
-                    margin-bottom: 15px;
-                }
-                input[type="checkbox"] {
-                    margin-right: 10px;
-                }
-                button {
-                    padding: 10px 15px;
-                    font-size: 16px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    text-align: center;
-                }
-                .btn-primary {
-                    background-color: gray;
-                    color: white;
-                }
-               
-                .btn-secondary {
-                    background-color: #6c757d;
-                    color: white;
-                }
-                
-                .btn-success {
-                    background-color: green;
-                    color: white;
-                }
-                
-            </style>
+            <link rel="stylesheet" href="css/mainstyle.css">
         </head>
 
 

@@ -1,51 +1,7 @@
 <html>
     <head>
         <title>Create Prescription</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-                background-color: #f5f5f5;
-            }
-            .container {
-                max-width: 800px;
-                margin: auto;
-                padding: 20px;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-            .form-group {
-                margin-bottom: 15px;
-            }
-            label {
-                display: block;
-                margin-bottom: 5px;
-                font-weight: bold;
-            }
-            input, textarea, button {
-                width: 100%;
-                padding: 10px;
-                font-size: 16px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-            textarea {
-                resize: vertical;
-            }
-            button {
-                margin-top: 10px;
-                background-color: gray;
-                color: white;
-                cursor: pointer;
-                border: none;
-            }
-            
-            .btn-secondary {
-                background-color: #6c757d;
-            }
-           
-        </style>
+        <link rel="stylesheet" href="css/createprescription.css">
     </head>
         <body>
             <div class="container">
