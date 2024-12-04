@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 use App\Models\Employee;
 use App\Models\Appointment;
@@ -224,6 +225,28 @@ class HomeAPI extends Controller
 
     public static function showFamily($patientId, $familyCode, $date)
     {
+        /**
+         * Validation of $patientId and $familyCode
+         */
+        $validatedPatient = DB::table('patients')
+            ->where('id', $patientId)
+            ->where('family_code', $familyCode)
+            ->exists();
+
+        // Incorrect combination of patient id and family code
+        if (!$validatedPatient)
+        {
+            // return redirect()->back()->withErrors([ "Could not find a patient with id { $patientId } and family code { $familyCode }"]);
+            return response()->json([
+                "success" => false,
+                "message" => "Could not find patient",
+                "errors" => [ "Could not find a patient with id { $patientId } and family code { $familyCode }" ]
+            ], 400);
+        }
+
+        /**
+         * Data retrieval
+         */
         $prescriptionStatusAppointment = ControllerHelper::getPatientPrescriptionStatusAppointmentByDate($patientId, $date);
 
         $appointment = $prescriptionStatusAppointment->appointment ?? null;
