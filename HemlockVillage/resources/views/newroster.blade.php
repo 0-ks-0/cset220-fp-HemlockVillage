@@ -40,7 +40,7 @@
                 cursor: pointer;
                 border: none;
             }
-          
+
             .btn-secondary {
                 background-color: #6c757d;
             }
@@ -49,16 +49,22 @@
             }
         </style>
     </head>
+
     <body>
         <div class="container">
             <h1>Create New Roster</h1>
 
             <form action="/create-roster" method="POST">
+                {{--  Date--}}
                 <div class="form-group">
-                    <label for="date">Future Date Only</label>
-                    <input type="date" id="date" name="date" required>
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date"
+                        @isset($currentDate) min="{{ $currentDate }}" @endisset
+                        required
+                    >
                 </div>
 
+                {{-- Supervisor --}}
                 <div class="form-group">
                     <label for="supervisor">Supervisor:</label>
                     <select id="supervisor" name="supervisor" required>
@@ -68,6 +74,7 @@
                     </select>
                 </div>
 
+                {{-- Doctor --}}
                 <div class="form-group">
                     <label for="doctor">Doctor:</label>
                     <select id="doctor" name="doctor" required>
@@ -77,6 +84,7 @@
                     </select>
                 </div>
 
+                {{-- Caregiver one --}}
                 <div class="form-group">
                     <label for="caregivers">Caregivers:</label>
                     <select id="caregivers" name="caregivers[]" multiple required>
@@ -86,6 +94,7 @@
                     </select>
                 </div>
 
+                {{-- Buttons --}}
                 <div class="form-group">
                     <button type="submit">Create New Roster</button>
                     <button type="button" class="btn-secondary">Dashboard</button>
@@ -93,6 +102,5 @@
             </form>
         </div>
 
-        
     </body>
 </html>
