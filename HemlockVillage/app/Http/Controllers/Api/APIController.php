@@ -21,6 +21,15 @@ class APIController extends Controller
         //
     }
 
+    public static function indexRosterCreation()
+    {
+        return [
+            "supervisors" => ControllerHelper::getEmployeeForRosterCreation("Supervisor"),
+            "doctors" => ControllerHelper::getEmployeeForRosterCreation("Doctor"),
+            "caregivers" => ControllerHelper::getEmployeeForRosterCreation("Caregiver")
+        ];
+    }
+
     /**
      * Store a newly created resource in storage.
      */
