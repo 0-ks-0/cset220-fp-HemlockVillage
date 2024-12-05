@@ -15,6 +15,7 @@ use App\Models\Patient;
 use App\Models\Employee;
 
 use App\Helpers\ControllerHelper;
+
 use Carbon\Carbon;
 
 class PageController extends Controller
@@ -155,6 +156,16 @@ class PageController extends Controller
                     "old" => HomeAPI::indexDoctor($userId),
                     "upcoming" =>HomeAPI::showDoctor($doctorId, $date)
                 ]);
+
+            case 5:
+                $patientId = Patient::getId($userId) ?? null;
+
+                if (!$patientId) abort(400,"Patient could not be found");
+
+                // To test, pass date as 2024-11-03
+                // return HomeAPI::showPatient($patientId, $date);
+
+                return view("patientshome")->with("data", HomeAPI::showPatient($patientId, $date));
 
             default:
                 return "You should not have access to this page otherwise";
