@@ -38,44 +38,47 @@ public function updateSalary(Request $request, $id)
 
     // Handle employee search functionality
     public function search(Request $request)
-    {
-        $query = Employee::with('user'); // Load user data associated with the employee
+{
+    $query = Employee::with('user'); // Load user data associated with the employee
 
-        // Filtering by the fields
-        if ($request->employee_id) {
-            $query->where('id', $request->employee_id); 
-        }
-        if ($request->user_id) {
-            $query->where('user_id', $request->user_id); 
-        }
-        if ($request->name) {
-            $query->whereHas('user', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->name . '%');
-            });
-        }
-        if ($request->role) {
-            $query->whereHas('user', function ($q) use ($request) {
-                $q->where('role', 'like', '%' . $request->role . '%');
-            });
-        }
-        if ($request->salary) {
-            $query->where('salary', $request->salary); 
-        }
-
-        // Get the filtered employees
-        $employees = $query->get();
-
-        // Return filtered employees in JSON format (if needed)
-        return response()->json($employees->map(function ($employee) {
-            return [
-                'employee_id' => $employee->id,
-                'user_id' => $employee->user->id,
-                'name' => $employee->user->name,
-                'role' => $employee->user->role,
-                'salary' => $employee->salary,
-            ];
-        }));
+    // Filtering by the fields
+    if ($request->employee_id) {
+        $query->where('id', $request->employee_id); 
     }
+    if ($request->user_id) {
+        $query->where('user_id', $request->user_id); 
+    }
+    if ($request->name) {
+        $query->whereHas('user', function ($q) use ($request) {
+            // Search by name using LIKE operator for partial matches
+            $q->where('name', 'like', '%' . $request->name . '%');
+        });
+    }
+    if ($request->role) {
+        $query->whereHas('user', function ($q) use ($request) {
+            $q->where('role', 'like', '%' . $request->role . '%');
+        });
+    }
+    if ($request->salary) {
+        $query->where('salary', $request->salary); 
+    }
+
+    // Execute query and get results
+    $employees = $query->get();
+
+    // Return filtered employees in JSON format
+    return response()->json($employees->map(function ($employee) {
+        return [
+            'employee_id' => $employee->id,
+            'user_id' => $employee->user->id,
+            'name' => $employee->user->name,
+            'role' => $employee->user->role,
+            'salary' => $employee->salary,
+        ];
+    }));
+}
+
+
     public function show($id)
     {
         $employee = Employee::with(['user', 'user.role'])->find($id);

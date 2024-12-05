@@ -10,104 +10,66 @@ use App\Http\Controllers\Regular\HomeController;
 use App\Http\Controllers\Regular\AuthController;
 use App\Http\Controllers\Regular\DoctorController;
 use App\Http\Controllers\Regular\RegistrationApprovalController;
-
 use App\Http\Middleware\CheckRole;
 
 require("rapi.php");
 
-Route::get("/test", function()
-{
+// Nav Bar Routes
+Route::get("/test", function() {
     return view("editroster");
 });
 
-
-// Nav bar routes
-
-// ========= Delete ==========
-// Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/patients', [PatientController::class, 'index'])->name('patientinfo.index');
-Route::get('/employees', [EmployeeController::class, 'index'])->name('employeeinfo.index');
-Route::get('/roster', [RosterController::class, 'index'])->name('roster.index');
-
-
-Route::get('/', fn() => PageController::landing());
-
-// Signup
+// ======== Authentication Routes ========
 Route::get("/signup", fn() => SignupController::index());
 Route::post("/signup", fn() => SignupController::store(request()));
 
-// Login
 Route::get("/login", fn() => LoginController::showLoginForm())->name("login.form");
 Route::post("/login", fn() => LoginController::login(request()));
-
-// Logout
 Route::get("/logout", fn() => LoginController::logout(request()));
 
-
-// Admin and Supervisor Access
-Route::middleware([CheckRole::class . ':1,2'])->group( function ()
-{
-    // Users
+// ======== Admin and Supervisor Access Routes ========
+Route::middleware([CheckRole::class . ':1,2'])->group(function () {
     Route::get("/users", fn() => PageController::users());
-
 });
 
-// All Users Access
-Route::middleware("auth")->group( function ()
-{
-    // Home
+// ======== All Authenticated Users Routes ========
+Route::middleware("auth")->group(function () {
     Route::get("/home", fn() => PageController::home());
 });
 
+// ======== Employee Routes ========
+Route::get('/employees', [EmployeeController::class, 'index'])->name('employeeinfo.index'); // Employee list
+Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search'); // Search employee
+Route::post('/employees/update-salary', [EmployeeController::class, 'updateSalary'])->name('employees.updateSalary'); // Update salary
+Route::get('/employeeinfo/{employeeId}', [EmployeeController::class, 'show'])->name('employeeinfo.show'); // Employee info page
 
-// ========= Delete ==========
-// Define the routes for each role's homepage
-//     Route::middleware(['auth'])->group(function () {
-//     Route::get('/admin/home', fn() => view('admin.home'))->name('admin.home');
-//     Route::get('/supervisor/home', fn() => view('supervisor.home'))->name('supervisor.home');
-//     Route::get('/doctor/home', fn() => view('doctorshome'))->name('doctor.home'); // Doctors' homepage route
-//     Route::get('/caregiver/home', fn() => view('caregiver.home'))->name('caregiver.home');
-//     Route::get('/family/home', fn() => view('family.home'))->name('family.home');
-// });
+// ======== Patient Routes ========
+Route::get('/patients', [PatientController::class, 'index'])->name('patientinfo.index'); // Patient list
+Route::get('/patients/search', [PatientController::class, 'search'])->name('patients.search'); // Search patient
+Route::get('/patients/{id}', [PatientController::class, 'show'])->name('patients.show'); // View patient info
+Route::post('/patients/{patientId}/updateEmergencyContact', [PatientController::class, 'updateEmergencyContact'])->name('patients.updateEmergencyContact'); // Update emergency contact
+Route::post('/patients/{patientId}/approve', [PatientController::class, 'approveRegistration'])->name('patients.approve'); // Approve patient registration
 
+// ======== Registration Approval Routes ========
+Route::get('/registration-approval', [RegistrationApprovalController::class, 'index'])->name('registrationapproval.index'); // Registration approval list
+Route::post('/patients/{patientId}/approve', [RegistrationApprovalController::class, 'approve'])->name('patients.approve'); // Approve patient registration
+Route::post('/patients/{patientId}/reject', [RegistrationApprovalController::class, 'reject'])->name('patients.reject'); // Reject patient registration
 
+// ======== Roster Routes ========
+Route::get('/rosters', [RosterController::class, 'index'])->name('rosters.index'); // Roster overview
+Route::get('/rosters/view', [RosterController::class, 'viewRoster'])->name('rosters.view'); // View roster
 
-Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search');
+// ======== Doctor Routes ========
+Route::get('/doctorshome', [DoctorController::class, 'index'])->name('doctorshome.index'); // Doctor's homepage
+Route::get('/patientofdoc', [DoctorController::class, 'patients'])->name('patientofdoc.index'); // Patient list for doctor
+Route::get('/caregivershome', [DoctorController::class, 'patients'])->name('caregivershome.index'); // Caregiver's homepage
 
-  
-Route::get('/patients', [PatientController::class, 'index'])->name('patientinfo.index');
-Route::get('/employeeinfo', [EmployeeController::class, 'index'])->name('employeeinfo.index');
-Route::get('/registrationapproval', [RegistrationApprovalController::class, 'index'])->name('registrationapproval.index');
-// Route::get('/rolecreation', [LoginController::class, 'index'])->name('registrationapproval.index');
-Route::get('/adminreport', [LoginController::class, 'index'])->name('adminreport.index');
+// ======== Miscellaneous Routes ========
+Route::get('/searchpatient', function () {
+    return view('searchpatient');
+}); // Search patient page
 
-
-Route::get('/rosters', [RosterController::class, 'index'])->name('rosters.index');
-Route::get('/rosters/view', [RosterController::class, 'viewRoster'])->name('rosters.view');
-Route::get('/doctorshome', [DoctorController::class, 'index'])->name('doctorshome.index');
-Route::get('/patientofdoc', [DoctorController::class, 'patients'])->name('patientofdoc.index');
-Route::get('/caregivershome', [DoctorController::class, 'patients'])->name('patientofdoc.index');
-
-
-
-
-Route::get('/employees', [EmployeeController::class, 'index'])->name('employeesinfo.index');
-Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search');
-
-
-
-Route::post('/patients/{patientId}/approve', [PatientController::class, 'approveRegistration'])->name('patients.approve');
-
-// Registration Approval Routes
-Route::get('/registration-approval', [RegistrationApprovalController::class, 'index'])->name('registrationapproval.index');
-Route::post('/patients/{patientId}/approve', [RegistrationApprovalController::class, 'approve'])->name('patients.approve');
-Route::post('/patients/{patientId}/reject', [RegistrationApprovalController::class, 'reject'])->name('patients.reject');
-
-
-Route::post('/employees/update-salary', [EmployeeController::class, 'updateSalary'])->name('employees.updateSalary');
-Route::get('/employeeinfo/{employeeId}', [EmployeeController::class, 'show'])->name('employeeinfo.show');
-
-
+Route::get('/adminreport', [LoginController::class, 'index'])->name('adminreport.index'); // Admin report page
 
 
 
@@ -140,9 +102,7 @@ Route::get('/employeeinfo/{employeeId}', [EmployeeController::class, 'show'])->n
 //     return view('editroles');
 // });
 
-// Route::get('/searchpatient', function () {
-//     return view('searchpatient');
-// });
+
 
 // Route::get('/registrationapproval', function () {
 //     return view('registrationapproval');

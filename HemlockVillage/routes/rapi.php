@@ -20,4 +20,5 @@ Route::post('/api/employees/{id}/update-salary', [EmployeeController::class, 'up
 
 Route::get('/api/employees/{id}', [EmployeeController::class, 'show'])->name('api.employees.show');
 
+Route::get('/api/patients', [PatientController::class, 'getPatients'])->name('api.patients');
 
