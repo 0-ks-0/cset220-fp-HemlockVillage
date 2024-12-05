@@ -54,7 +54,7 @@
         <div class="container">
             <h1>Create New Roster</h1>
 
-            <form action="/create-roster" method="POST">
+            <form action="/roster/create" method="POST">
                 {{--  Date--}}
                 <div class="form-group">
                     <label for="date">Date</label>
