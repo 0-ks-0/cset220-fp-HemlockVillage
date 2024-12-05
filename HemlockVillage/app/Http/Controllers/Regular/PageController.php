@@ -181,4 +181,22 @@ class PageController extends Controller
 
         return view("adminreport")->with("data", APIController::getReport(Carbon::today()));
     }
+
+    /*
+    *
+    *   Roster
+    *
+    */
+    public static function indexrosterForm()
+    {
+        return view("newroster")->with([
+            "currentDate" => Carbon::today()->format("Y-m-d"),
+            "employees" => APIController::indexRosterCreation()
+        ]);
+    }
+
+    public static function showRosterForm($date)
+    {
+
+    }
 }
