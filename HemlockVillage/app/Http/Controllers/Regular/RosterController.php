@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Regular;
 
 use Illuminate\Http\Request;
 use App\Models\Roster;
+use App\Http\Controllers\Controller; // This line is important
 
 class RosterController extends Controller
 {

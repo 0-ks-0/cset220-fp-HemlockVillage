@@ -1,5 +1,8 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Search for Employees</title>
         <style>
             body {
@@ -38,12 +41,16 @@
             }
             .search-bar button {
                 grid-column: span 4;
-                color: black;
+                background-color: #007bff;
+                color: white;
                 font-size: 16px;
                 padding: 10px 20px;
                 border: none;
                 border-radius: 5px;
                 cursor: pointer;
+            }
+            .search-bar button:hover {
+                background-color: #0056b3;
             }
             .employee-card {
                 border: 1px solid #ddd;
@@ -64,18 +71,19 @@
             }
             .employee-card button {
                 margin-top: 10px;
-                color: black;
+                background-color: #28a745;
+                color: white;
                 font-size: 14px;
                 padding: 8px 15px;
                 border: none;
                 border-radius: 5px;
                 cursor: pointer;
             }
+            .employee-card button:hover {
+                background-color: #218838;
+            }
         </style>
     </head>
-
-
-
         <body>
             <div class="container">
                 <h1>Search for an Employee</h1>
@@ -119,7 +127,7 @@
                     const name = document.getElementById('name').value;
                     const role = document.getElementById('role').value;
                     const salary = document.getElementById('salary').value;
-
+            
                     const params = new URLSearchParams({
                         employee_id: employeeId,
                         user_id: userId,
@@ -127,13 +135,13 @@
                         role: role,
                         salary: salary
                     });
-
+            
                     fetch(`/employees/search?${params}`)
                         .then(response => response.json())
                         .then(data => {
                             const employeeList = document.getElementById('employee-list');
                             employeeList.innerHTML = '';
-
+            
                             data.forEach(employee => {
                                 const card = document.createElement('div');
                                 card.classList.add('employee-card');
@@ -143,15 +151,18 @@
                                     <p>Employee ID: ${employee.employee_id}</p>
                                     <p>Role: ${employee.role}</p>
                                     <p>Salary: $${employee.salary}</p>
-                                    <button>View Employee Info</button>
+                                    <button onclick="redirectToEmployeeInfo(${employee.employee_id})">View Employee Info</button>
                                 `;
                                 employeeList.appendChild(card);
                             });
                         });
                 }
+            
+                function redirectToEmployeeInfo(employeeId) {
+                    window.location.href = `/employeeinfo/${employeeId}`; // Adjust the endpoint as necessary
+                }
             </script>
 
-        @include('navbar')
-
+            @include('navbar')
         </body>
 </html>

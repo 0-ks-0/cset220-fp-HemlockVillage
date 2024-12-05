@@ -1,61 +1,115 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <title>Employee Info</title>
-        <link rel="stylesheet" href="css/patientinfo.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Employee Information</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 20px;
+            }
+            .container {
+                max-width: 600px;
+                background: #ffffff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                margin: auto;
+            }
+            .info-box {
+                margin-bottom: 20px;
+                padding: 10px;
+                background-color: #e9ecef;
+                border-radius: 5px;
+            }
+            .info-box label {
+                font-weight: bold;
+            }
+            button {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+                margin-top: 20px;
+            }
+            button:hover {
+                background-color: #218838;
+            }
+        </style>
     </head>
-    <body>
-
-
-
-        <form action="update-employee-salary" method="POST">
-
+        <body>
             <div class="container">
-                <h1>Employee Information / Salary</h1>
+                <h1>Employee Information</h1>
 
-                <div class="flexbox">
-                    <label>User ID</label>
-                    <input type="text" id="user-id" name="user_id" placeholder="1">
+                <div class="info-box">
+                    <label>Employee ID:</label>
+                    <p>{{ $employee->id }}</p>
                 </div>
 
-                <div class="flexbox">
-                    <label>Full Name</label>
-                    <input type="text" id="full-name" name="fuil_name" placeholder="James Pearson">
+                <div class="info-box">
+                    <label>Name:</label>
+                    <p>{{ $employee->user->name ?? 'N/A' }}</p>
                 </div>
 
-                <div class="flexbox">
-                    <label>Email</label>
-                    <input type="text" id="email" name="email" placeholder="pearson@gmail.com">
+                <div class="info-box">
+                    <label>Email:</label>
+                    <p>{{ $employee->user->email ?? 'N/A' }}</p>
                 </div>
 
-                <div class="flexbox">
-                    <label>Phone Number</label>
-                    <input type="text" id="number" name="number" placeholder="717-555-2342">
+                <div class="info-box">
+                    <label>Role:</label>
+                    <p>{{ $employee->user->role->role ?? 'N/A' }}</p>
                 </div>
 
-                <div class="flexbox">
-                    <label>Role</label>
-                    <input type="text" id="role" name="role" placeholder="Caregiver">
+                <div class="info-box">
+                    <label>Current Salary:</label>
+                    <p>${{ number_format($employee->salary, 2) ?? 'N/A' }}</p>
                 </div>
 
-                <div class="flexbox">
-                    <label>Current Salary</label>
-                    <input type="text" id="current-salary" name="current_salary" placeholder="$78,000">
-                </div>
-
-                <div class="flexbox">
-                    <label>New Salary</label>
-                    <input type="text" id="new-salary" name="new_salary" placeholder="Enter New Salary">
-                </div>
-
-                <div class="flexbox">
-                    <label>Update Salary</label>
-                    <button type="submit">Update Salary</button><br>
-                    <button type="button">Cancel</button>
-                </div>
+                <form method="POST" action="{{ route('employees.updateSalary') }}">
+                    @csrf
+                    <input type="hidden" name="employee_id" value="{{ $employee->id }}">
+                    <div class="info-box">
+                        <label for="new-salary">New Salary:</label>
+                        <input type="text" id="new-salary" name="new_salary" required>
+                    </div>
+                    <button type="submit">Update Salary</button>
+                </form>
             </div>
-        </form>
-        @include('navbar')
 
-
-    </body>
+            <script>
+                async function fetchEmployeeDetails() {
+                    const employeeId = window.location.pathname.split('/').pop();
+                    const response = await fetch(`/api/employees/${employeeId}`);
+                    const employee = await response.json();
+            
+                    if (response.ok) {
+                        const tbody = document.querySelector('#employee-info tbody');
+                        tbody.innerHTML = `
+                            <tr>
+                                <td>${employee.id}</td>
+                                <td>${employee.name || 'N/A'}</td>
+                                <td>${employee.email || 'N/A'}</td>
+                                <td>${employee.role || 'N/A'}</td>
+                                <td>${employee.salary !== 'N/A' ? `$${parseFloat(employee.salary).toFixed(2)}` : 'N/A'}</td>
+                            </tr>
+                        `;
+                    } else {
+                        alert('Employee not found');
+                    }
+                }
+            
+                fetchEmployeeDetails();
+            </script>
+        </body>
 </html>
+
+
+

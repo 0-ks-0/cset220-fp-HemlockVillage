@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Regular;
+namespace App\Http\Controllers\Regular; // This defines the namespace of your controllers
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\PatientController;
-use App\Http\Controllers\RosterController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\Regular\EmployeeController;
+use App\Http\Controllers\Regular\PatientController;
+use App\Http\Controllers\Regular\RosterController;
+use App\Http\Controllers\Regular\HomeController;
+use App\Http\Controllers\Regular\AuthController;
+use App\Http\Controllers\Regular\DoctorController;
+use App\Http\Controllers\Regular\RegistrationApprovalController;
 
 use App\Http\Middleware\CheckRole;
 
@@ -71,10 +72,12 @@ Route::middleware("auth")->group( function ()
 
 
 
-  //
+Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search');
+
+  
 Route::get('/patients', [PatientController::class, 'index'])->name('patientinfo.index');
 Route::get('/employeeinfo', [EmployeeController::class, 'index'])->name('employeeinfo.index');
-Route::get('/registrationapproval', [LoginController::class, 'index'])->name('registrationapproval.index');
+Route::get('/registrationapproval', [RegistrationApprovalController::class, 'index'])->name('registrationapproval.index');
 // Route::get('/rolecreation', [LoginController::class, 'index'])->name('registrationapproval.index');
 Route::get('/adminreport', [LoginController::class, 'index'])->name('adminreport.index');
 
@@ -88,12 +91,21 @@ Route::get('/caregivershome', [DoctorController::class, 'patients'])->name('pati
 
 
 
-Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
+Route::get('/employees', [EmployeeController::class, 'index'])->name('employeesinfo.index');
 Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search');
 
 
 
 Route::post('/patients/{patientId}/approve', [PatientController::class, 'approveRegistration'])->name('patients.approve');
+
+// Registration Approval Routes
+Route::get('/registration-approval', [RegistrationApprovalController::class, 'index'])->name('registrationapproval.index');
+Route::post('/patients/{patientId}/approve', [RegistrationApprovalController::class, 'approve'])->name('patients.approve');
+Route::post('/patients/{patientId}/reject', [RegistrationApprovalController::class, 'reject'])->name('patients.reject');
+
+
+Route::post('/employees/update-salary', [EmployeeController::class, 'updateSalary'])->name('employees.updateSalary');
+Route::get('/employeeinfo/{employeeId}', [EmployeeController::class, 'show'])->name('employeeinfo.show');
 
 
 
@@ -128,9 +140,9 @@ Route::post('/patients/{patientId}/approve', [PatientController::class, 'approve
 //     return view('editroles');
 // });
 
-Route::get('/searchpatient', function () {
-    return view('searchpatient');
-});
+// Route::get('/searchpatient', function () {
+//     return view('searchpatient');
+// });
 
 // Route::get('/registrationapproval', function () {
 //     return view('registrationapproval');
