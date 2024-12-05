@@ -100,7 +100,7 @@
 
                 {{-- Buttons --}}
                 <div class="form-group">
-                    <button type="submit">Create New Roster</button>
+                    <button type="submit">Create</button>
                 </div>
             </form>
         </div>
