@@ -15,7 +15,7 @@ use App\Models\Patient;
 use App\Models\Employee;
 
 use App\Helpers\ControllerHelper;
-
+use App\Http\Controllers\Api\APIController;
 use Carbon\Carbon;
 
 class PageController extends Controller
@@ -170,5 +170,15 @@ class PageController extends Controller
             default:
                 return "You should not have access to this page otherwise";
         }
+    }
+
+    public static function report()
+    {
+        // insert into rosters values (null, "2024-11-01", 2,3,4, null, null, null, null, null);
+
+        // return APIController::getReport(Carbon::today());
+        // return APIController::getReport("2024-11-01");
+
+        return view("adminreport")->with("data", APIController::getReport(Carbon::today()));
     }
 }
