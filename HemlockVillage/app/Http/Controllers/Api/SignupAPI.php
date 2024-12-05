@@ -75,34 +75,17 @@ class SignupAPI extends Controller
 
         $userId = $user->id;
 
-        // Create records in other tables depending on user type
-        switch ($request->role)
+        // Add data into patient table if patient role
+        if ($request->role == Role::getId("Patient"))
         {
-            // Employees
-            case Role::getId("Admin"):
-            case Role::getId("Supervisor"):
-            case Role::getId("Doctor"):
-            case Role::getId("Caregiver"):
-                Employee::create([
-                    "user_id" => $userId
-                ]);
-
-                break;
-
-            // Patient
-            case Role::getId("Patient"):
-                Patient::create([
-                    "id" => ModelHelper::getRandomString(),
-                    "user_id" => $userId,
-                    "family_code" => $request->get("family_code"),
-                    "econtact_name" => $request->get("econtact_name"),
-                    "econtact_phone" => $request->get("econtact_phone"),
-                    "econtact_relation" => $request->get("econtact_relation")
-                ]);
-
-                break;
-
-            default:
+            Patient::create([
+                "id" => ModelHelper::getRandomString(),
+                "user_id" => $userId,
+                "family_code" => $request->get("family_code"),
+                "econtact_name" => $request->get("econtact_name"),
+                "econtact_phone" => $request->get("econtact_phone"),
+                "econtact_relation" => $request->get("econtact_relation")
+            ]);
         }
 
         return response()->json([
