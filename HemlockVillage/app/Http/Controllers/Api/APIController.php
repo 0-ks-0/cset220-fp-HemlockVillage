@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Helpers\ValidationHelper;
+use App\Helpers\ControllerHelper;
 
 use App\Models\Patient;
 
@@ -79,7 +80,7 @@ class APIController extends Controller
         })
         ->get();
 
-        return $data->map( function ($d)
+        return $data->map( function ($d) use ($date)
         {
             $patient = $d->user ?? null;
             $doctor = $d->appointments->first()->doctor->user ?? null;
@@ -91,6 +92,7 @@ class APIController extends Controller
                 "patient_name" => $patient ? "{$patient->first_name} {$patient->last_name}" : null,
                 "doctor_name" => $doctor ? "{$doctor->first_name} {$doctor->last_name}" : null,
                 "appointment_status" => $appointment ? $appointment->status : null,
+                "caregiver_name" => ControllerHelper::getPatientCaregiverByDate($d->id, $date)["caregiver_name"],
                 "prescriptions" => [
                     "morning" => $appointment ? $appointment->morning : null,
                     "afternoon" => $appointment ? $appointment->afternoon : null,
