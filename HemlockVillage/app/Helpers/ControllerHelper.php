@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\PrescriptionStatus;
 use App\Models\Patient;
 use App\Models\Appointment;
+use App\Models\Employee;
 
 use Carbon\Carbon;
 
@@ -200,5 +201,47 @@ class ControllerHelper
 			"caregiver_id" => $caregiver->$column ?? null,
 			"caregiver_name" => $caregiver ? "{$caregiver->first_name} {$caregiver->last_name}" : null
 		];
+	}
+
+	/*
+	*
+	* Roster
+	*
+	*/
+	/**
+	 * Get all the employees with a certain role
+	 * @param string $role The role to search for
+	 */
+	public static function getEmployeeForRosterCreation($role)
+	{
+		/**
+		 * Role Validation
+		 */
+		$roles = [ "Supervisor", "Doctor", "Caregiver" ];
+
+		if (!in_array($role, $roles))
+			abort(400, "Invalid role");
+
+		/**
+		 * Data retrieval
+		 */
+		$employees = Employee::with([
+			"user" => fn($q) => $q->select("id", "first_name", "last_name", "role_id"),
+			"user.role" => fn($q) => $q->select("id", "role")
+		])
+        ->whereHas("user.role", function ($q) use ($role)
+		{
+            $q->where("role", $role);
+        })
+        ->select("id", "user_id")
+        ->get();
+
+		return $employees->map( function ($e)
+		{
+			return [
+				"employee_id" => $e->id ?? null,
+				"name" => $e->user ? "{$e->user->first_name} {$e->user->last_name}" : null
+			];
+		});
 	}
 }
