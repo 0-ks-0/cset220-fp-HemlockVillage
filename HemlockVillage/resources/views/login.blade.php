@@ -8,8 +8,6 @@
 		<title>Login</title>
 
 		<link rel="stylesheet" href="{{ asset("./css/style.css>") }}">
-
-		<script src="{{ asset("./js/navigator.js") }}"></script>
 	</head>
 
 	<body>
