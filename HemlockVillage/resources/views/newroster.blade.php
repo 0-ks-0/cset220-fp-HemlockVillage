@@ -68,9 +68,13 @@
                 <div class="form-group">
                     <label for="supervisor">Supervisor:</label>
                     <select id="supervisor" name="supervisor" required>
-                        <option value="">Select a Supervisor</option>
-                        <option value="">Nicholas Helock</option>
-                        <option value="">Gage Cooper</option>
+                        @isset($employees["supervisors"] )
+                            @foreach ($employees["supervisors"]  as $s)
+                                @isset($s['employee_id'], $s["name"] )
+                                    <option value="{{ $s['employee_id'] }}">{{ $s["name"] }}</option>
+                                @endisset
+                            @endforeach
+                        @endisset
                     </select>
                 </div>
 
