@@ -96,9 +96,13 @@
                 <div class="form-group">
                     <label for="caregiver_one">Caregiver 1:</label>
                     <select id="caregiver_one" name="caregivers[]" required>
-                        <option value="">Lady 1</option>
-                        <option value="">Lady 2</option>
-                        <option value="">Lady 3</option>
+                        @isset($employees["caregivers"] )
+                            @foreach ($employees["caregivers"]  as $c)
+                                @isset($c['employee_id'], $c["name"] )
+                                    <option value="{{ $c['employee_id'] }}">{{ $c["name"] }}</option>
+                                @endisset
+                            @endforeach
+                        @endisset
                     </select>
                 </div>
 
