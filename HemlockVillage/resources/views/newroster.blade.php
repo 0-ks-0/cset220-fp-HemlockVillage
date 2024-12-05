@@ -68,6 +68,8 @@
                 <div class="form-group">
                     <label for="supervisor">Supervisor:</label>
                     <select id="supervisor" name="supervisor" required>
+                        <option disabled selected value> -- select an option -- </option>
+
                         @isset($employees["supervisors"] )
                             @foreach ($employees["supervisors"]  as $s)
                                 @isset($s['employee_id'], $s["name"] )
@@ -82,6 +84,8 @@
                 <div class="form-group">
                     <label for="doctor">Doctor:</label>
                     <select id="doctor" name="doctor" required>
+                        <option disabled selected value> -- select an option -- </option>
+
                         @isset($employees["doctors"] )
                             @foreach ($employees["doctors"]  as $d)
                                 @isset($d['employee_id'], $d["name"] )
@@ -96,6 +100,8 @@
                 <div class="form-group">
                     <label for="caregiver_one">Caregiver 1:</label>
                     <select id="caregiver_one" name="caregivers[]" required>
+                        <option disabled selected value> -- select an option -- </option>
+
                         @isset($employees["caregivers"] )
                             @foreach ($employees["caregivers"]  as $c)
                                 @isset($c['employee_id'], $c["name"] )
@@ -110,6 +116,8 @@
                 <div class="form-group">
                     <label for="caregiver_two">Caregiver 2:</label>
                     <select id="caregiver_two" name="caregivers[]" required>
+                        <option disabled selected value> -- select an option -- </option>
+
                         @isset($employees["caregivers"] )
                             @foreach ($employees["caregivers"]  as $c)
                                 @isset($c['employee_id'], $c["name"] )
@@ -124,6 +132,8 @@
                 <div class="form-group">
                     <label for="caregiver_three">Caregiver 3:</label>
                     <select id="caregiver_three" name="caregivers[]" required>
+                        <option disabled selected value> -- select an option -- </option>
+
                         @isset($employees["caregivers"] )
                             @foreach ($employees["caregivers"]  as $c)
                                 @isset($c['employee_id'], $c["name"] )
@@ -138,6 +148,8 @@
                 <div class="form-group">
                     <label for="caregiver_four">Caregiver 4:</label>
                     <select id="caregiver_four" name="caregivers[]" required>
+                        <option disabled selected value> -- select an option -- </option>
+
                         @isset($employees["caregivers"] )
                             @foreach ($employees["caregivers"]  as $c)
                                 @isset($c['employee_id'], $c["name"] )
