@@ -27,6 +27,9 @@ Route::middleware([CheckRole::class . ':1,2'])->group( function ()
 {
     // Users
     Route::get("/users", fn() => PageController::users());
+
+    // Report
+    Route::get("/report", fn() => PageController::report());
 });
 
 // All users access
