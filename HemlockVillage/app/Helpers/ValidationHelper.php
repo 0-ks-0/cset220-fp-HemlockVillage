@@ -47,6 +47,26 @@ class ValidationHelper
 		"econtact_relation.max" => "Emergency contact relation cannot exceed 50 characters.",
 	];
 
+	public static $roster = [
+		"date.required" => "Please provide a date.",
+		"date.date" => "The date format is invalid. Please use a valid date.",
+		"date.after_or_equal" => "The date must be today or a future date.",
+		"date.unique" => "A roster already exists for this date.",
+
+		"supervisor.required" => "A supervisor must be selected.",
+		"supervisor.exists" => "The selected supervisor does not exist. Please choose a valid supervisor.",
+
+		"doctor.required" => "A doctor must be selected.",
+		"doctor.exists" => "The selected doctor does not exist. Please choose a valid doctor.",
+
+		"caregivers.required" => "At least one caregiver must be selected.",
+		"caregivers.array" => "The caregivers must be selected as an array.",
+		"caregivers.size" => "You must select 4 caregivers.",
+
+		"caregivers.*.exists" => "Each caregiver must exist.",
+		"caregivers.*.distinct" => "Cannot select the same caregiver. Please select different ones.",
+	];
+
 	/**
 	 * Validate the date format. Aborts if not valid
 	 *
