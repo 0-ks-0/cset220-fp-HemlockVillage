@@ -94,7 +94,7 @@
 
                 {{-- Caregiver one --}}
                 <div class="form-group">
-                    <label for="caregiver_one">Caregivers:</label>
+                    <label for="caregiver_one">Caregiver 1:</label>
                     <select id="caregiver_one" name="caregivers[]" required>
                         <option value="">Lady 1</option>
                         <option value="">Lady 2</option>
