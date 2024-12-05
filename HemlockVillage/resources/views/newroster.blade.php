@@ -106,6 +106,20 @@
                     </select>
                 </div>
 
+                {{-- Caregiver two --}}
+                <div class="form-group">
+                    <label for="caregiver_two">Caregiver 2:</label>
+                    <select id="caregiver_two" name="caregivers[]" required>
+                        @isset($employees["caregivers"] )
+                            @foreach ($employees["caregivers"]  as $c)
+                                @isset($c['employee_id'], $c["name"] )
+                                    <option value="{{ $c['employee_id'] }}">{{ $c["name"] }}</option>
+                                @endisset
+                            @endforeach
+                        @endisset
+                    </select>
+                </div>
+
                 {{-- Buttons --}}
                 <div class="form-group">
                     <button type="submit">Create</button>
