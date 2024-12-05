@@ -46,7 +46,7 @@ class PatientController extends Controller
 
         }
 
-        return view('patients.index', compact('patients'));
+        return view('patientinfo', compact('patients'));
     }
 
     public function approveRegistration(Request $request, $patientId)
