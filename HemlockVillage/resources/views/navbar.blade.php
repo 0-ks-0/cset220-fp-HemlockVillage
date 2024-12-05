@@ -133,18 +133,19 @@
                 @elseif ($accessLevel === 3) {{-- Doctor --}}
                     <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li>
                     <li><a href="{{ route('roster.index') }}">Roster</a></li>
-                    <li><a href="{{ route('doctorshome.index') }}">Doctor Home</a></li>
+                    <li><a href="/home">Home</a></li>
 
                 @elseif ($accessLevel === 4) {{-- Caregiver --}}
                     <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li>
                     <li><a href="{{ route('roster.index') }}">Roster</a></li>
-                    <li><a href="">Caregivers Home</a></li>
+                    <li><a href="/home">Home</a></li>
 
                 @elseif ($accessLevel === 5) {{-- Patient --}}
-                    <li><a href="{{ route('patientshome.index') }}">Home</a></li>
+                    <li><a href="/home">Home</a></li>
                     <li><a href="{{ route('roster.index') }}">Roster</a></li>
 
                 @elseif ($accessLevel === 6) {{-- Family Member --}}
+                <li><a href="/home">Home</a></li>
                     <li><a href="{{ route('roster.index') }}">Roster</a></li>
                     <li><a href="">Make Payment</a></li>
                 @endif
