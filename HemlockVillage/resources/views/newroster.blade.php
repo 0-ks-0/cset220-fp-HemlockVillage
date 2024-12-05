@@ -83,9 +83,9 @@
                     <label for="doctor">Doctor:</label>
                     <select id="doctor" name="doctor" required>
                         @isset($employees["doctors"] )
-                            @foreach ($employees["doctors"]  as $s)
-                                @isset($s['employee_id'], $s["name"] )
-                                    <option value="{{ $s['employee_id'] }}">{{ $s["name"] }}</option>
+                            @foreach ($employees["doctors"]  as $d)
+                                @isset($d['employee_id'], $d["name"] )
+                                    <option value="{{ $d['employee_id'] }}">{{ $d["name"] }}</option>
                                 @endisset
                             @endforeach
                         @endisset
