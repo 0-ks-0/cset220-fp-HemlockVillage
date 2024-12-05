@@ -82,9 +82,13 @@
                 <div class="form-group">
                     <label for="doctor">Doctor:</label>
                     <select id="doctor" name="doctor" required>
-                        <option value="">Select a Doctor</option>
-                        <option value="">Dr. Cooper</option>
-                        <option value="">Dr. Helock</option>
+                        @isset($employees["doctors"] )
+                            @foreach ($employees["doctors"]  as $s)
+                                @isset($s['employee_id'], $s["name"] )
+                                    <option value="{{ $s['employee_id'] }}">{{ $s["name"] }}</option>
+                                @endisset
+                            @endforeach
+                        @endisset
                     </select>
                 </div>
 
