@@ -195,8 +195,24 @@ class PageController extends Controller
         ]);
     }
 
-    public static function showRosterForm($date)
+    public static function storeRosterForm(Request $request)
     {
+        /**
+         * Check status
+         */
+        $response = APIController::storeRosterForm($request);
+        $jsonDecoded = json_decode($response->getContent(), true);
 
+        // Fails validation
+        if ($response->getStatusCode() !== 200)
+        {
+            $errors = $jsonDecoded["errors"] ?? [ "Invalid inputs(s). Please try again" ];
+
+            return redirect()->back()->withErrors($errors)->withInput(); // Pass back the inputted values as well
+        }
+
+        // Success
+        return redirect()->back()
+            ->with("message", $jsonDecoded["message"] ?? "Roster for date {$request->get('date')} has been created");
     }
 }
