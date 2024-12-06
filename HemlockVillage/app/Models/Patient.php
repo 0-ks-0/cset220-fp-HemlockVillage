@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +18,8 @@ class Patient extends Model
         "admission_date",
         "group_num",
         "last_updated_date",
-        "bill"
+        "bill",
+        "approved"  // Add 'approved' to the fillable array
     ];
 
     public $incrementing = false;
@@ -45,9 +45,9 @@ class Patient extends Model
     //     return $this->hasMany(PrescriptionStatus::class, "appointment_id");
     // }
 
-
     public static function getId($userID)
     {
         return ModelHelper::getId(Patient::class, "user_id", $userID);
     }
 }
+

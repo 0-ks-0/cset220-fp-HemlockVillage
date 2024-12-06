@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+@extends('layouts.app')
 
-		<title>Home</title>
-	</head>
+@section('title', 'Home Page')
 
-	<body>
-		Welcome to the home page. You should be logged in if you are able to see this.
+@section('content')
+    <h1>Welcome to the Application</h1>
+    <p>Your access level: {{ Auth::user()->role->access_level ?? 'Unknown' }}</p>
+    <p>Welcome to the home page. You should be logged in if you are able to see this.</p>
 
-		<a href="/logout">Logout</a>
-	</body>
-</html>
+    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+@endsection
