@@ -40,14 +40,13 @@ class Patient extends Model
         return $this->hasMany(Meal::class, "patient_id");
     }
 
-    // public function prescriptions()
-    // {
-    //     return $this->hasMany(PrescriptionStatus::class, "appointment_id");
-    // }
+    // // public function prescriptions()
+    // // {
+    // //     return $this->hasMany(PrescriptionStatus::class, "appointment_id");
+    // // }
 
     public static function getId($userID)
     {
         return ModelHelper::getId(Patient::class, "user_id", $userID);
     }
 }
-

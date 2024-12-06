@@ -31,22 +31,20 @@ Route::post("/login", fn() => LoginController::login(request()));
 
 Route::get("/logout", fn() => LoginController::logout(request()));
 
+
+// Admin and supervisor access
+Route::middleware([CheckRole::class . ':1,2'])->group( function ()
+{
+    // Users
 // ======== Admin and Supervisor Access Routes ========
 Route::middleware([CheckRole::class . ':1,2'])->group(function () {
     Route::get("/users", fn() => PageController::users());
-
-    // Report
-    Route::get("/report", fn() => PageController::report());
-
-    // Roster
-    Route::get("/roster/create", fn() => PageController::indexrosterForm());
-    Route::post("/roster/create", fn() => PageController::storeRosterForm(request()));
 });
 
-// ======== All Authenticated Users Routes ========
-Route::middleware("auth")->group(function ()
+Route::middleware("auth")->group( function ()
 {
     Route::get("/home", fn() => PageController::home());
+
 
 });
 
@@ -55,6 +53,15 @@ Route::middleware([ CheckRole::class . ":3,5"])->group( function ()
 {
     // Home
     Route::get("/home/{date}", fn($date) => PageController::homeWithDate($date));
+// Doctor and Patient Access
+Route::middleware([ CheckRole::class . ":3,5"])->group( function ()
+{
+    // Home
+    Route::get("/home/{date}", fn($date) => PageController::homeWithDate($date));
+});
+
+Route::get('/patientshome', function () {
+    return view('patientshome');
 });
 
 // ======== Employee Routes ========

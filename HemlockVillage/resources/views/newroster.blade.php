@@ -41,6 +41,7 @@
                 border: none;
             }
 
+
             .btn-secondary {
                 background-color: #6c757d;
             }
@@ -49,6 +50,7 @@
             }
         </style>
     </head>
+
 
     <body>
         <div class="container">
@@ -59,8 +61,19 @@
                 </div>
             @endif
 
+            {{-- Success message for creation --}}
+            @if (session('message'))
+                <div>
+                    <p>{{ session('message') }}</p>
+                </div>
+            @endif
+
             <h1>Create New Roster</h1>
 
+            <form action="/roster/create" method="POST">
+                @csrf
+
+                {{--  Date--}}
             <form action="/roster/create" method="POST">
                 @csrf
 
@@ -75,8 +88,18 @@
 
                     {{-- Error for date --}}
                     @error('date') <div>{{ $message }}</div> @enderror
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date"
+                        @isset($currentDate) min="{{ $currentDate }}" @endisset
+                        required
+                        value="{{ old('date', '') }}"
+                    >
+
+                    {{-- Error for date --}}
+                    @error('date') <div>{{ $message }}</div> @enderror
                 </div>
 
+                {{-- Supervisor --}}
                 {{-- Supervisor --}}
                 <div class="form-group">
                     <label for="supervisor">Supervisor:</label>
@@ -95,12 +118,30 @@
                                 @endisset
                             @endforeach
                         @endisset
+                        <option disabled @selected(old('supervisor') === null) value> -- select an option -- </option>
+
+                        @isset($employees["supervisors"] )
+                            @foreach ($employees["supervisors"]  as $s)
+                                @isset($s['employee_id'], $s["name"] )
+                                    <option
+                                        value="{{ $s['employee_id'] }}"
+                                        @selected(old('supervisor') == $s['employee_id'])
+                                    >
+                                        {{ $s["name"] }}
+                                    </option>
+                                @endisset
+                            @endforeach
+                        @endisset
                     </select>
+
+                    {{-- Error for supervisor --}}
+                    @error("supervisor") <div>{{ $message }}</div> @enderror
 
                     {{-- Error for supervisor --}}
                     @error("supervisor") <div>{{ $message }}</div> @enderror
                 </div>
 
+                {{-- Doctor --}}
                 {{-- Doctor --}}
                 <div class="form-group">
                     <label for="doctor">Doctor:</label>
@@ -192,7 +233,24 @@
                 </div>
 
                 {{-- Caregiver four --}}
+                {{-- Caregiver four --}}
                 <div class="form-group">
+                    <label for="caregiver_four">Caregiver 4:</label>
+                    <select id="caregiver_four" name="caregivers[]" required>
+                        <option disabled @selected(old('caregivers.3') === null) value> -- select an option -- </option>
+
+                        @isset($employees["caregivers"] )
+                            @foreach ($employees["caregivers"]  as $c)
+                                @isset($c['employee_id'], $c["name"] )
+                                    <option
+                                        value="{{ $c['employee_id'] }}"
+                                        {{ in_array($c['employee_id'], old('caregivers', [])) ? 'selected' : '' }}
+                                    >
+                                        {{ $c["name"] }}
+                                    </option>
+                                @endisset
+                            @endforeach
+                        @endisset
                     <label for="caregiver_four">Caregiver 4:</label>
                     <select id="caregiver_four" name="caregivers[]" required>
                         <option disabled @selected(old('caregivers.3') === null) value> -- select an option -- </option>
@@ -219,11 +277,20 @@
                 @error("caregivers.3") <div>{{ $message }}</div> @enderror
 
                 {{-- Buttons --}}
+                {{-- Error for caregivers --}}
+                @error("caregivers.0") <div>{{ $message }}</div> @enderror
+                @error("caregivers.1") <div>{{ $message }}</div> @enderror
+                @error("caregivers.2") <div>{{ $message }}</div> @enderror
+                @error("caregivers.3") <div>{{ $message }}</div> @enderror
+
+                {{-- Buttons --}}
                 <div class="form-group">
+                    <button type="submit">Create</button>
                     <button type="submit">Create</button>
                 </div>
             </form>
         </div>
+
 
     </body>
 </html>

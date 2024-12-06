@@ -27,6 +27,14 @@ class SignupController extends Controller
     {
         $response = SignupAPI::store($request);
 
+        // Fails signup validation
+        if ($response->getStatusCode() !== 200)
+        {
+            $errors = json_decode($response->getContent(), true)["errors"] ?? ["Invalid input(s). Please try again."];
+
+            return redirect()->back()->withErrors($errors);
+        }
+
         if ($response->getStatusCode() !== 200) {
             $errors = json_decode($response->getContent(), true)["errors"] ?? ["Invalid input(s). Please try again."];
             return redirect()->back()->withErrors($errors);
@@ -34,31 +42,10 @@ class SignupController extends Controller
 
         session()->forget("familyCode");
 
-        session()->flash("success", "Your account has been created successfully. Please wait for approval.");
+        // Save confirmation message for redirecting to login page
+        session()->flash("success", "Your account has been created successfully. Please wait for approval to login.");
 
-        $roleId = $request->input('role_id'); // Assuming 'role_id' is sent in the form
-        $role = Role::find($roleId);
-
-        if (!$role) {
-            return redirect()->route("login.form")->withErrors("Invalid role selected.");
-        }
-
-        // Redirect based on role access level
-        switch ($role->access_level) {
-            case 1:
-                return redirect()->route('admin.home');
-            case 2:
-                return redirect()->route('supervisor.home');
-            case 3:
-                return redirect()->route('doctor.home');
-            case 4:
-                return redirect()->route('caregiver.home');
-            case 5:
-                return redirect()->route('patientshome.index');
-            case 6:
-                return redirect()->route('family.home');
-            default:
-                return redirect()->route("login.form")->withErrors("Unknown role.");
-        }
+        return redirect()->route("login.form");
     }
+
 }
