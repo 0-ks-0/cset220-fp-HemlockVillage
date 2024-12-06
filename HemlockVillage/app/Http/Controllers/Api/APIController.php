@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Validator;
+
 use App\Helpers\ValidationHelper;
 use App\Helpers\ControllerHelper;
 
 use App\Models\Patient;
+use App\Models\Roster;
 
 class APIController extends Controller
 {
@@ -36,6 +39,49 @@ class APIController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    public static function storeRosterForm(Request $request)
+    {
+        /**
+         * Validation
+         */
+        $validatedData = Validator::make($request->all(), [
+            "date" => [ "required", "date", "unique:rosters,date_assigned", "after_or_equal:today" ],
+            "supervisor" => [ "required", "exists:employees,id" ],
+            "doctor" => [ "required", "exists:employees,id" ],
+            "caregivers" => [ "required", "array", "size:4" ],
+            "caregivers.*" => [ "exists:employees,id", "distinct" ], // Applies to each caregiver
+        ], ValidationHelper::$roster);
+
+        if ($validatedData->fails())
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Roster could not be created",
+                "errors" => $validatedData->errors()
+            ], 400);
+        }
+
+        /**
+         * Creation
+         */
+        $roster = Roster::create([
+            "date_assigned" => $request->get("date"),
+            "supervisor_id" => $request->get("supervisor"),
+            "doctor_id" => $request->get("doctor"),
+            "caregiver_one_id" => $request->get("caregivers")[0],
+            "caregiver_two_id" => $request->get("caregivers")[1],
+            "caregiver_three_id" => $request->get("caregivers")[2],
+            "caregiver_four_id" => $request->get("caregivers")[3]
+        ]);
+
+        // Success
+        return response()->json([
+            "success" => true,
+            "message" => "Roster for date { {$request->get('date')} } has been created",
+            "roster" => $roster
+        ], 200);
     }
 
     /**
