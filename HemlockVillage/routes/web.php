@@ -17,6 +17,8 @@ use App\Http\Middleware\CheckRole;
 
 require("rapi.php");
 
+Route::get("/", fn() => PageController::landing());
+
 // Nav Bar Routes
 Route::get("/test", function() {
     return view("editroster");
