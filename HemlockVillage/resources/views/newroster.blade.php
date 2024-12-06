@@ -55,6 +55,8 @@
             <h1>Create New Roster</h1>
 
             <form action="/roster/create" method="POST">
+                @csrf
+
                 {{--  Date--}}
                 <div class="form-group">
                     <label for="date">Date</label>
@@ -62,6 +64,8 @@
                         @isset($currentDate) min="{{ $currentDate }}" @endisset
                         required
                     >
+                    {{-- Error for date --}}
+                    @error('date') <div>{{ $message }}</div> @enderror
                 </div>
 
                 {{-- Supervisor --}}
@@ -78,6 +82,9 @@
                             @endforeach
                         @endisset
                     </select>
+
+                    {{-- Error for supervisor --}}
+                    @error("supervisor") <div>{{ $message }}</div> @enderror
                 </div>
 
                 {{-- Doctor --}}
@@ -94,6 +101,9 @@
                             @endforeach
                         @endisset
                     </select>
+
+                    {{-- Error for doctor --}}
+                    @error("doctor") <div>{{ $message }}</div> @enderror
                 </div>
 
                 {{-- Caregiver one --}}
@@ -159,6 +169,12 @@
                         @endisset
                     </select>
                 </div>
+
+                {{-- Error for caregivers --}}
+                @error("caregivers.0") <div>{{ $message }}</div> @enderror
+                @error("caregivers.1") <div>{{ $message }}</div> @enderror
+                @error("caregivers.2") <div>{{ $message }}</div> @enderror
+                @error("caregivers.3") <div>{{ $message }}</div> @enderror
 
                 {{-- Buttons --}}
                 <div class="form-group">
