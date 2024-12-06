@@ -1,66 +1,7 @@
 <html>
     <head>
         <title>Family Home</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-                background-color: #f5f5f5;
-            }
-            .container {
-                max-width: 800px;
-                margin: auto;
-                padding: 20px;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-            .form-group {
-                margin-bottom: 15px;
-            }
-            label {
-                display: block;
-                margin-bottom: 5px;
-                font-weight: bold;
-            }
-            input, button, table {
-                width: 100%;
-                padding: 10px;
-                font-size: 16px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-            input[readonly] {
-                background-color: #f9f9f9;
-                cursor: not-allowed;
-            }
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-            th, td {
-                padding: 10px;
-                border: 1px solid #ddd;
-                text-align: left;
-            }
-            th {
-                background-color: gray;
-                color: white;
-            }
-            button {
-                margin-top: 10px;
-                background-color: gray;
-                color: white;
-                cursor: pointer;
-                border: none;
-            }
-
-            .btn-secondary {
-                background-color: #6c757d;
-            }
-
-        </style>
+        <link rel="stylesheet" href="css/mainstyle.css">
     </head>
     <body>
         <div class="container">

@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>Home</title>
-    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/landing.css">
     <style>
         #home{
             background-image: url("images/homepic.jpg");
