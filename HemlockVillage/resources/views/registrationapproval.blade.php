@@ -20,89 +20,128 @@
                 </div>
             </div>
 
-        <script>
-            async function fetchPatients() {
-                try {
-                    const response = await fetch('/api/patients/unapproved');
-                    const patients = await response.json();
-                    renderPatients(patients);
-                } catch (error) {
-                    document.getElementById('patient-list').innerHTML = '<p>Failed to load patients.</p>';
-                    console.error('Error fetching patients:', error);
-                }
-            }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Approval</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f4f8;
+        }
 
-            function renderPatients(patients) {
-                const container = document.getElementById('patient-list');
-                container.innerHTML = '';
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-                if (patients.length === 0) {
-                    container.innerHTML = '<p>No unapproved patients found.</p>';
-                    return;
-                }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #333;
+        }
 
-                patients.forEach(patient => {
-                    const form = document.createElement('div');
-                    form.className = 'approval-form';
+        .approval-form {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
 
-                    form.innerHTML = `
-                        <div class="form-group">
-                            <label>Name:</label>
-                            <p>${patient.user.name || 'N/A'}</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Role:</label>
-                            <p>${patient.role || 'N/A'}</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Approval Status:</label>
-                            <div class="radio-group">
-                                <label><input type="radio" name="approval_status_${patient.id}" value="approved"> Approved</label>
-                                <label><input type="radio" name="approval_status_${patient.id}" value="rejected"> Rejected</label>
-                            </div>
-                        </div>
-                        <div class="action-buttons">
-                            <button class="submit-btn" onclick="approvePatient(${patient.id})">Submit</button>
-                        </div>
-                    `;
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-                    container.appendChild(form);
-                });
-            }
+        .form-group label {
+            font-weight: bold;
+            font-size: 14px;
+            color: #555;
+        }
 
-            async function approvePatient(patientId) {
-                const approvalStatus = document.querySelector(`input[name="approval_status_${patientId}"]:checked`);
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
 
-                if (!approvalStatus) {
-                    alert('Please select an approval status.');
-                    return;
-                }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
 
-                const status = approvalStatus.value;
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
 
-                try {
-                    const response = await fetch(`/api/patients/${patientId}/approve`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({ approval_status: status })
-                    });
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
 
-                    if (response.ok) {
-                        alert('Patient status updated successfully.');
-                        fetchPatients(); // Refresh list
-                    } else {
-                        alert('Failed to update patient status.');
-                    }
-                } catch (error) {
-                    alert('An error occurred. Please try again.');
-                    console.error('Error approving patient:', error);
-                }
-            }
+        .reject-btn {
+            background-color: #d9534f;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
 
-            fetchPatients(); // Load patients on page load
-        </script>
-    </body>
+        .reject-btn:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Registration Approval</h1>
+
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @foreach ($patients as $patient)
+            <div class="approval-form">
+                <h3>{{ $patient->user->name }}</h3>
+                <p>Role: {{ $patient->user->role->role ?? 'N/A' }}</p>
+                <p>Email: {{ $patient->user->email }}</p>
+                <p>DOB: {{ $patient->user->date_of_birth }}</p>
+                <p>Phone Number: {{ $patient->user->phone_number }}</p>
+
+                <form action="{{ route('patients.approve', ['patientId' => $patient->id]) }}" method="POST">
+                    @csrf
+                    <button type="submit">Approve</button>
+                </form>
+
+                <form action="{{ route('patients.reject', ['patientId' => $patient->id]) }}" method="POST">
+                    @csrf
+                    <button type="submit">Reject</button>
+                </form>
+            </div>
+        @endforeach
+    </div>
+
+</body>
 </html>
