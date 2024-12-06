@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Regular; // This defines the namespace of your controllers
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Regular\EmployeeController;
-use App\Http\Controllers\Regular\PatientController;
-use App\Http\Controllers\Regular\RosterController;
-use App\Http\Controllers\Regular\HomeController;
-use App\Http\Controllers\Regular\AuthController;
-use App\Http\Controllers\Regular\DoctorController;
-use App\Http\Controllers\Regular\RegistrationApprovalController;
+
+// Name space is defined in a way that you don't need to import all these controllers under app\Http\Controllers\Regular
+// use App\Http\Controllers\Regular\EmployeeController;
+// use App\Http\Controllers\Regular\PatientController;
+// use App\Http\Controllers\Regular\RosterController;
+// use App\Http\Controllers\Regular\HomeController;
+// use App\Http\Controllers\Regular\AuthController;
+// use App\Http\Controllers\Regular\DoctorController;
+// use App\Http\Controllers\Regular\RegistrationApprovalController;
+
 use App\Http\Middleware\CheckRole;
 
 require("rapi.php");
@@ -25,6 +28,7 @@ Route::post("/signup", fn() => SignupController::store(request()));
 
 Route::get("/login", fn() => LoginController::showLoginForm())->name("login.form");
 Route::post("/login", fn() => LoginController::login(request()));
+
 Route::get("/logout", fn() => LoginController::logout(request()));
 
 // ======== Admin and Supervisor Access Routes ========
@@ -40,17 +44,19 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
 });
 
 // ======== All Authenticated Users Routes ========
-Route::middleware("auth")->group(function () {
+Route::middleware("auth")->group(function ()
+{
     Route::get("/home", fn() => PageController::home());
 
 });
 
-// Doctor and Patient Access
+// ======== Doctor and Patient Access ========
 Route::middleware([ CheckRole::class . ":3,5"])->group( function ()
 {
     // Home
     Route::get("/home/{date}", fn($date) => PageController::homeWithDate($date));
 });
+
 // ======== Employee Routes ========
 Route::get('/employees', [EmployeeController::class, 'index'])->name('employeeinfo.index'); // Employee list
 Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search'); // Search employee
@@ -83,11 +89,9 @@ Route::get('/searchpatient', function () {
     return view('searchpatient');
 }); // Search patient page
 
-Route::get('/adminreport', [LoginController::class, 'index'])->name('adminreport.index'); // Admin report page
-
-
-
-
+Route::get('/searchemployee', function () {
+    return view('searchemployee');
+});
 
 
 // Route::get('/patientshome', function () {
@@ -161,7 +165,3 @@ Route::get('/adminreport', [LoginController::class, 'index'])->name('adminreport
 // Route::get('/familypayment', function () {
 //     return view('familypayment');
 // });
-
-Route::get('/searchemployee', function () {
-    return view('searchemployee');
-});
