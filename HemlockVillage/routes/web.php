@@ -31,11 +31,6 @@ Route::post("/login", fn() => LoginController::login(request()));
 
 Route::get("/logout", fn() => LoginController::logout(request()));
 
-
-// Admin and supervisor access
-Route::middleware([CheckRole::class . ':1,2'])->group( function ()
-{
-    // Users
 // ======== Admin and Supervisor Access Routes ========
 Route::middleware([CheckRole::class . ':1,2'])->group(function () {
     Route::get("/users", fn() => PageController::users());
@@ -44,16 +39,9 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
 Route::middleware("auth")->group( function ()
 {
     Route::get("/home", fn() => PageController::home());
-
-
 });
 
 // ======== Doctor and Patient Access ========
-Route::middleware([ CheckRole::class . ":3,5"])->group( function ()
-{
-    // Home
-    Route::get("/home/{date}", fn($date) => PageController::homeWithDate($date));
-// Doctor and Patient Access
 Route::middleware([ CheckRole::class . ":3,5"])->group( function ()
 {
     // Home

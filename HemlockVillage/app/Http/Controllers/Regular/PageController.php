@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Validator;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\UserAPI;
@@ -14,11 +13,10 @@ use App\Http\Controllers\Api\HomeAPI;
 
 use App\Models\Patient;
 use App\Models\Employee;
-use App\Models\Employee;
 
 use App\Helpers\ControllerHelper;
 use App\Http\Controllers\Api\APIController;
-use App\Http\Controllers\Api\APIController;
+
 use Carbon\Carbon;
 
 class PageController extends Controller
@@ -187,90 +185,6 @@ class PageController extends Controller
             default:
                 return "No home page for your access level";
         }
-    }
-
-    public static function homeWithDate($date)
-    {
-        $userId = Auth::user()->id;
-        $accessLevel = ControllerHelper::getUserAccessLevel($userId);
-
-        switch ($accessLevel)
-        {
-            case 3: // Doctor
-
-                $doctorId = Employee::getId($userId);
-
-                if (!$doctorId)
-                    abort(500, "Could not find an employee id associated with your user id");
-
-                // --- Uncomment to see the data only
-                // return [
-                //     "old" => HomeAPI::indexDoctor($userId),
-                //     "upcoming" =>HomeAPI::showDoctor($doctorId, $date)
-                // ];
-
-                return view("doctorshome")->with([
-                    "old" => HomeAPI::indexDoctor($userId),
-                    "upcoming" =>HomeAPI::showDoctor($doctorId, $date)
-                ]);
-
-            case 5:
-                $patientId = Patient::getId($userId) ?? null;
-
-                if (!$patientId) abort(400,"Patient could not be found");
-
-                // To test, pass date as 2024-11-03
-                // return HomeAPI::showPatient($patientId, $date);
-
-                return view("patientshome")->with("data", HomeAPI::showPatient($patientId, $date));
-
-            default:
-                return "You should not have access to this page otherwise";
-        }
-    }
-
-    public static function report()
-    {
-        // insert into rosters values (null, "2024-11-01", 2,3,4, null, null, null, null, null);
-
-        // return APIController::getReport(Carbon::today());
-        // return APIController::getReport("2024-11-01");
-
-        return view("adminreport")->with("data", APIController::getReport(Carbon::today()));
-    }
-
-    /*
-    *
-    *   Roster
-    *
-    */
-    public static function indexrosterForm()
-    {
-        return view("newroster")->with([
-            "currentDate" => Carbon::today()->format("Y-m-d"),
-            "employees" => APIController::indexRosterCreation()
-        ]);
-    }
-
-    public static function storeRosterForm(Request $request)
-    {
-        /**
-         * Check status
-         */
-        $response = APIController::storeRosterForm($request);
-        $jsonDecoded = json_decode($response->getContent(), true);
-
-        // Fails validation
-        if ($response->getStatusCode() !== 200)
-        {
-            $errors = $jsonDecoded["errors"] ?? [ "Invalid inputs(s). Please try again" ];
-
-            return redirect()->back()->withErrors($errors)->withInput(); // Pass back the inputted values as well
-        }
-
-        // Success
-        return redirect()->back()
-            ->with("message", $jsonDecoded["message"] ?? "Roster for date {$request->get('date')} has been created");
     }
 
     public static function homeWithDate($date)
