@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // Don't touch
         self::insertData("admin", "first", "a@example.com", "2000-02-02", "123-456-7890", "admin", 1, 1); // 1
         self::insertData("supervisor", "first", "s@example.com", "1985-09-23", "321-654-9870", "supervisor", 2, 1); // 2
         self::insertData("doctor", "first", "d@example.com", "1990-03-15", "456-789-1230", "doctor", 3, 1); // 3
@@ -30,6 +31,8 @@ class UserSeeder extends Seeder
         self::insertData("caregiver", "five", "c5@example.com", "1989-08-25", "345-678-9016", "caregiver", 4, 1); // 10
         self::insertData("caregiver", "six", "c6@example.com", "1990-12-11", "345-678-9017", "caregiver", 4, 1); // 11
         self::insertData("caregiver", "seven", "c7@example.com", "1991-03-14", "345-678-9018", "caregiver", 4, 1); // 12
+
+        // All touchable below
         self::insertData("caregiver", "eight", "c8@example.com", "1993-05-22", "345-678-9019", "caregiver", 4, 1); // 13
         self::insertData("caregiver", "nine", "c9@example.com", "1994-01-18", "345-678-9020", "caregiver", 4, 1); // 14
         self::insertData("caregiver", "ten", "c10@example.com", "1996-03-14", "345-678-9021", "caregiver", 4, 1); // 15

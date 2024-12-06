@@ -14,29 +14,27 @@ class EmployeeSeeder extends Seeder
      */
     public function run(): void
     {
-        // Jamie's wonderful data
         self::insertData(1, 120_000);
         self::insertData(2, 90_000);
         self::insertData(3, 100_000);
         self::insertData(4, 65_000);
-        self::insertData(7, 90_000);
-        self::insertData(8, 45_500);
-        self::insertData(9, 50_000);
-        self::insertData(10, 70_500);
 
-        // Katy's terrible data
-        self::insertData(11, 68_000);
-        self::insertData(12, 30_000);
-        self::insertData(13, 80_000);
-        self::insertData(14, 70_000);
+        self::insertData(7, 65_000);
+        self::insertData(8, 65_500);
+        self::insertData(9, 64_800);
+        self::insertData(10, 66_200);
+        self::insertData(11, 64_500);
+        self::insertData(12, 67_000);
 
-        // Caregivers
-        self::insertData(17, 65_000);
-        self::insertData(18, 65_500);
-        self::insertData(19, 64_800);
-        self::insertData(20, 66_200);
-        self::insertData(21, 64_500);
-        self::insertData(22, 67_000);
+        // Jamie's data
+        // self::insertData(1, 120_000);
+        // self::insertData(2, 90_000);
+        // self::insertData(3, 100_000);
+        // self::insertData(4, 65_000);
+        // self::insertData(7, 90_000);
+        // self::insertData(8, 45_500);
+        // self::insertData(9, 50_000);
+        // self::insertData(10, 70_500);
     }
 
     private static function insertData($userID, $salary): void
