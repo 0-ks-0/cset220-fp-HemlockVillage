@@ -30,6 +30,10 @@ Route::middleware([CheckRole::class . ':1,2'])->group( function ()
 
     // Report
     Route::get("/report", fn() => PageController::report());
+
+    // Roster
+    Route::get("/roster/create", fn() => PageController::indexrosterForm());
+    Route::post("/roster/create", fn() => PageController::storeRosterForm(request()));
 });
 
 // All users access
