@@ -37,12 +37,16 @@
         }
         .search-bar button {
             grid-column: span 4;
-            color: black;
+            background-color: #007bff;
+            color: white;
             font-size: 16px;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+        }
+        .search-bar button:hover {
+            background-color: #0056b3;
         }
         .patient-card {
             border: 1px solid #ddd;
@@ -63,12 +67,16 @@
         }
         .patient-card button {
             margin-top: 10px;
-            color: black;
+            background-color: #28a745;
+            color: white;
             font-size: 14px;
             padding: 8px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+        }
+        .patient-card button:hover {
+            background-color: #218838;
         }
     </style>
 </head>
@@ -81,31 +89,25 @@
                 <label for="patient-id">Search by Patient ID</label>
                 <input type="text" id="patient-id" placeholder="Enter Patient ID">
             </div>
-
             <div>
                 <label for="user-id">Search by User ID</label>
                 <input type="text" id="user-id" placeholder="Enter User ID">
             </div>
-
             <div>
                 <label for="name">Search by Name</label>
                 <input type="text" id="name" placeholder="Enter Name">
             </div>
-
             <div>
-                <label for="dob">Search by Age</label>
-                <input type="text" id="dob" placeholder="Enter a Number">
+                <label for="dob">Search by DOB</label>
+                <input type="text" id="dob" placeholder="Enter DOB (YYYY-MM-DD)">
             </div>
-
-
             <div>
-                <label for="emergency_contact">Search by Emergency Contact</label>
-                <input type="text" id="emergency_contact" placeholder="Enter Emergency Contact">
+                <label for="emergency-contact">Search by Emergency Contact</label>
+                <input type="text" id="emergency-contact" placeholder="Enter Emergency Contact">
             </div>
-
             <div>
-                <label for="emergency_contact_name">Search by Emergency Contact Name</label>
-                <input type="text" id="emergency_contact_name" placeholder="Enter Emergency Contact Name">
+                <label for="emergency-contact-name">Search by Emergency Contact Name</label>
+                <input type="text" id="emergency-contact-name" placeholder="Enter Emergency Contact Name">
             </div>
 
             <button onclick="searchPatients()">Search</button>
@@ -120,44 +122,43 @@
             const userId = document.getElementById('user-id').value;
             const name = document.getElementById('name').value;
             const dob = document.getElementById('dob').value;
-            const emergencyContact = document.getElementById('emergency_contact').value;
+            const emergencyContact = document.getElementById('emergency-contact').value;
+            const emergencyContactName = document.getElementById('emergency-contact-name').value;
 
             const params = new URLSearchParams({
                 patient_id: patientId,
                 user_id: userId,
                 name: name,
                 dob: dob,
-                emergency_contact: emergencyContact
+                emergency_contact: emergencyContact,
+                emergency_contact_name: emergencyContactName
             });
 
             fetch(`/patients/search?${params}`)
                 .then(response => response.json())
                 .then(data => {
                     const patientList = document.getElementById('patient-list');
-                    patientList.innerHTML = '';  // Clear previous content
-
-                    if (data.length === 0) {
-                        patientList.innerHTML = '<p>No patients found matching your criteria.</p>';
-                        return;
-                    }
+                    patientList.innerHTML = '';
 
                     data.forEach(patient => {
                         const card = document.createElement('div');
                         card.classList.add('patient-card');
                         card.innerHTML = `
-                            <h3>Patient Name: ${patient.user.name}</h3>
-                            <p>Patient ID: ${patient.id}</p>
-                            <p>Role: ${patient.user.role}</p>
-                            <button onclick="window.location.href='/patients/${patient.id}'">View Patient Info</button>
+                            <h3>Patient Name: ${patient.name}</h3>
+                            <p>Patient ID: ${patient.patient_id}</p>
+                            <p>User ID: ${patient.user_id}</p>
+                            <p>DOB: ${patient.date_of_birth}</p>
+                            <p>Emergency Contact: ${patient.emergency_contact}</p>
+                            <p>Emergency Contact Name: ${patient.emergency_contact_name}</p>
+                            <button onclick="window.location.href='/patients/${patient.patient_id}'">View Patient Info</button>
                         `;
                         patientList.appendChild(card);
                     });
                 })
                 .catch(error => {
-                    console.error("Error fetching patients:", error);
+                    console.error('Error:', error);
                 });
         }
     </script>
-
 </body>
 </html>

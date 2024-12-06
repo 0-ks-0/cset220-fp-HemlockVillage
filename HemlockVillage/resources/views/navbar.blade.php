@@ -59,7 +59,7 @@
         }
 
         .hamburger:hover {
-            background: none; /
+            background: none;
             color: black;
         }
 
@@ -70,8 +70,6 @@
         nav.open {
             width: 250px;
         }
-
-
 
         .overlay {
             position: fixed;
@@ -114,49 +112,34 @@
                     $accessLevel = Auth::user()->role->access_level;
                 @endphp
 
-
-                {{-- MOST TO ALL OF THESE ARE BROKEN BECAUSE YOUR `route` ARE INCORRECT --}}
-                {{-- Suggestion: Instead of repeating info, add generic buttons first. then add buttons specific to each access level using if statements --}}
                 @if ($accessLevel === 1) {{-- Admin --}}
-                    <li><a href="{{ route('patientinfo.index') }}">Patients</a></li>
-                    <li><a href="{{ route('employeeinfo.index') }}">Employees</a></li>
-                    <li><a href="{{ route('registrationapproval.index') }}">Registration Approval</a></li>
+                    <li><a href="{{ route('patientsearch') }}">Patients</a></li> 
+                    <li><a href="{{ route('employeesearch') }}">Employees</a></li> 
+                    <li><a href="{{ route('registrationapproval.index') }}">Registration Approval</a>                    </li>
                     <li><a href="">Roles</a></li>
-                    <li><a href="{{ route('roster.index') }}">Roster</a></li>
                     <li><a href="{{ route('adminreport.index') }}">Admin Report</a></li>
-
                 @elseif ($accessLevel === 2) {{-- Supervisor --}}
                     <li><a href="{{ route('patientinfo.index') }}">Patients</a></li>
-                    <li><a href="{{ route('employeeinfo.index') }}">Employees</a></li>
+                    <li><a href="{{ route('employeesearch') }}">Employees</a></li>
                     <li><a href="{{ route('roster.index') }}">Roster</a></li>
-
                 @elseif ($accessLevel === 3) {{-- Doctor --}}
                     <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li>
                     <li><a href="{{ route('roster.index') }}">Roster</a></li>
                     <li><a href="/home">Home</a></li>
-
                 @elseif ($accessLevel === 4) {{-- Caregiver --}}
                     <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li>
                     <li><a href="{{ route('roster.index') }}">Roster</a></li>
                     <li><a href="/home">Home</a></li>
-
                 @elseif ($accessLevel === 5) {{-- Patient --}}
                     <li><a href="/home">Home</a></li>
                     <li><a href="{{ route('roster.index') }}">Roster</a></li>
-
                 @elseif ($accessLevel === 6) {{-- Family Member --}}
-                <li><a href="/home">Home</a></li>
+                    <li><a href="/home">Home</a></li>
                     <li><a href="{{ route('roster.index') }}">Roster</a></li>
                     <li><a href="">Make Payment</a></li>
                 @endif
 
                 <li><a href="/logout">Logout</a></li>
-
-
-                {{-- <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form> --}}
             </ul>
         </nav>
     @endauth

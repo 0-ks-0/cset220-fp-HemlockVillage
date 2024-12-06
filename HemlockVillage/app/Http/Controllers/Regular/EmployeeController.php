@@ -25,19 +25,19 @@ public function updateSalary(Request $request, $id)
     }
 
     $request->validate([
-        'new_salary' => 'required|numeric|min:0'
+        'new_salary' => 'required|numeric|min:0',
     ]);
 
     $employee->salary = $request->new_salary;
     $employee->save();
 
-    return response()->json(['message' => 'Salary updated successfully']);
+    return response()->json(['message' => 'Salary updated successfully', 'new_salary' => $employee->salary]);
 }
 
-    
 
-    // Handle employee search functionality
-    public function search(Request $request)
+
+
+public function search(Request $request)
 {
     $query = Employee::with('user'); // Load user data associated with the employee
 
@@ -50,13 +50,12 @@ public function updateSalary(Request $request, $id)
     }
     if ($request->name) {
         $query->whereHas('user', function ($q) use ($request) {
-            // Search by name using LIKE operator for partial matches
-            $q->where('name', 'like', '%' . $request->name . '%');
+            $q->where('first_name', 'like', '%' . $request->name . '%'); // Filter by first_name
         });
     }
-    if ($request->role) {
+    if ($request->role_id) {
         $query->whereHas('user', function ($q) use ($request) {
-            $q->where('role', 'like', '%' . $request->role . '%');
+            $q->where('role_id', $request->role_id); // Filter by role_id
         });
     }
     if ($request->salary) {
@@ -71,12 +70,16 @@ public function updateSalary(Request $request, $id)
         return [
             'employee_id' => $employee->id,
             'user_id' => $employee->user->id,
-            'name' => $employee->user->name,
-            'role' => $employee->user->role,
-            'salary' => $employee->salary,
+            'name' => $employee->user->first_name, // Use first_name from the `users` table
+            'role_id' => $employee->user->role_id, // Include role_id from the `users` table
+            'salary' => $employee->salary, // Include salary from the employees table
         ];
     }));
 }
+
+
+
+
 
 
     public function show($id)

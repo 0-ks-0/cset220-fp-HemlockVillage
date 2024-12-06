@@ -1,50 +1,75 @@
 <?php
+
 namespace App\Http\Controllers\Regular;
 
 use Illuminate\Http\Request;
 use App\Models\Patient;
-use App\Http\Controllers\Controller; 
+use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class PatientController extends Controller
 {
     // This method handles patient search functionality and returns search results
     public function index(Request $request)
-{
-    $patients = collect();
+    {
+        $patients = collect();
 
-    // Search logic
-    if ($request->hasAny(['patient_id', 'user_id', 'name', 'DOB', 'emergency_contact', 'admission_date'])) {
-        $query = Patient::with('user');
+        // Search logic
+        if ($request->hasAny(['patient_id', 'user_id', 'name', 'DOB', 'emergency_contact', 'emergency_contact_name'])) {
+            $query = Patient::with('user');
 
-        if ($request->patient_id) {
-            $query->where('id', $request->patient_id);
-        }
-        if ($request->user_id) {
-            $query->where('user_id', $request->user_id);
-        }
-        if ($request->name) {
-            $query->whereHas('user', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->name . '%');
-            });
-        }
-        if ($request->DOB) {
-            $query->whereHas('user', function ($q) use ($request) {
-                $q->whereDate('date_of_birth', $request->DOB);
-            });
-        }
-        if ($request->emergency_contact) {
-            $query->where('emergency_contact', 'like', '%' . $request->emergency_contact . '%');
-        }
-        if ($request->admission_date) {
-            $query->where('admission_date', $request->admission_date);
+            // Search by patient ID
+            if ($request->patient_id) {
+                $query->where('id', $request->patient_id);
+            }
+
+            // Search by user ID
+            if ($request->user_id) {
+                $query->where('user_id', $request->user_id);
+            }
+
+            // Search by first name
+            if ($request->name) {
+                $query->whereHas('user', function ($q) use ($request) {
+                    $q->where('first_name', 'like', '%' . $request->name . '%');
+                });
+            }
+
+            // Search by DOB
+            if ($request->DOB) {
+                $query->whereHas('user', function ($q) use ($request) {
+                    // Match the DOB exactly
+                    $q->whereDate('date_of_birth', $request->DOB);
+                });
+            }
+
+            // Search by emergency contact
+            if ($request->emergency_contact) {
+                $query->where('econtact_phone', 'like', '%' . $request->emergency_contact . '%');
+            }
+
+            // Search by emergency contact name
+            if ($request->emergency_contact_name) {
+                $query->where('econtact_name', 'like', '%' . $request->emergency_contact_name . '%');
+            }
+
+            $patients = $query->get();
         }
 
-        $patients = $query->get();
+        return response()->json($patients->map(function ($patient) {
+            return [
+                'patient_id' => $patient->id,
+                'user_id' => $patient->user->id,
+                'name' => $patient->user->first_name ?? '',
+                'dob' => $patient->user->date_of_birth ?? '', // Display DOB
+                'emergency_contact' => $patient->econtact_phone,
+                'emergency_contact_name' => $patient->econtact_name,
+                'age' => $patient->user->date_of_birth
+                    ? Carbon::parse($patient->user->date_of_birth)->age
+                    : null, // Calculate age using DOB
+            ];
+        }));
     }
-
-    // Ensure the patients variable is being passed correctly to the view
-    return view('patientinfo', compact('patients'));
-}
 
     // This method handles approval of patient registration status
     public function approveRegistration(Request $request, $patientId)
@@ -73,15 +98,14 @@ class PatientController extends Controller
         return response()->json($patients);
     }
 
-    
+    // Method to show specific patient details
     public function show($id)
     {
         $patient = Patient::findOrFail($id);
         return view('patientinfo', compact('patient'));
     }
 
-
-
+    // Method to update the emergency contact for a specific patient
     public function updateEmergencyContact(Request $request, $patientId)
     {
         // Find the patient
@@ -100,47 +124,67 @@ class PatientController extends Controller
         return redirect()->route('patients.show', ['id' => $patientId])
             ->with('success', 'Emergency contact updated successfully.');
     }
-    
-public function search(Request $request)
+
+    public function search(Request $request)
+    {
+        $query = Patient::with('user'); // Load user data associated with the patient
+
+        // Search by patient_id
+        if ($request->patient_id) {
+            $query->where('id', $request->patient_id);
+        }
+
+        // Search by user_id
+        if ($request->user_id) {
+            $query->where('user_id', $request->user_id);
+        }
+
+        // Search by name (first_name in users table)
+        if ($request->name) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('first_name', 'like', '%' . $request->name . '%');
+            });
+        }
+
+        // Search by date_of_birth (DOB in users table)
+        if ($request->age) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->whereDate('date_of_birth', $request->age);
+            });
+        }
+
+        // Search by emergency contact
+        if ($request->emergency_contact) {
+            $query->where('econtact_phone', 'like', '%' . $request->emergency_contact . '%');
+        }
+
+        // Search by emergency contact name
+        if ($request->emergency_contact_name) {
+            $query->where('econtact_name', 'like', '%' . $request->emergency_contact_name . '%');
+        }
+
+        // Get the filtered patients
+        $patients = $query->get();
+
+        // Return filtered patients in JSON format
+        return response()->json($patients->map(function ($patient) {
+            return [
+                'patient_id' => $patient->id,
+                'user_id' => $patient->user->id,
+                'name' => $patient->user->first_name,
+                'date_of_birth' => $patient->user->date_of_birth,
+                'emergency_contact' => $patient->econtact_phone,
+                'emergency_contact_name' => $patient->econtact_name,
+            ];
+        }));
+    }
+
+    public function getUnapprovedPatients()
 {
-    // Build query
-    $query = Patient::with('user'); // Assuming 'user' relationship exists in Patient model
-    
-    // Search by patient_id
-    if ($request->patient_id) {
-        $query->where('id', $request->patient_id);
-    }
+    // Fetch all unapproved patients
+    $patients = Patient::where('approved', false)->with('user')->get();
 
-    // Search by user_id
-    if ($request->user_id) {
-        $query->where('user_id', $request->user_id);
-    }
-
-    // Search by name (check if 'name' field exists in 'user' relation)
-    if ($request->name) {
-        $query->whereHas('user', function ($q) use ($request) {
-            $q->where('name', 'like', '%' . $request->name . '%');
-        });
-    }
-
-    // Search by DOB (check if 'date_of_birth' field exists in 'user' relation)
-    if ($request->dob) {
-        $query->whereHas('user', function ($q) use ($request) {
-            $q->whereDate('date_of_birth', $request->dob);
-        });
-    }
-
-    // Search by emergency contact
-    if ($request->emergency_contact) {
-        $query->where('emergency_contact', 'like', '%' . $request->emergency_contact . '%');
-    }
-
-    // Execute query
-    $patients = $query->get(); 
-
-    // Return patients data as JSON
     return response()->json($patients);
 }
 
-    
 }
