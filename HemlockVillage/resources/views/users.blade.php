@@ -46,5 +46,8 @@
 				{!! $data->withQueryString()->links('vendor.pagination.bootstrap-4') !!}
 			</div>
 		</div>
+
+		@include('navbar')
+
 	</body>
 </html>

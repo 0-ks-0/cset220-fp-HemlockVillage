@@ -57,5 +57,8 @@
                     </tbody>
                 </table>
         </div>
+
+        @include('navbar')
+
     </body>
 </html>

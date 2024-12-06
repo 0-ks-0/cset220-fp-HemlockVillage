@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Regular;
 
 use App\Http\Controllers\Controller;
@@ -31,6 +30,7 @@ class LoginController extends Controller
         // Success
         $Request->session()->regenerate();
 
+        // Go to home page
         return redirect()->intended("/home");
     }
 

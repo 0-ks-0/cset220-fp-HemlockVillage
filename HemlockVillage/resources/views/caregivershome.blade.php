@@ -7,6 +7,14 @@
 
 
             <body>
+
+
+
+
+                @extends('layouts.app')
+
+                @section('content')
+
                 <div class="container">
                     <h1>Caregiver's Home</h1>
 
@@ -59,5 +67,8 @@
                         <button type="button" class="btn-secondary">Dashboard</button>
                     </div>
                 </div>
+
+
+
             </body>
 </html>

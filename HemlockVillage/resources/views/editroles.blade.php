@@ -1,7 +1,7 @@
 <html>
         <head>
             <title>Edit Role</title>
-            <link rel="stylesheet" href="css/editroles.css">     
+            <link rel="stylesheet" href="css/editroles.css">
         </head>
             <body>
                 <div class="container">
@@ -9,7 +9,7 @@
 
                     <form action="/update-role" method="POST">
 
-                        
+
                         <div class="flexbox">
                             <label for="employee-name">Employee Name:</label>
                             <input type="text" id="employee-name" name="employee_name" value="Jimmy Butler" readonly>
@@ -32,6 +32,7 @@
                         </div>
                     </form>
                 </div>
+                @include('navbar')
 
             </body>
 </html>

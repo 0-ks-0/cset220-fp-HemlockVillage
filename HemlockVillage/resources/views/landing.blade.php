@@ -107,6 +107,8 @@
         </div>
     </footer>
     
+    @includes('navbar')
+
 
 </body>
 </html>

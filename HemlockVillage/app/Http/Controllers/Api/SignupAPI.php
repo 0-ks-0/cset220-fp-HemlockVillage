@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 use App\Helpers\ModelHelper;
-
+use App\Helpers\ValidationHelper;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Employee;
@@ -44,11 +44,17 @@ class SignupAPI extends Controller
             "econtact_name" => [ "required_if:role," . Role::getId("Patient"), "max:128" ],
             "econtact_phone" => [ "required_if:role," . Role::getId("Patient"), "max:20" ],
             "econtact_relation" => [ "required_if:role," . Role::getId("Patient"), "max:50" ],
-        ]);
+        ], ValidationHelper::$signup);
 
         // Fails validation for user
         if ($validatedUser->fails())
-            return redirect()->back()->withErrors([ "Invalid input(s). Please try again."]);
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Invalid input(s). Please try again.",
+                "errors" => $validatedUser->errors()
+            ], 400);
+        }
 
         // Hash the password
         $request->merge([
@@ -69,37 +75,24 @@ class SignupAPI extends Controller
 
         $userId = $user->id;
 
-        // Create records in other tables depending on user type
-        switch ($request->role)
+        // Add data into patient table if patient role
+        if ($request->role == Role::getId("Patient"))
         {
-            // Employees
-            case Role::getId("Admin"):
-            case Role::getId("Supervisor"):
-            case Role::getId("Doctor"):
-            case Role::getId("Caregiver"):
-                Employee::create([
-                    "user_id" => $userId
-                ]);
-
-                break;
-
-            // Patient
-            case Role::getId("Patient"):
-                Patient::create([
-                    "id" => ModelHelper::getRandomString(),
-                    "user_id" => $userId,
-                    "family_code" => $request->get("family_code"),
-                    "econtact_name" => $request->get("econtact_name"),
-                    "econtact_phone" => $request->get("econtact_phone"),
-                    "econtact_relation" => $request->get("econtact_relation")
-                ]);
-
-                break;
-
-            default:
+            Patient::create([
+                "id" => ModelHelper::getRandomString(),
+                "user_id" => $userId,
+                "family_code" => $request->get("family_code"),
+                "econtact_name" => $request->get("econtact_name"),
+                "econtact_phone" => $request->get("econtact_phone"),
+                "econtact_relation" => $request->get("econtact_relation")
+            ]);
         }
 
-        return $user;
+        return response()->json([
+            "success" => true,
+            "message" => "User account successfully created.",
+            "user" => $user
+        ]);
     }
 
     /**

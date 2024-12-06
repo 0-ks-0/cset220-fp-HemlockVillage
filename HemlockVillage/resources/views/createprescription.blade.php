@@ -43,6 +43,7 @@
                 </form>
             </div>
 
-            
+            @include('navbar')
+
         </body>
 </html>

@@ -3,7 +3,7 @@
         <title>Payments</title>
         <link rel="stylesheet" href="css/mainstyle.css">
     </head>
-    
+
         <body>
             <div class="container">
                 <h1>Payments</h1>
@@ -28,5 +28,9 @@
                     <button type="button">Dashboard</button>
                 </div>
             </div>
+
+
+            @include('navbar')
+
         </body>
 </html>
