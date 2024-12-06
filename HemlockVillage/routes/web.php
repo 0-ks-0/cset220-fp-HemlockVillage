@@ -33,7 +33,7 @@ Route::post("/signup", fn() => SignupController::store(request()));
 Route::get("/login", fn() => LoginController::showLoginForm())->name("login.form");
 Route::post("/login", fn() => LoginController::login(request()));
 
-Route::get("/logout", fn() => LoginController::logout(request()));
+Route::get("/logout", fn() => LoginController::logout(request()))->name("logout");
 
 // ======== Admin and Supervisor Access Routes ========
 Route::middleware([CheckRole::class . ':1,2'])->group(function () {
@@ -106,14 +106,6 @@ Route::get('/searchpatient', function () {
 Route::get('/searchemployee', function () {
     return view('searchemployee');
 })->name('employeesearch');
-
-
-
-Route::get('/report', [LoginController::class, 'index'])->name('adminreport.index'); // Admin report page
-
-
-
-
 
 
 // Route::get('/patientshome', function () {
