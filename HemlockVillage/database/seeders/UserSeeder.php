@@ -16,30 +16,30 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        self::insertData("Mia", "Foster", "mia.foster@example.com", "1986-01-12", "555-928-2034", "admin123", 1, 1);
-        self::insertData("Ethan", "Walker", "ethan.walker@example.com", "1992-02-25", "555-837-4932", "supervisor123", 2, 1);
-        self::insertData("Dr. Olivia", "Hughes", "olivia.hughes@example.com", "1980-03-18", "555-746-2843", "doctor123", 3, 1);
-        self::insertData("Liam", "Nelson", "liam.nelson@example.com", "1994-06-04", "555-634-5732", "caregiver123", 4, 1);
-        self::insertData("Chloe", "Reed", "chloe.reed@example.com", "1972-08-30", "555-527-6189", "patient123", 5, 1);
-        self::insertData("Owen", "Parker", "owen.parker@example.com", "1996-04-17", "555-910-6723", "family123", 6, 1);
-        self::insertData("Harper", "Scott", "harper.scott@example.com", "1983-11-08", "555-415-9235", "admin123", 1, 1);
-        self::insertData("Lucas", "Evans", "lucas.evans@example.com", "1989-07-22", "555-724-8904", "supervisor123", 2, 1);
-        self::insertData("Dr. Isabella", "King", "isabella.king@example.com", "1985-12-03", "555-623-4517", "doctor123", 3, 1);
-        self::insertData("Sophia", "Morris", "sophia.morris@example.com", "1990-09-14", "555-302-8569", "caregiver123", 4, 1);
+        self::insertData("Mia", "Foster", "mia.foster@example.com", "1986-01-12", "555-928-2034", "admin123", 1, 1); // 1
+        self::insertData("Ethan", "Walker", "ethan.walker@example.com", "1992-02-25", "555-837-4932", "supervisor123", 2, 1); // 2
+        self::insertData("Dr. Olivia", "Hughes", "olivia.hughes@example.com", "1980-03-18", "555-746-2843", "doctor123", 3, 1); // 3
+        self::insertData("Liam", "Nelson", "liam.nelson@example.com", "1994-06-04", "555-634-5732", "caregiver123", 4, 1); // 4
+        self::insertData("Chloe", "Reed", "chloe.reed@example.com", "1972-08-30", "555-527-6189", "patient123", 5, 1); // 5
+        self::insertData("Owen", "Parker", "owen.parker@example.com", "1996-04-17", "555-910-6723", "family123", 6, 1); // 6
+        self::insertData("Harper", "Scott", "harper.scott@example.com", "1983-11-08", "555-415-9235", "admin123", 1, 1); // 7
+        self::insertData("Lucas", "Evans", "lucas.evans@example.com", "1989-07-22", "555-724-8904", "supervisor123", 2, 1); // 8
+        self::insertData("Dr. Isabella", "King", "isabella.king@example.com", "1985-12-03", "555-623-4517", "doctor123", 3, 1); // 9
+        self::insertData("Sophia", "Morris", "sophia.morris@example.com", "1990-09-14", "555-302-8569", "caregiver123", 4, 1); // 10
 
-        self::insertData("admin", "first", "a@example.com", "2000-02-02", "123-456-7890", "admin", 1, 1);
-        self::insertData("supervisor", "first", "s@example.com", "1985-09-23", "321-654-9870", "supervisor", 2, 1);
-        self::insertData("doctor", "first", "d@example.com", "1990-03-15", "456-789-1230", "doctor", 3, 1);
-        self::insertData("caregiver", "first", "c@example.com", "1992-07-10", "987-654-3210", "caregiver", 4, 1);
-        self::insertData("patient", "first", "p@example.com", "1950-02-25", "234-567-8901", "patient", 5, 1);
-        self::insertData("family", "first", "f@example.com", "1995-11-17", "345-678-9012", "family", 6, 1);
+        self::insertData("admin", "first", "a@example.com", "2000-02-02", "123-456-7890", "admin", 1, 1); // 11
+        self::insertData("supervisor", "first", "s@example.com", "1985-09-23", "321-654-9870", "supervisor", 2, 1); // 12
+        self::insertData("doctor", "first", "d@example.com", "1990-03-15", "456-789-1230", "doctor", 3, 1); // 13
+        self::insertData("caregiver", "first", "c@example.com", "1992-07-10", "987-654-3210", "caregiver", 4, 1); // 14
+        self::insertData("patient", "first", "p@example.com", "1950-02-25", "234-567-8901", "patient", 5, 1); // 15
+        self::insertData("family", "first", "f@example.com", "1995-11-17", "345-678-9012", "family", 6, 1); // 16
 
-        self::insertData("caregiver", "two", "c2@example.com", "1992-07-10", "345-678-9013", "caregiver", 4, 1);
-        self::insertData("caregiver", "three", "c3@example.com", "1995-11-17", "345-678-9014", "caregiver", 4, 1);
-        self::insertData("caregiver", "four", "c4@example.com", "1995-11-17", "345-678-9015", "caregiver", 4, 1);
-        self::insertData("caregiver", "five", "c5@example.com", "1989-08-25", "345-678-9016", "caregiver", 4, 1);
-        self::insertData("caregiver", "six", "c6@example.com", "1990-12-11", "345-678-9017", "caregiver", 4, 1);
-        self::insertData("caregiver", "seven", "c7@example.com", "1991-03-14", "345-678-9018", "caregiver", 4, 1);
+        self::insertData("caregiver", "two", "c2@example.com", "1992-07-10", "345-678-9013", "caregiver", 4, 1); // 17
+        self::insertData("caregiver", "three", "c3@example.com", "1995-11-17", "345-678-9014", "caregiver", 4, 1); // 18
+        self::insertData("caregiver", "four", "c4@example.com", "1995-11-17", "345-678-9015", "caregiver", 4, 1); // 19
+        self::insertData("caregiver", "five", "c5@example.com", "1989-08-25", "345-678-9016", "caregiver", 4, 1); // 20
+        self::insertData("caregiver", "six", "c6@example.com", "1990-12-11", "345-678-9017", "caregiver", 4, 1); // 21
+        self::insertData("caregiver", "seven", "c7@example.com", "1991-03-14", "345-678-9018", "caregiver", 4, 1); // 12
     }
 
     private static function insertData($firstName, $lastName, $email, $dob, $phone, $password, $roleID, $approved = 0): void
