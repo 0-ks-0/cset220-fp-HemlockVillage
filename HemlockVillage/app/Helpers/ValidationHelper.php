@@ -64,7 +64,12 @@ class ValidationHelper
 		"caregivers.size" => "You must select 4 caregivers.",
 
 		"caregivers.*.exists" => "Each caregiver must exist.",
-		"caregivers.*.distinct" => "Cannot select the same caregiver. Please select different ones.",
+
+		// Not working
+		"caregivers.0.distinct" => "Caregiver 1 has a duplicate value.",
+		"caregivers.1.distinct" => "Caregiver 2 has a duplicate value.",
+		"caregivers.2.distinct" => "Caregiver 3 has a duplicate value.",
+		"caregivers.3.distinct" => "Caregiver 4 has a duplicate value.",
 	];
 
 	/**
