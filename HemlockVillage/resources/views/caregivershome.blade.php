@@ -2,7 +2,7 @@
         <head>
             <title>Caregiver's Home</title>
 
-            
+
             <style>
                 body {
                     font-family: Arial, sans-serif;
@@ -49,23 +49,31 @@
                     background-color: gray;
                     color: white;
                 }
-               
+
                 .btn-secondary {
                     background-color: #6c757d;
                     color: white;
                 }
-                
+
                 .btn-success {
                     background-color: green;
                     color: white;
                 }
-                
+
             </style>
         </head>
 
 
 
             <body>
+
+
+
+                
+                @extends('layouts.app')
+
+                @section('content')
+
                 <div class="container">
                     <h1>Caregiver's Home</h1>
 
@@ -118,5 +126,8 @@
                         <button type="button" class="btn-secondary">Dashboard</button>
                     </div>
                 </div>
+
+
+
             </body>
 </html>

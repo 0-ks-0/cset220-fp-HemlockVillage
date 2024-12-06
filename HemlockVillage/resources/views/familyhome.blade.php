@@ -55,11 +55,11 @@
                 cursor: pointer;
                 border: none;
             }
-           
+
             .btn-secondary {
                 background-color: #6c757d;
             }
-            
+
         </style>
     </head>
     <body>
@@ -116,5 +116,8 @@
                     </tbody>
                 </table>
         </div>
+
+        @include('navbar')
+
     </body>
 </html>

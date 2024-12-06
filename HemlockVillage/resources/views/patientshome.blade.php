@@ -1,14 +1,25 @@
 <html>
     <head>
         <title>Patients Home</title>
-        <link rel="stylesheet" href="css/patientshome.css">
+        <link rel="stylesheet" href="css/app.css">
+
     </head>
+
+
+
     <body>
+
+        {{-- @extends('layouts.app')
+
+        @section('content') --}}
+
+
         <div class="container">
             <h1>Patients Home</h1>
+
             <div class="flexbox">
                 <label>Patient ID</label>
-                <input type="text" id="patient-id" name="patient_id" readonly value = 1>
+                <input type="text" id="patient-id" name="patient_id" readonly value="1">
             </div>
 
             <div class="flexbox">
@@ -18,15 +29,16 @@
 
             <div class="flexbox">
                 <label>Date</label>
-                <input type="date" id="date" name="date" readonly value="01-03-2024">
+                <input type="date" id="date" name="date" readonly value="2024-01-03">
             </div>
+
             <div class="patient-info">
                 <h3>Appointments and Caregivers</h3>
                 <table>
                     <tr>
-                        <th>Doctors name</th>
-                        <th>Doctors appointments</th>
-                        <th>Caregivers name</th>
+                        <th>Doctor's Name</th>
+                        <th>Doctor's Appointment</th>
+                        <th>Caregiver's Name</th>
                     </tr>
                     <tr>
                         <td>Dr. Rupert Mclovin</td>
@@ -34,6 +46,7 @@
                         <td>Ruberta</td>
                     </tr>
                 </table>
+
                 <h3>Medicine</h3>
                 <table>
                     <tr>
@@ -42,11 +55,12 @@
                         <th>Night</th>
                     </tr>
                     <tr>
-                        <td><input type="checkbox" name="morning-meds" id="morning_meds"></td>
-                        <td><input type="checkbox" name="afternoon-meds" id="afternoon_meds"></td>
-                        <td><input type="checkbox" name="night-meds" id="night_meds"></td>
+                        <td class="status-completed">Completed</td>
+                        <td class="status-pending">Pending</td>
+                        <td class="status-missing">Missing</td>
                     </tr>
                 </table>
+
                 <h3>Meals</h3>
                 <table>
                     <tr>
@@ -55,17 +69,16 @@
                         <th>Dinner</th>
                     </tr>
                     <tr>
-                        <td><input type="checkbox" name="breakfast" id="breakfast"></td>
-                        <td><input type="checkbox" name="lunch" id="lunch"></td>
-                        <td><input type="checkbox" name="dinner" id="dinner"></td>
+                        <td class="status-completed">Completed</td>
+                        <td class="status-pending">Pending</td>
+                        <td class="status-completed">Completed</td>
                     </tr>
                 </table>
             </div>
+
             <div class="flexbox">
                 <button type="button">View Roster</button>
-                <button type="button">Update Roster</button>
             </div>
-
         </div>
 
     </body>

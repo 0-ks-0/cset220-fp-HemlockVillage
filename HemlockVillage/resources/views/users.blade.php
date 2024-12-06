@@ -46,5 +46,8 @@
 				{!! $data->withQueryString()->links() !!}
 			</div>
 		</div>
+
+		@include('navbar')
+
 	</body>
 </html>

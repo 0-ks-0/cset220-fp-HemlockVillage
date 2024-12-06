@@ -41,15 +41,15 @@
                 cursor: pointer;
                 border: none;
             }
-          
+
             .btn-danger {
                 background-color: red;
             }
-            
+
             .btn-secondary {
                 background-color: #6c757d;
             }
-            
+
         </style>
     </head>
     <body>
@@ -95,6 +95,8 @@
             </form>
         </div>
 
-        
+        @include('navbar')
+
+
     </body>
 </html>

@@ -7,9 +7,7 @@
 
 		<title>Login</title>
 
-		<link rel="stylesheet" href="{{ asset("./css/style.css>") }}">
-
-		<script src="{{ asset("./js/navigator.js") }}"></script>
+		<link rel="stylesheet" href="{{ asset('./css/style.css') }}">
 	</head>
 
 	<body>

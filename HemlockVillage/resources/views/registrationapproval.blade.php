@@ -1,142 +1,168 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registration Approval</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f4f8;
+        }
 
-        <head>
-            <title>Registration Approval</title>
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 20px;
-                    background-color: #f0f4f8;
-                }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #333;
+        }
 
-                .container {
-                    max-width: 600px;
-                    margin: auto;
-                    padding: 20px;
-                    background: #ffffff;
-                    border-radius: 10px;
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                }
+        .approval-form {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
 
-                h1 {
-                    text-align: center;
-                    margin-bottom: 30px;
-                    font-size: 24px;
-                    color: #333333;
-                }
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-                .approval-form {
-                    padding: 15px;
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
-                    margin-bottom: 20px;
-                    background-color: #f9f9f9;
-                }
+        .form-group label {
+            font-weight: bold;
+            font-size: 14px;
+            color: #555;
+        }
 
-                .form-group {
-                    margin-bottom: 15px;
-                }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
 
-                .form-group label {
-                    display: block;
-                    font-weight: bold;
-                    font-size: 14px;
-                    color: #555555;
-                    margin-bottom: 5px;
-                }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
 
-                .form-group input[type="text"] {
-                    padding: 10px;
-                    font-size: 16px;
-                    border: 1px solid #cccccc;
-                    border-radius: 5px;
-                    background-color: #fafafa;
-                    color: #555555;
-                    width: 100%;
-                    box-sizing: border-box;
-                }
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
 
-                .form-group input[type="checkbox"] {
-                    transform: scale(1.2);
-                    margin-right: 10px;
-                    cursor: pointer;
-                }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registration Approval</h1>
+        <div id="patient-list">
+            <p style="text-align: center;">Loading...</p>
+        </div>
+    </div>
 
-                .checkbox-group {
-                    display: flex;
-                    align-items: center;
-                    gap: 20px;
-                }
+    <script>
+        async function fetchPatients() {
+            try {
+                const response = await fetch('/api/patients/unapproved');
+                const patients = await response.json();
+                renderPatients(patients);
+            } catch (error) {
+                document.getElementById('patient-list').innerHTML = '<p>Failed to load patients.</p>';
+                console.error('Error fetching patients:', error);
+            }
+        }
 
-                .dashboard-btn {
-                    display: block;
-                    background-color: #007bff;
-                    color: white;
-                    font-size: 16px;
-                    padding: 10px 20px;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    border: none;
-                    text-align: center;
-                    margin: 20px auto 0;
-                    width: fit-content;
-                    transition: background-color 0.3s ease;
-                }
+        function renderPatients(patients) {
+            const container = document.getElementById('patient-list');
+            container.innerHTML = '';
 
-                
-            </style>
-        </head>
-            <body>
-                <div class="container">
-                    <h1>Registration Approval</h1>
+            if (patients.length === 0) {
+                container.innerHTML = '<p>No unapproved patients found.</p>';
+                return;
+            }
 
-                    <div class="approval-form">
+            patients.forEach(patient => {
+                const form = document.createElement('div');
+                form.className = 'approval-form';
 
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" id="name" readonly value="Nick Helock">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="role">Role</label>
-                            <input type="text" id="role" readonly value="Nurse">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Approval Status</label>
-
-                            <div class="checkbox-group">
-                                <label><input type="checkbox" id="approved" name="approve"> Approved</label>
-                                <label><input type="checkbox" id="reject" name="rejected"> Rejected</label>
-                            </div>
+                form.innerHTML = `
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <p>${patient.user.name || 'N/A'}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Role:</label>
+                        <p>${patient.role || 'N/A'}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Approval Status:</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="approval_status_${patient.id}" value="approved"> Approved</label>
+                            <label><input type="radio" name="approval_status_${patient.id}" value="rejected"> Rejected</label>
                         </div>
                     </div>
-
-                    <div class="approval-form">
-
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" readonly value="Gage Cooper">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="role">Role</label>
-                            <input type="text" id="role" readonly value="Nurse">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Approval Status</label>
-                            <div class="checkbox-group">
-                                <label><input type="checkbox" id="approved" name="approve"> Approved</label>
-                                <label><input type="checkbox" id="rejected" name="reject"> Rejected</label>
-                            </div>
-                        </div>
+                    <div class="action-buttons">
+                        <button class="submit-btn" onclick="approvePatient(${patient.id})">Submit</button>
                     </div>
+                `;
 
-                    <button class="dashboard-btn">Dashboard</button>
-                </div>
+                container.appendChild(form);
+            });
+        }
 
-                
-            </body>
+        async function approvePatient(patientId) {
+            const approvalStatus = document.querySelector(`input[name="approval_status_${patientId}"]:checked`);
+
+            if (!approvalStatus) {
+                alert('Please select an approval status.');
+                return;
+            }
+
+            const status = approvalStatus.value;
+
+            try {
+                const response = await fetch(`/api/patients/${patientId}/approve`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ approval_status: status })
+                });
+
+                if (response.ok) {
+                    alert('Patient status updated successfully.');
+                    fetchPatients(); // Refresh list
+                } else {
+                    alert('Failed to update patient status.');
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+                console.error('Error approving patient:', error);
+            }
+        }
+
+        fetchPatients(); // Load patients on page load
+    </script>
+</body>
 </html>
