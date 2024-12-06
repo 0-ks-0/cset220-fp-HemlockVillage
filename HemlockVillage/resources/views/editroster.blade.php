@@ -3,6 +3,7 @@
         <title>Edit Roster</title>
         <link rel="stylesheet" href="css/editroster.css">
     </head>
+
     <body>
         <div class="container">
             <h1>Edit Roster</h1>
@@ -47,7 +48,6 @@
         </div>
 
         @include('navbar')
-
 
     </body>
 </html>
