@@ -52,6 +52,13 @@
 
     <body>
         <div class="container">
+            {{-- Success message for creation --}}
+            @if (session('message'))
+                <div>
+                    <p>{{ session('message') }}</p>
+                </div>
+            @endif
+
             <h1>Create New Roster</h1>
 
             <form action="/roster/create" method="POST">
