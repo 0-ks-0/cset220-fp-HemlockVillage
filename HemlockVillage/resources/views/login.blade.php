@@ -6,10 +6,9 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 		<title>Login</title>
+
 		<link rel="stylesheet" href="css/login.css">
 		<link rel="stylesheet" href="{{ asset("./css/style.css>") }}">
-
-		<script src="{{ asset("./js/navigator.js") }}"></script>
 	</head>
 
 	<body>
