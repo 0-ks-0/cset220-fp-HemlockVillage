@@ -138,9 +138,8 @@
                                     <option
                                         value="{{ $c['employee_id'] }}"
                                         @if(in_array($c['employee_id'], old('caregivers', [])))
-                                        selected
-                                    @endif
-                                        {{-- {{ in_array($c['employee_id'], old('caregivers', [])) ? 'selected' : '' }} --}}
+                                            selected
+                                        @endif
                                     >
                                         {{ $c["name"] }}
                                     </option>
