@@ -48,8 +48,8 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
 // ======== All Authenticated Users Routes ========
 Route::middleware("auth")->group(function ()
 {
+    // Home
     Route::get("/home", fn() => PageController::home());
-
 });
 
 // ======== Doctor and Patient Access ========
