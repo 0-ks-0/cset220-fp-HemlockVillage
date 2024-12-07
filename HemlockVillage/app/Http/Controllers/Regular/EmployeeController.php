@@ -12,6 +12,8 @@ class EmployeeController extends Controller
 {
     $employees = Employee::with('user')->get(); // Fetch employees with related user info
 
+    // return $employees;
+
     // Pass the data to the view
     return view('employeeinfo', compact('employees'));
 }
@@ -43,10 +45,10 @@ public function search(Request $request)
 
     // Filtering by the fields
     if ($request->employee_id) {
-        $query->where('id', $request->employee_id); 
+        $query->where('id', $request->employee_id);
     }
     if ($request->user_id) {
-        $query->where('user_id', $request->user_id); 
+        $query->where('user_id', $request->user_id);
     }
     if ($request->name) {
         $query->whereHas('user', function ($q) use ($request) {
@@ -59,7 +61,7 @@ public function search(Request $request)
         });
     }
     if ($request->salary) {
-        $query->where('salary', $request->salary); 
+        $query->where('salary', $request->salary);
     }
 
     // Execute query and get results
@@ -85,13 +87,13 @@ public function search(Request $request)
     public function show($id)
     {
         $employee = Employee::with(['user', 'user.role'])->find($id);
-    
+
         if (!$employee) {
             return redirect()->route('employeeinfo.index')->with('error', 'Employee not found');
         }
-    
+
         return view('employeeinfo', compact('employee'));
     }
-    
+
 
 }
