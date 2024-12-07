@@ -18,6 +18,12 @@ class RegistrationApprovalController extends Controller
             ->where("users.approved", false)
             ->get();
 
+        // $users = DB::table("users")
+        //     ->where("approved", false)
+        //     ->get();
+
+        // return $users;
+
         // Return the correct view for registration approval
         return view('registrationapproval', compact('patients'));
     }
