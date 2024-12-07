@@ -45,6 +45,21 @@
                         <label for="total-due">Total Due:</label>
                         <p>{{ $bill }}</p>
                     </div>
+
+                    @if(isset($accessLevel) && $accessLevel == 6 && isset($patientId))
+                        <div class="form-group">
+                            <label for="new-payment">New Payment:</label>
+                            <input type="number" id="new-payment"
+                                name="amount"
+                                placeholder="{{ number_format($bill, 2) }}"
+                                min="0"
+                                max="{{ $bill }}"
+                                step="1"
+                            >
+                        </div>
+
+                        <button type="submit">Pay</button>
+                    @endif
                 @endisset
 
                 <div class="form-group">
