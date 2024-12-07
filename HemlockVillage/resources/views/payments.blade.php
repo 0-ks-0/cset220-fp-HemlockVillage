@@ -2,7 +2,7 @@
     <head>
         <title>Payments</title>
 
-        <link rel="stylesheet" href="css/mainstyle.css">
+        <link rel="stylesheet" href="{{ asset("./css/mainstyle.css") }}">
 
         <script src="{{ asset("./js/navigator.js") }}"></script>
         <script src="{{ asset("./js/payment.js") }}"></script>
