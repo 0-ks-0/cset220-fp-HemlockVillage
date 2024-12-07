@@ -22,3 +22,9 @@ Route::get('/api/employees/{id}', [EmployeeController::class, 'show'])->name('ap
 
 Route::get('/api/patients', [PatientController::class, 'getPatients'])->name('api.patients');
 
+// API route to fetch unapproved patients (from the controller)
+Route::get('/api/patients/unapproved', [PatientController::class, 'getUnapprovedPatients']);
+
+// Route to handle the approval of a patient
+Route::post('/api/patients/{patientId}/approve', [PatientController::class, 'approve']);
+
