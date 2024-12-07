@@ -75,7 +75,13 @@
                     <th>Email</th>
                     <th>Role</th>
                     <th>Date of Birth</th>
+                    <th>Phone</th>
+                    <th>Family Code</th>
                     <th>Emergency Contact</th>
+                    <th>Emergency Contact Phone</th>
+                    <th>Relation</th>
+                    <th>Admission Date</th>
+                    <th>Group Number</th>
                 </tr>
             </thead>
             <tbody>
@@ -85,7 +91,13 @@
                     <td>{{ $patient->user->email }}</td>
                     <td>{{ $patient->user->role->role }}</td>
                     <td>{{ $patient->user->date_of_birth }}</td>
+                    <td>{{ $patient->phone }}</td>
+                    <td>{{ $patient->family_code }}</td>
                     <td>{{ $patient->econtact_name }}</td>
+                    <td>{{ $patient->econtact_phone }}</td>
+                    <td>{{ $patient->econtact_relation }}</td>
+                    <td>{{ $patient->admission_date }}</td>
+                    <td>{{ $patient->group_num }}</td>
                 </tr>
             </tbody>
         </table>
