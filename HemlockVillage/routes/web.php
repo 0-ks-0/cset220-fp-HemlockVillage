@@ -47,6 +47,14 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
     Route::post("/roster/create", fn() => PageController::storeRosterForm(request()));
 });
 
+// ======== Admin and Family Access Routes ========
+Route::middleware([CheckRole::class . ":1,6"])->group(function ()
+{
+    // Payment / Bill
+    Route::get("/payment", fn() => PageController::indexPayment());
+    Route::get("/payment/{patientId}", fn($patientId) => PageController::showPayment($patientId));
+});
+
 // ======== All Authenticated Users Routes ========
 Route::middleware("auth")->group(function ()
 {
