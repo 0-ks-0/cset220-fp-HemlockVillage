@@ -1,7 +1,10 @@
 <html>
     <head>
         <title>Payments</title>
+
         <link rel="stylesheet" href="css/mainstyle.css">
+
+        <script src="{{ asset("./js/navigator.js") }}"></script>
     </head>
 
     <body>
