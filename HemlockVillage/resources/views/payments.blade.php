@@ -26,6 +26,7 @@
                 {{-- Add token if family --}}
                 @if(isset($accessLevel) && $accessLevel == 6 && isset($patientId))
                     @csrf
+                    @method("patch")
                 @endif
 
                 <div class="form-group">
