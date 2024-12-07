@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="css/mainstyle.css">
 
         <script src="{{ asset("./js/navigator.js") }}"></script>
+        <script src="{{ asset("./js/payment.js") }}"></script>
     </head>
 
     <body>
