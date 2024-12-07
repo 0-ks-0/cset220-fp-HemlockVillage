@@ -28,7 +28,6 @@
 
             <div class="form-group">
                 <button type="button">Update Payment</button>
-                <button type="button">Dashboard</button>
             </div>
         </div>
 
