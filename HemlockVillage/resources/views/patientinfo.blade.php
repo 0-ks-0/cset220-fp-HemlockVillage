@@ -81,11 +81,11 @@
             <tbody>
                 <tr>
                     <td>{{ $patient->id }}</td>
-                    <td>{{ $patient->user->name }}</td>
+                    <td>{{ $patient->user->first_name }} {{ $patient->user->last_name }}</td>
                     <td>{{ $patient->user->email }}</td>
-                    <td>{{ $patient->user->role }}</td>
+                    <td>{{ $patient->user->role->role }}</td>
                     <td>{{ $patient->user->date_of_birth }}</td>
-                    <td>{{ $patient->emergency_contact }}</td>
+                    <td>{{ $patient->econtact_name }}</td>
                 </tr>
             </tbody>
         </table>
@@ -99,7 +99,7 @@
                 <input type="text" id="emergency_contact" name="emergency_contact" value="{{ $patient->emergency_contact }}" required>
                 <button type="submit">Update Emergency Contact</button>
             </form>
-            
+
         </div>
     </div>
 </body>
