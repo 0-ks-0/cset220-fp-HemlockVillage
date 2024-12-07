@@ -15,7 +15,9 @@
             <form action="">
                 <div class="form-group">
                     <label for="patient-id">Patient ID:</label>
-                    <input type="text" name="patient_id" placeholder="Patient ID" id="patient-id">
+                    <input type="text" name="patient_id" placeholder="Patient ID" id="patient-id"
+                        @isset($patientId) value="{{ $patientId }}" @endisset
+                    >
                 </div>
 
                 <div class="form-group">
