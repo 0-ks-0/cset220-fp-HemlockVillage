@@ -5,12 +5,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+
 class RegistrationApprovalController extends Controller
 {
     public function index()
     {
         // Get all patients who need approval
-        $patients = Patient::where('approved', false)->get();
+        // $patients = Patient::where('approved', false)->get();
+        $patients = DB::table("patients")
+            ->join("users", "patients.user_id", "users.id")
+            ->where("users.approved", false)
+            ->get();
 
         // Return the correct view for registration approval
         return view('registrationapproval', compact('patients'));
@@ -44,5 +50,3 @@ class RegistrationApprovalController extends Controller
         return redirect()->route('registrationapproval.index')->with('success', 'Patient rejected successfully.');
     }
 }
-
-
