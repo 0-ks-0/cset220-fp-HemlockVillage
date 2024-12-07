@@ -286,7 +286,7 @@ class PageController extends Controller
 
         return redirect()->back()->with([
             "patientId" => $jsonDecoded["patientId"] ?? $patientId,
-            "message" => $jsonDecoded["message"] ?? 0,
+            "message" => $jsonDecoded["message"] ?? "$$request->amount has been paid",
             "bill" => $jsonDecoded["bill"] ?? 0,
         ]);
     }
