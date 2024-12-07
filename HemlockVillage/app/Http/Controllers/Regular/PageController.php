@@ -272,9 +272,13 @@ class PageController extends Controller
 
     public static function updatePayment(Request $request, $patientId)
     {
+        /**
+         * Check status
+         */
         $response = APIController::updatePayment($request, $patientId);
         $jsonDecoded = json_decode($response->getContent(), true);
 
+        // Failure
         if ($response->getStatusCode() !== 200)
         {
             $errors =  $jsonDecoded["errors"] ?? [ "Patient with id { {$patientId} } does not exist OR the invalid amount" ];
@@ -284,6 +288,7 @@ class PageController extends Controller
                 ->withInput();
         }
 
+        // Success
         return redirect()->back()
             ->with("message", $jsonDecoded["message"] ?? "$$request->amount has been paid");
     }
