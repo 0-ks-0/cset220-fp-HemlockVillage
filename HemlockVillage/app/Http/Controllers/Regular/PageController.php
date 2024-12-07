@@ -281,14 +281,10 @@ class PageController extends Controller
 
             return redirect()->back()
                 ->withErrors($errors)
-                ->withInput()
-                ->with("bill", $jsonDecoded["bill"]);
+                ->withInput();
         }
 
-        return redirect()->back()->with([
-            "patientId" => $jsonDecoded["patientId"] ?? $patientId,
-            "message" => $jsonDecoded["message"] ?? "$$request->amount has been paid",
-            "bill" => $jsonDecoded["bill"] ?? 0,
-        ]);
+        return redirect()->back()
+            ->with("message", $jsonDecoded["message"] ?? "$$request->amount has been paid");
     }
 }
