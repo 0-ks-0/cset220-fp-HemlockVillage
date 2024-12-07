@@ -118,6 +118,7 @@
                     <li><a href="{{ route('registrationapproval.index') }}">Registration Approval</a></li>
                     <li><a href="">Roles</a></li>
                     <li><a href="/report">Report</a></li>
+                    <li><a href="/payment">Bills</a></li>
                 @elseif ($accessLevel === 2) {{-- Supervisor --}}
                     <li><a href="{{ route('patientinfo.index') }}">Patients</a></li>
                     <li><a href="{{ route('employeesearch') }}">Employees</a></li>
@@ -137,7 +138,7 @@
                 @elseif ($accessLevel === 6) {{-- Family Member --}}
                     <li><a href="/home">Home</a></li>
                     {{-- <li><a href="{{ route('roster.index') }}">Roster</a></li> --}}
-                    <li><a href="">Make Payment</a></li>
+                    <li><a href="/payment">Make Payment</a></li>
                 @endif
                 <li><a href="{{ route('roster.show') }}">Roster</a></li>
 
