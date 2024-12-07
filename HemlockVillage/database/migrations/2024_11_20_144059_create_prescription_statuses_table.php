@@ -25,8 +25,6 @@ return new class extends Migration
                 ->on("appointments")
                 ->onUpdate("cascade")
                 ->onDelete("cascade");
-
-            $table->unique("appointment_id");
         });
     }
 
