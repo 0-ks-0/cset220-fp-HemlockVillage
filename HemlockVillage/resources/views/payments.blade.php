@@ -16,6 +16,13 @@
                 $accessLevel = Auth::user()->role->access_level;
             @endphp
 
+            {{-- Success --}}
+            @if (session('message'))
+                <div>
+                    {{ session('message') }}
+                </div>
+            @endif
+
             <form
                 {{-- For family --}}
                 @if(isset($accessLevel) && $accessLevel == 6 && isset($patientId))
@@ -39,6 +46,9 @@
                     @isset($error)
                         <div>{{ $error }}</div>
                     @endisset
+
+                    {{-- Error Patient Id PATCH  --}}
+                    @error("patient_id") <div>{{ $message }}</div> @enderror
                 </div>
 
                 @isset($bill)
@@ -58,6 +68,8 @@
                                 step="1"
                             >
                         </div>
+                        {{-- Error Amount  PATCH --}}
+                        @error("amount") <div>{{ $message }}</div> @enderror
 
                         <button type="submit">Pay</button>
                     @endif
