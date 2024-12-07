@@ -167,6 +167,77 @@ class APIController extends Controller
         });
     }
 
+    public static function showRoster($date)
+    {
+        /**
+         * Validation
+         */
+        ValidationHelper::validateDateFormat($date);
+
+        /**
+         * Data retrieval
+         */
+        $roster = Roster::with([
+            "supervisor" => fn($q) => $q->select('id', 'user_id'),
+            "supervisor.user" => fn($q) => $q->select('id', 'first_name', 'last_name'),
+
+            "doctor" => fn($q) => $q->select('id', 'user_id'),
+            "doctor.user" => fn($q) => $q->select('id', 'first_name', 'last_name'),
+
+            "caregiverOne" => fn($q) => $q->select('id', 'user_id'),
+            "caregiverOne.user" => fn($q) => $q->select('id', 'first_name', 'last_name'),
+
+            "caregiverTwo" => fn($q) => $q->select('id', 'user_id'),
+            "caregiverTwo.user" => fn($q) => $q->select('id', 'first_name', 'last_name'),
+
+            "caregiverThree" => fn($q) => $q->select('id', 'user_id'),
+            "caregiverThree.user" => fn($q) => $q->select('id', 'first_name', 'last_name'),
+
+            "caregiverFour" => fn($q) => $q->select('id', 'user_id'),
+            "caregiverFour.user" => fn($q) => $q->select('id', 'first_name', 'last_name'),
+        ])
+        ->whereDate("date_assigned", $date)
+        ->select('id', 'date_assigned', 'supervisor_id', 'doctor_id', 'caregiver_one_id', 'caregiver_two_id', 'caregiver_three_id', 'caregiver_four_id')
+        ->first();
+
+        // No roster
+        if (!$roster) {
+            return response()->json([
+                "message" => "No roster found for date $date.",
+                "data" => [],
+            ], 404);
+        }
+
+        $data = [
+            "roster_id" => $roster->id,
+            "date" => $roster->date_assigned,
+
+            "supervisor_id" => $roster->supervisor_id,
+            "supervisor_name" => $roster->supervisor ? "{$roster->supervisor->user->first_name} {$roster->supervisor->user->last_name}" : null,
+
+            "doctor_id" => $roster->doctor_id,
+            "doctor_name" => $roster->doctor ? "{$roster->doctor->user->first_name} {$roster->doctor->user->last_name}" : null,
+
+            "caregivers" => [
+                "caregiver_one_id" => $roster->caregiver_one_id,
+                "caregiver_one_name" => $roster->caregiverOne ? "{$roster->caregiverOne->user->first_name} {$roster->caregiverOne->user->last_name}" : null,
+
+                "caregiver_two_id" => $roster->caregiver_two_id,
+                "caregiver_two_name" => $roster->caregiverTwo ? "{$roster->caregiverTwo->user->first_name} {$roster->caregiverTwo->user->last_name}" : null,
+
+                "caregiver_three_id" => $roster->caregiver_three_id,
+                "caregiver_three_name" => $roster->caregiverThree ? "{$roster->caregiverThree->user->first_name} {$roster->caregiverThree->user->last_name}" : null,
+
+                "caregiver_four_id" => $roster->caregiver_four_id,
+                "caregiver_four_name" => $roster->caregiverFour ? "{$roster->caregiverFour->user->first_name} {$roster->caregiverFour->user->last_name}" : null,
+            ]
+        ];
+
+        return response()->json([
+            "data" => $data
+        ], 200);
+    }
+
     /**
      * Update the specified resource in storage.
      */

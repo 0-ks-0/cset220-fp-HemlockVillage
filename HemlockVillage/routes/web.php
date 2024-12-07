@@ -19,6 +19,7 @@ require("rapi.php");
 
 Route::get("/", fn() => PageController::landing());
 
+// Nav Bar Routes
 Route::get("/test", function() {
     return view("editroster");
 });
@@ -40,6 +41,8 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
     Route::get("/report", fn() => PageController::report());
 
     // Roster
+    // Not a requirement, and don't have time for this
+    // Route::get('/rosters', [RosterController::class, 'index'])->name('rosters.index'); // Roster overview
     Route::get("/roster/create", fn() => PageController::indexrosterForm());
     Route::post("/roster/create", fn() => PageController::storeRosterForm(request()));
 });
@@ -47,8 +50,11 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
 // ======== All Authenticated Users Routes ========
 Route::middleware("auth")->group(function ()
 {
+    // Home
     Route::get("/home", fn() => PageController::home());
 
+     // Roster
+     Route::get("/roster", fn() => PageController::showRoster());
 });
 
 // ======== Doctor and Patient Access ========
@@ -112,8 +118,8 @@ Route::post('/users/{userId}/reject', [RegistrationApprovalController::class, 'r
 
 
 // ======== Roster Routes ========
-Route::get('/rosters', [RosterController::class, 'index'])->name('rosters.index'); // Roster overview
-Route::get('/rosters/view', [RosterController::class, 'viewRoster'])->name('rosters.view'); // View roster
+// Route::get('/rosters', [RosterController::class, 'index'])->name('rosters.index'); // Roster overview
+// Route::get('/rosters/view', [RosterController::class, 'viewRoster'])->name('rosters.view'); // View roster
 
 // ======== Doctor Routes ========
 // /home is the home page for ALL users. The page will load the correct data for each type of access level

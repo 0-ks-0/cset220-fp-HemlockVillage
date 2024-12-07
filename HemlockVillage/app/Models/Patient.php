@@ -17,7 +17,8 @@ class Patient extends Model
         "econtact_relation",
         "admission_date",
         "group_num",
-        "last_updated_date",
+        "daily_updated_date",
+        "prescription_updated_date",
         "bill",
         "approved"  // Add 'approved' to the fillable array
     ];
@@ -50,4 +51,3 @@ class Patient extends Model
         return ModelHelper::getId(Patient::class, "user_id", $userID);
     }
 }
-
