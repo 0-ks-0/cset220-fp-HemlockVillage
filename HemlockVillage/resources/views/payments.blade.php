@@ -18,6 +18,11 @@
                     <input type="text" name="patient_id" placeholder="Patient ID" id="patient-id"
                         @isset($patientId) value="{{ $patientId }}" @endisset
                     >
+
+                    {{-- Error --}}
+                    @isset($error)
+                        <div>{{ $error }}</div>
+                    @endisset
                 </div>
 
                 <div class="form-group">
