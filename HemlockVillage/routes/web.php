@@ -62,7 +62,7 @@ Route::middleware("auth")->group(function ()
     Route::get("/home", fn() => PageController::home());
 
      // Roster
-     Route::get("/roster", fn() => PageController::showRoster());
+     Route::get("/roster", fn() => PageController::showRoster())->name("roster.show");
 });
 
 // ======== Doctor and Patient Access ========
