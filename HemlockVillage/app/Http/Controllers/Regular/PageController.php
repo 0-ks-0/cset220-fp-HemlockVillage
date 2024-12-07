@@ -67,7 +67,7 @@ class PageController extends Controller
 
             case 5: // Patient
                 $patientId = Patient::getId($userId);
-                
+
                 // return HomeAPI::showPatient($patientId, Carbon::today());
                 return HomeAPI::showPatient($patientId, "2024-11-03");
 
@@ -214,5 +214,29 @@ class PageController extends Controller
         // Success
         return redirect()->back()
             ->with("message", $jsonDecoded["message"] ?? "Roster for date {$request->get('date')} has been created");
+    }
+
+    public static function showRoster()
+    {
+        /**
+         * Check response status
+         */
+        // To test, pass date as 2024-11-03
+        $reponse = APIController::showRoster(Carbon::today()->format("Y-m-d"));
+        $jsonDecoded = json_decode($reponse->getContent(), true);
+
+        // No roster
+        if ($reponse->getStatusCode() !== 200)
+        {
+            return view("roster")->with([
+                "message" => $jsonDecoded["message"],
+                "data" => $jsonDecoded["data"]
+            ]);
+        }
+
+        // Success
+        return view("roster")->with([
+            "data" => $jsonDecoded["data"]
+        ]);
     }
 }
