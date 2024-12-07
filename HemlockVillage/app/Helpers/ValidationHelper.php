@@ -65,7 +65,6 @@ class ValidationHelper
 
 		"caregivers.*.exists" => "Each caregiver must exist.",
 
-		// Not working
 		"caregivers.0.distinct" => "Caregiver 1 has a duplicate value.",
 		"caregivers.1.distinct" => "Caregiver 2 has a duplicate value.",
 		"caregivers.2.distinct" => "Caregiver 3 has a duplicate value.",
