@@ -13,16 +13,18 @@ class RegistrationApprovalController extends Controller
     {
         // Get all patients who need approval
         // $patients = Patient::where('approved', false)->get();
-        $patients = DB::table("patients")
-            ->join("users", "patients.user_id", "users.id")
-            ->where("users.approved", false)
+        // $patients = DB::table("users")
+        //     ->join("patients", "patients.user_id", "=", "users.id")
+        //     ->where("users.approved", false)
+        //     ->get()
+
+        // return $patients;
+        // USE this instead. can't figure out why the patients is returning []
+        $users = DB::table("users")
+            ->where("approved", false)
             ->get();
 
-        // $users = DB::table("users")
-        //     ->where("approved", false)
-        //     ->get();
-
-        // return $users;
+        return $users;
 
         // Return the correct view for registration approval
         return view('registrationapproval', compact('patients'));
