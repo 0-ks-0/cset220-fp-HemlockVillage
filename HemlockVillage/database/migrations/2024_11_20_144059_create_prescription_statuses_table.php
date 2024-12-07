@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("appointment_id");
             $table->date("prescription_date");
-            $table->enum('morning', ['Missing', 'Pending', 'Completed'])->default('Pending');
-            $table->enum('afternoon', ['Missing', 'Pending', 'Completed'])->default('Pending');
-            $table->enum('night', ['Missing', 'Pending', 'Completed'])->default('Pending');
+            $table->enum('morning', ['Missing', 'Pending', 'Completed'])->nullable();
+            $table->enum('afternoon', ['Missing', 'Pending', 'Completed'])->nullable();
+            $table->enum('night', ['Missing', 'Pending', 'Completed'])->nullable();
             $table->timestamps();
 
             $table->foreign("appointment_id")
