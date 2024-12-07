@@ -257,7 +257,7 @@ class APIController extends Controller
         // Success
         return response()->json([
             "patientId" => $patientId,
-            "bill" => Patient::where("id", $patientId)->first()->bill
+            "bill" => $patient->bill
         ], 200);
     }
 
