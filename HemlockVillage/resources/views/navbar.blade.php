@@ -117,7 +117,7 @@
                     <li><a href="{{ route('employeesearch') }}">Employees</a></li>
                     <li><a href="{{ route('registrationapproval.index') }}">Registration Approval</a></li>
                     <li><a href="">Roles</a></li>
-                    <li><a href="{{ route('adminreport.index') }}">Admin Report</a></li>
+                    <li><a href="/report">Report</a></li>
                 @elseif ($accessLevel === 2) {{-- Supervisor --}}
                     <li><a href="{{ route('patientinfo.index') }}">Patients</a></li>
                     <li><a href="{{ route('employeesearch') }}">Employees</a></li>
