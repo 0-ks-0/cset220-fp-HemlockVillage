@@ -25,15 +25,12 @@
                     @endisset
                 </div>
 
-                <div class="form-group">
-                    <label for="total-due">Total Due:</label>
-                    <input type="text" id="total-due" value="$150.00" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label for="new-payment">New Payment:</label>
-                    <input type="text" id="new-payment" >
-                </div>
+                @isset($bill)
+                    <div class="form-group">
+                        <label for="total-due">Total Due:</label>
+                        <p>{{ $bill }}</p>
+                    </div>
+                @endisset
 
                 <div class="form-group">
                     <button type="button">Update Payment</button>
