@@ -239,4 +239,34 @@ class PageController extends Controller
             "data" => $jsonDecoded["data"]
         ]);
     }
+
+    /**
+     *
+     * Payment
+     *
+     */
+
+    public static function indexPayment()
+    {
+        return view("payments");
+    }
+
+    public static function showPayment($patientId)
+    {
+        $response = APIController::showPayment($patientId);
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        if ($response->getStatusCode() !== 200)
+        {
+            return view("payments")->with([
+                "patientId" => $jsonDecoded["patientId"] ?? $patientId,
+                "error" => $jsonDecoded["error"] ?? "Patient with id { {$patientId} } does not exist"
+            ]);
+        }
+
+        return view("payments")->with([
+            "patientId" => $jsonDecoded["patientId"] ?? $patientId,
+            "bill" => $jsonDecoded["bill"] ?? 0,
+        ]);
+    }
 }
