@@ -41,7 +41,8 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
     Route::get("/report", fn() => PageController::report());
 
     // Roster
-    Route::get('/rosters', [RosterController::class, 'index'])->name('rosters.index'); // Roster overview
+    // Not a requirement, and don't have time for this
+    // Route::get('/rosters', [RosterController::class, 'index'])->name('rosters.index'); // Roster overview
     Route::get("/roster/create", fn() => PageController::indexrosterForm());
     Route::post("/roster/create", fn() => PageController::storeRosterForm(request()));
 });
