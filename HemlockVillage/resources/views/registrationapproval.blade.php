@@ -1,25 +1,3 @@
-<html>
-    <head>
-        <title>Registration Approval</title>
-        <link rel="stylesheet" href="css/mainstyle.css">
-    </head>
-    <body>
-        <div class="container">
-            <h1>Registration Approval</h1>
-
-            <div class="approval-form">
-
-                <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" id="name" readonly value="Nick Helock">
-                </div>
-
-                <div class="form-group">
-                    <label for="role">Role</label>
-                    <input type="text" id="role" readonly value="Nurse">
-                </div>
-            </div>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
