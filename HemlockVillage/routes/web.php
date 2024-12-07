@@ -41,6 +41,7 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
     Route::get("/report", fn() => PageController::report());
 
     // Roster
+    Route::get('/rosters', [RosterController::class, 'index'])->name('rosters.index'); // Roster overview
     Route::get("/roster/create", fn() => PageController::indexrosterForm());
     Route::post("/roster/create", fn() => PageController::storeRosterForm(request()));
 });
@@ -113,8 +114,8 @@ Route::post('/users/{userId}/reject', [RegistrationApprovalController::class, 'r
 
 
 // ======== Roster Routes ========
-Route::get('/rosters', [RosterController::class, 'index'])->name('rosters.index'); // Roster overview
-Route::get('/rosters/view', [RosterController::class, 'viewRoster'])->name('rosters.view'); // View roster
+// Route::get('/rosters', [RosterController::class, 'index'])->name('rosters.index'); // Roster overview
+// Route::get('/rosters/view', [RosterController::class, 'viewRoster'])->name('rosters.view'); // View roster
 
 // ======== Doctor Routes ========
 // /home is the home page for ALL users. The page will load the correct data for each type of access level
