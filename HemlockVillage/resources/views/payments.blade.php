@@ -14,7 +14,7 @@
             <form action="">
                 <div class="form-group">
                     <label for="patient-id">Patient ID:</label>
-                    <input type="text" id="patient-id" >
+                    <input type="text" name="patient_id" placeholder="Patient ID" id="patient-id">
                 </div>
 
                 <div class="form-group">
