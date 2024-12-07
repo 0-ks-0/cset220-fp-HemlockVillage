@@ -12,7 +12,22 @@
         <div class="container">
             <h1>Payments</h1>
 
-            <form action="">
+            @php
+                $accessLevel = Auth::user()->role->access_level;
+            @endphp
+
+            <form
+                {{-- For family --}}
+                @if(isset($accessLevel) && $accessLevel == 6 && isset($patientId))
+                    action="/payment/{{ $patientId }}"
+                    method="post"
+                @endif
+            >
+                {{-- Add token if family --}}
+                @if(isset($accessLevel) && $accessLevel == 6 && isset($patientId))
+                    @csrf
+                @endif
+
                 <div class="form-group">
                     <label for="patient-id">Patient ID:</label>
                     <input type="text" name="patient_id" placeholder="Patient ID" id="patient-id"
