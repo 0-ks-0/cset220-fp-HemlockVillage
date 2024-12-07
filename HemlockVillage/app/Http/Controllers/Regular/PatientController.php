@@ -110,16 +110,16 @@ class PatientController extends Controller
     {
         // Find the patient
         $patient = Patient::findOrFail($patientId);
-    
+
         // Validate the request input
         $request->validate([
             'emergency_contact' => 'required|string|max:255',
         ]);
-    
+
         // Update the emergency contact
         $patient->emergency_contact = $request->input('emergency_contact');
         $patient->save();
-    
+
         // Return the updated patient data or redirect back with a success message
         return redirect()->route('patients.show', ['id' => $patientId])
             ->with('success', 'Emergency contact updated successfully.');
