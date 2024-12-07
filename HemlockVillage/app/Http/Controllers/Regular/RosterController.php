@@ -14,9 +14,7 @@ class RosterController extends Controller
     public function index()
     {
         // Return the roster index page where the user can select a date
-        // return view('rosters.index');
-
-        return "sdf";
+        return view('rosters');
     }
 
     /**

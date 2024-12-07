@@ -2,50 +2,57 @@
 namespace App\Http\Controllers\Regular;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Patient;
+use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\DB;
 
 class RegistrationApprovalController extends Controller
 {
-    // Display unapproved patients
     public function index()
     {
-        // Fetch all patients who are not approved
-        $patients = Patient::where('approved', false)->get();
-        
+        // Get all patients who need approval
+        // $patients = Patient::where('approved', false)->get();
+        $patients = DB::table("patients")
+            ->join("users", "patients.user_id", "users.id")
+            ->where("users.approved", false)
+            ->get();
+
+        // $users = DB::table("users")
+        //     ->where("approved", false)
+        //     ->get();
+
+        // return $users;
+
+        // Return the correct view for registration approval
         return view('registrationapproval', compact('patients'));
     }
 
-    // Approve or reject a patient
+    // Approve patient
     public function approve(Request $request, $patientId)
     {
-        // Find the patient by ID
         $patient = Patient::find($patientId);
-
         if (!$patient) {
             return redirect()->route('registrationapproval.index')->with('error', 'Patient not found');
         }
 
-        // Set the patient status based on the button clicked
-        $patient->approved = true;  // Automatically approve when button is clicked
+        $patient->approved = true; // Set the patient as approved
         $patient->save();
 
-        // Return with success message
         return redirect()->route('registrationapproval.index')->with('success', 'Patient approved successfully.');
     }
 
-    // Reject a patient
+    // Reject patient
     public function reject(Request $request, $patientId)
     {
-        // Find the patient by ID
         $patient = Patient::find($patientId);
-
         if (!$patient) {
             return redirect()->route('registrationapproval.index')->with('error', 'Patient not found');
         }
 
-        // Reject the patient (no need to save if we're rejecting, just don't approve)
-        return redirect()->route('registrationapproval.index')->with('error', 'Patient rejected and not added.');
+        $patient->approved = false; // Reject the patient
+        $patient->save();
+
+        return redirect()->route('registrationapproval.index')->with('success', 'Patient rejected successfully.');
     }
 }
-
