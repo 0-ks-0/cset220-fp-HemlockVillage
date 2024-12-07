@@ -238,6 +238,29 @@ class APIController extends Controller
         ], 200);
     }
 
+    public static function showPayment($patientId)
+    {
+        /**
+         * Validation
+         */
+        $patient = Patient::find($patientId);
+
+        // Fails
+        if (!$patient)
+        {
+            return response()->json([
+                "patientId" => $patientId,
+                "error" => "Patient with id { {$patientId} } does not exist"
+            ], 404);
+        }
+
+        // Success
+        return response()->json([
+            "patientId" => $patientId,
+            "bill" => Patient::where("id", $patientId)->first()->bill
+        ], 200);
+    }
+
     /**
      * Update the specified resource in storage.
      */
