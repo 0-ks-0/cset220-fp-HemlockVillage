@@ -277,11 +277,12 @@ class PageController extends Controller
 
         if ($response->getStatusCode() !== 200)
         {
-            return redirect()->back()->with([
-                "patientId" => $jsonDecoded["patientId"] ?? $patientId,
-                "bill" => $jsonDecoded["bill"],
-                "errors" => $jsonDecoded["errors"] ?? [ "Patient with id { {$patientId} } does not exist" ]
-            ]);
+            $errors =  $jsonDecoded["errors"] ?? [ "Patient with id { {$patientId} } does not exist OR the invalid amount" ];
+
+            return redirect()->back()
+                ->withErrors($errors)
+                ->withInput()
+                ->with("bill", $jsonDecoded["bill"]);
         }
 
         return redirect()->back()->with([
