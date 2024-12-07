@@ -269,4 +269,25 @@ class PageController extends Controller
             "bill" => $jsonDecoded["bill"] ?? 0,
         ]);
     }
+
+    public static function updatePayment(Request $request, $patientId)
+    {
+        $response = APIController::updatePayment($request, $patientId);
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        if ($response->getStatusCode() !== 200)
+        {
+            return redirect()->back()->with([
+                "patientId" => $jsonDecoded["patientId"] ?? $patientId,
+                "bill" => $jsonDecoded["bill"],
+                "errors" => $jsonDecoded["errors"] ?? [ "Patient with id { {$patientId} } does not exist" ]
+            ]);
+        }
+
+        return redirect()->back()->with([
+            "patientId" => $jsonDecoded["patientId"] ?? $patientId,
+            "message" => $jsonDecoded["message"] ?? 0,
+            "bill" => $jsonDecoded["bill"] ?? 0,
+        ]);
+    }
 }
