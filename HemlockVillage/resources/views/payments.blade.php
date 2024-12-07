@@ -61,10 +61,6 @@
                         <button type="submit">Pay</button>
                     @endif
                 @endisset
-
-                <div class="form-group">
-                    <button type="button">Update Payment</button>
-                </div>
             </form>
         </div>
 
