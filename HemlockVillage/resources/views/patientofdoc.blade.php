@@ -26,14 +26,7 @@
                 {{-- Comment section --}}
                 <div class="form-group">
                     <label for="comment">Comment:</label>
-                    <textarea id="comment" name="comment" rows="4" readonly>
-                        @if(isset($a->comment))
-                        {{ $a->comment }}
-                        @else
-                            No comment
-                        @endif
-                    </textarea>
-
+                    <textarea id="comment" name="comment" rows="4" readonly>{{ $a->comment ?? "No comment" }}</textarea>
                 </div>
 
                 <h2>Prescription</h2>
