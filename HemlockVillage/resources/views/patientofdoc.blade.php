@@ -103,6 +103,11 @@
             </div>
         </div>
 
+        {{-- Pagination -- not showing up --}}
+        <div>
+            {!! $appointments->withQueryString()->links('pagination::bootstrap-5') !!}
+        </div>
+
         @include('navbar')
 
     </body>
