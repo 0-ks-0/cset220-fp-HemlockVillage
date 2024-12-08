@@ -60,6 +60,8 @@ class HomeAPI extends Controller
         ])
         ->where("doctor_id", $doctorId)
         ->where("appointment_date", "<", Carbon::today())
+        ->orderBy("appointment_date", "asc")
+        ->orderBy("patient_id", "asc")
         ->get();
 
         // return response()->json($appointments);
