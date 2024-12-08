@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Helpers\ValidationHelper;
 use App\Helpers\ControllerHelper;
-
+use App\Helpers\UpdaterHelper;
 use App\Models\Patient;
 use App\Models\Roster;
 
@@ -254,7 +254,16 @@ class APIController extends Controller
             ], 404);
         }
 
-        // Success
+        /**
+         *  Success
+         */
+        // Add new charges if needed
+        UpdaterHelper::addDailyCharge($patientId);
+
+        // Very important. It gets the most up-to-date data from the database
+        // Otherwise the bill will not update on client-side for the current request
+        $patient->refresh();
+
         return response()->json([
             "patientId" => $patientId,
             "bill" => $patient->bill
