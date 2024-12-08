@@ -23,7 +23,7 @@
                 <textarea id="comment" name="comment" rows="4" readonly>Patient is not dead yet</textarea>
             </div>
 
-            <h2>Current Prescription</h2>
+            <h2>Prescription</h2>
             <table>
                 <thead>
                     <tr>
