@@ -40,6 +40,35 @@ class UpdaterHelper
 	}
 
 	/**
+	 * Get the difference in full months between two dates.
+	 *
+	 * @param string|DateTime|Carbon $date1
+	 * @param string|DateTime|Carbon $date2
+	 * @return int The number of full months between $date1 and $date2
+	 */
+	public static function getFullMonthsDifference($date1, $date2)
+	{
+		/**
+		 * Validation
+		 */
+		ValidationHelper::validateDateFormat($date1);
+		ValidationHelper::validateDateFormat($date2);
+
+		// Convert to Carbon instance if not already
+		if (!($date1 instanceof Carbon))
+			$date1 = Carbon::parse($date1);
+
+		if (!($date2 instanceof Carbon))
+			$date2 = Carbon::parse($date2);
+
+		// Check the chronological order of the dates passed
+		if ($date1 > $date2)
+			list($date1, $date2) = [ $date2, $date1 ]; // Switch the dates to make them in chronological order
+
+		return (int) $date1->diffInMonths($date2);
+	}
+
+	/**
 	 * Add a daily charge to a patient's bill if not added for the current day
 	 */
 	public static function addDailyCharge($patientId)
