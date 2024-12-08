@@ -259,6 +259,7 @@ class APIController extends Controller
          */
         // Add new charges if needed
         UpdaterHelper::addDailyCharge($patientId);
+        UpdaterHelper::addMonthlyPrescriptionCharge($patientId);
 
         // Very important. It gets the most up-to-date data from the database
         // Otherwise the bill will not update on client-side for the current request
