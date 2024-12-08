@@ -50,33 +50,17 @@
                     <tbody>
                         <tr>
                             <td>Morning</td>
-                            <td>
-                                @if(isset($a->morning))
-                                    {{ $a->morning }}
-                                @else
-                                    Nothing prescribed
-                                @endif
-                            </td>
+                            <td>{{ $a->morning ?? 'Nothing prescribed' }}</td>
                         </tr>
+
                         <tr>
                             <td>Afternoon</td>
-                            <td>
-                                @if(isset($a->afternoon))
-                                    {{ $a->afternoon }}
-                                @else
-                                    Nothing prescribed
-                                @endif
-                            </td>
+                            <td>{{ $a->afternoon ?? 'Nothing prescribed' }}</td>
                         </tr>
+
                         <tr>
                             <td>Night</td>
-                            <td>
-                                @if(isset($a->night))
-                                    {{ $a->night }}
-                                @else
-                                    Nothing prescribed
-                                @endif
-                            </td>
+                            <td>{{ $a->night ?? 'Nothing prescribed' }}</td>
                         </tr>
                     </tbody>
                 </table>
