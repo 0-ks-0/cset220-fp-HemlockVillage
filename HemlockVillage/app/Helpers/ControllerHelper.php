@@ -74,6 +74,17 @@ class ControllerHelper
 		});
 	}
 
+	/**
+	 * Check if a patient has an apppointment for a given date
+	 * @return boolean true if an appointment can be found for the given date; false otherwise
+	 */
+	public static function appointmentExists($patientId, $date)
+	{
+		return DB::table("appointments")
+			->where("patient_id", $patientId)
+			->whereDate("appointment_date", $date)
+			->exists();
+	}
 
 	/**
 	 * Get the prescription status, appointment info for prescriptions, and the doctor info for a patient on a given date
