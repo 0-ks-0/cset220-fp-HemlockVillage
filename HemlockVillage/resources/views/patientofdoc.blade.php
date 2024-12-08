@@ -66,25 +66,33 @@
                 </table>
             @endforeach
 
-            <h2>New Prescription</h2>
-            <div class="form-group">
-                <label for="morning-meds">Morning Meds:</label>
-                <input type="text" id="morning-meds" name="morning_meds" placeholder="Enter morning medications">
-            </div>
-            <div class="form-group">
-                <label for="afternoon-meds">Afternoon Meds:</label>
-                <input type="text" id="afternoon-meds" name="afternoon_meds" placeholder="Enter afternoon medications">
-            </div>
-            <div class="form-group">
-                <label for="night-meds">Night Meds:</label>
-                <input type="text" id="night-meds" name="night_meds" placeholder="Enter night medications">
-            </div>
+            {{-- New prescription if appointment date --}}
+            @if($isAppointmentDay)
+                <h2>New Prescription</h2>
 
-            <div class="form-group">
-                <button type="submit">Create New Prescription</button>
-                <button type="button">Patient Home</button>
-                <button type="button" class="btn-secondary">Dashboard</button>
-            </div>
+                <form action="">
+                    <div class="form-group">
+                        <label for="morning-meds">Morning Meds:</label>
+                        <input type="text" id="morning-meds" name="morning_meds" placeholder="Enter morning medications">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="afternoon-meds">Afternoon Meds:</label>
+                        <input type="text" id="afternoon-meds" name="afternoon_meds" placeholder="Enter afternoon medications">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="night-meds">Night Meds:</label>
+                        <input type="text" id="night-meds" name="night_meds" placeholder="Enter night medications">
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit">Create New Prescription</button>
+                        <button type="button">Patient Home</button>
+                        <button type="button" class="btn-secondary">Dashboard</button>
+                    </div>
+                </form>
+            @endif
         </div>
 
         {{-- Pagination -- not showing up --}}
