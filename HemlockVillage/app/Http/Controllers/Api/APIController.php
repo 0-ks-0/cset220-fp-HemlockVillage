@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 use App\Helpers\ValidationHelper;
 use App\Helpers\ControllerHelper;
@@ -269,6 +270,27 @@ class APIController extends Controller
             "patientId" => $patientId,
             "bill" => $patient->bill
         ], 200);
+    }
+
+    public static function showDoctorPatient($patientId, $date)
+    {
+        /**
+         * Validation
+         */
+        ValidationHelper::validateDateFormat($date);
+
+        $patient = Patient::find($patientId);
+
+        // Patient does not exist
+        if (!$patient)
+            abort("Patient with id { {$patientId} } not found");
+
+        return DB::table("appointments")
+			->where("patient_id", $patientId)
+			->whereDate("appointment_date", "<", $date)
+			->orderBy("appointment_date", "desc")
+			->select("id", "appointment_date", "comment", "morning", "afternoon", "night")
+			->paginate(1);
     }
 
     /**
