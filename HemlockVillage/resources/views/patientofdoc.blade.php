@@ -3,6 +3,7 @@
         <title>Patient of Doctor</title>
         <link rel="stylesheet" href="css/mainstyle.css">
     </head>
+
     <body>
         <div class="container">
             <h1>Patient of Doctor</h1>
@@ -12,40 +13,73 @@
                 <input type="text" id="patient-id" name="patient_id" placeholder="1">
             </div>
 
-            <div class="form-group">
-                <label for="date">Date:</label>
-                <input type="date" id="date" readonly>
-            </div>
+            @foreach($appointments as $a)
+                {{-- Date section --}}
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" readonly
+                        @isset($a->appointment_date) value="{{ $a->appointment_date }}" @endisset
+                    >
+                </div>
 
+                {{-- Comment section --}}
+                <div class="form-group">
+                    <label for="comment">Comment:</label>
+                    <textarea id="comment" name="comment" rows="4" readonly>
+                        @if(isset($a->comment))
+                        {{ $a->comment }}
+                        @else
+                            No comment
+                        @endif
+                    </textarea>
 
-            <div class="form-group">
-                <label for="comment">Comment:</label>
-                <textarea id="comment" name="comment" rows="4" readonly>Patient is not dead yet</textarea>
-            </div>
+                </div>
 
-            <h2>Prescription</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Time of Day</th>
-                        <th>Medication</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Morning</td>
-                        <td>Perc 30</td>
-                    </tr>
-                    <tr>
-                        <td>Afternoon</td>
-                        <td>Adderall</td>
-                    </tr>
-                    <tr>
-                        <td>Night</td>
-                        <td>Pepto Bismol</td>
-                    </tr>
-                </tbody>
-            </table>
+                <h2>Prescription</h2>
+
+                {{-- Prescription table --}}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time of Day</th>
+                            <th>Medication</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Morning</td>
+                            <td>
+                                @if(isset($a->morning))
+                                    {{ $a->morning }}
+                                @else
+                                    Nothing prescribed
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Afternoon</td>
+                            <td>
+                                @if(isset($a->afternoon))
+                                    {{ $a->afternoon }}
+                                @else
+                                    Nothing prescribed
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Night</td>
+                            <td>
+                                @if(isset($a->night))
+                                    {{ $a->night }}
+                                @else
+                                    Nothing prescribed
+                                @endif
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            @endforeach
 
             <h2>New Prescription</h2>
             <div class="form-group">
