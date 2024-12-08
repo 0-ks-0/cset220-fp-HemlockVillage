@@ -73,6 +73,12 @@ Route::middleware([ CheckRole::class . ":3,5"])->group( function ()
     Route::get("/home/{date}", fn($date) => PageController::homeWithDate($date));
 });
 
+// ======== Doctor Access ========
+Route::middleware([ CheckRole::class . ":3"])->group( function ()
+{
+    Route::get("/doctor/patients/{patientId}", fn($patientId) => PageController::showDoctorPatient($patientId));
+});
+
 // ======== Employee Routes ========
 // ***** Undefined variable $employee.
 // ***** Property [user] does not exist on this collection instance. This is because you are not looping through all the employees in the blade file so it is trying to find a key called `user` in the INDEX array
