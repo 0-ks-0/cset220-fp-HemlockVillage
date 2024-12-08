@@ -3,6 +3,8 @@
         <title>Payments</title>
 
         <link rel="stylesheet" href="{{ asset("./css/mainstyle.css") }}">
+        <link rel="stylesheet" href="{{ asset("./css/style.css") }}">
+
 
         <script src="{{ asset("./js/navigator.js") }}"></script>
         <script src="{{ asset("./js/payment.js") }}"></script>
@@ -24,6 +26,8 @@
             @endif
 
             <form
+                id="payment_form"
+
                 {{-- For family --}}
                 @if(isset($accessLevel) && $accessLevel == 6 && isset($patientId))
                     action="/payment/{{ $patientId }}"
@@ -71,7 +75,21 @@
                         {{-- Error Amount  PATCH --}}
                         @error("amount") <div>{{ $message }}</div> @enderror
 
-                        <button type="submit">Pay</button>
+                        <button type="button" id="pay_btn">Pay</button>
+
+                        {{-- Confirmation Modal --}}
+                        <div class="modal">
+                            <div class="modal_content">
+                                <span class="close" id="close_modal">&times;</span>
+
+                                <h2>Are you sure you want to proceed with the payment?</h2>
+
+                                <div class="modal_btn_container">
+                                    <button id="confirm_btn">Confirm</button>
+                                    <button id="cancel_btn">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
                     @endif
                 @endisset
             </form>
