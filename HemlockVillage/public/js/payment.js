@@ -7,7 +7,7 @@ function checkIdInput(event)
 	setTop(`/payment/${patientIdInput.value}`) // Change the url
 }
 
-window.onload = () =>
+document.addEventListener("DOMContentLoaded", () =>
 {
 	patientIdInput = document.querySelector("#patient-id")
 	if (!patientIdInput) console.error("none")
@@ -66,4 +66,4 @@ window.onload = () =>
 
 		form.submit()
 	}
-}
+})
