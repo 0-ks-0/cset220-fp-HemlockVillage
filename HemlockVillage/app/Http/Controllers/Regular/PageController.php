@@ -292,4 +292,21 @@ class PageController extends Controller
         return redirect()->back()
             ->with("message", $jsonDecoded["message"] ?? "$$request->amount has been paid");
     }
+
+    /**
+     *
+     * Doctor's Patient
+     *
+     */
+    public static function showDoctorPatient($patientId)
+    {
+        $appointments = APIController::showDoctorPatient($patientId, Carbon::today());
+
+        // return $jsonDecoded["appointments"];
+
+        return view("patientofdoc")->with([
+            "isAppointmentDay" => ControllerHelper::appointmentExists($patientId, Carbon::today()),
+            "appointments" => $appointments
+        ]);
+    }
 }
