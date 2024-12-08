@@ -42,7 +42,7 @@
                         @isset($patientId) value="{{ $patientId }}" @endisset
                     >
 
-                    {{-- Error --}}
+                    {{-- Error GET --}}
                     @isset($error)
                         <div>{{ $error }}</div>
                     @endisset
