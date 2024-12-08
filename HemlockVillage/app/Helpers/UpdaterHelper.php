@@ -111,4 +111,48 @@ class UpdaterHelper
 			"patient" => $patient
 		]);
 	}
+
+	/**
+	 * Add a monthly charge to a patient's bill if not added at the current day
+	 */
+	public static function addMonthlyPrescriptionCharge($patientId)
+	{
+		/**
+		 * Validation
+		 */
+		$patient = Patient::find($patientId);
+
+		if (!$patient)
+		{
+			abort(400, "Patient could not be found");
+		}
+
+		/**
+		 * Days calculation
+		 */
+		$currentDate = Carbon::today();
+		$lastUpdated = Carbon::parse($patient->prescription_updated_date);
+
+		// Do nothing if no last updated date
+		if (!$lastUpdated) return;
+
+		$monthsDifference = self::getFullMonthsDifference($lastUpdated, $currentDate);
+
+		/**
+		 * Charge calculation
+		 */
+		// Don't do anything if last updated within the last month
+		if ($monthsDifference < 1)
+			return;
+
+		$patient->update([
+			"bill" => ( $patient->bill + self::$monthlyPrescriptionCharge * $monthsDifference ),
+			"prescription_updated_date" => $lastUpdated->addMonths($monthsDifference)
+		]);
+
+		return response()->json([
+			"message" => "The bill has been updated",
+			"patient" => $patient
+		]);
+	}
 }
