@@ -47,6 +47,15 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
     Route::post("/roster/create", fn() => PageController::storeRosterForm(request()));
 });
 
+// ======== Admin and Family Access Routes ========
+Route::middleware([CheckRole::class . ":1,6"])->group(function ()
+{
+    // Payment / Bill
+    Route::get("/payment", fn() => PageController::indexPayment());
+    Route::get("/payment/{patientId}", fn($patientId) => PageController::showPayment($patientId));
+    Route::patch("/payment/{patientId}", fn($patientId) => PageController::updatePayment(request(), $patientId));
+});
+
 // ======== All Authenticated Users Routes ========
 Route::middleware("auth")->group(function ()
 {
@@ -54,7 +63,7 @@ Route::middleware("auth")->group(function ()
     Route::get("/home", fn() => PageController::home());
 
      // Roster
-     Route::get("/roster", fn() => PageController::showRoster());
+     Route::get("/roster", fn() => PageController::showRoster())->name("roster.show");
 });
 
 // ======== Doctor and Patient Access ========

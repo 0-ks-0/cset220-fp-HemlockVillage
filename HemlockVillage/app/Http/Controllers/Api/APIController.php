@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 use App\Helpers\ValidationHelper;
 use App\Helpers\ControllerHelper;
-
+use App\Helpers\UpdaterHelper;
 use App\Models\Patient;
 use App\Models\Roster;
 
@@ -238,12 +238,102 @@ class APIController extends Controller
         ], 200);
     }
 
+    public static function showPayment($patientId)
+    {
+        /**
+         * Validation
+         */
+        $patient = Patient::find($patientId);
+
+        // Fails
+        if (!$patient)
+        {
+            return response()->json([
+                "patientId" => $patientId,
+                "error" => "Patient with id { {$patientId} } does not exist"
+            ], 404);
+        }
+
+        /**
+         *  Success
+         */
+        // Add new charges if needed
+        UpdaterHelper::addDailyCharge($patientId);
+        UpdaterHelper::addMonthlyPrescriptionCharge($patientId);
+
+        // Very important. It gets the most up-to-date data from the database
+        // Otherwise the bill will not update on client-side for the current request
+        $patient->refresh();
+
+        return response()->json([
+            "patientId" => $patientId,
+            "bill" => $patient->bill
+        ], 200);
+    }
+
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
         //
+    }
+
+    public static function updatePayment(Request $request, $patientId)
+    {
+        /**
+         * Validation
+         */
+        $patient = Patient::find($patientId);
+
+        // Patient doesn't exist
+        if (!$patient)
+        {
+            return response()->json([
+                "patientId" => $patientId,
+                "error" => "Patient with id {$patientId} does not exist"
+            ], 404);
+        }
+
+        // Get the bill for the patient
+        $bill = $patient->bill ?? null;
+
+        // No bill (should not happen)
+        if (!$bill) {
+            return response()->json([
+                "patientId" => $patientId,
+                "error" => "Patient does not have a bill"
+            ], 404);
+        }
+
+        // Validate submitted data
+        $validatedData = Validator::make($request->all(), [
+            "patient_id" => [ "required", "exists:patients,id" ],
+            "amount" => [ "required", "numeric", "min:0", "max:$bill" ]
+        ], ValidationHelper::$payment);
+
+        // Failure
+        if ($validatedData->fails()) {
+            return response()->json([
+                "patientId" => $patientId,
+                "bill" => $bill,
+                "errors" => $validatedData->errors()
+            ], 400);
+        }
+
+        /**
+         * Success on validation
+         */
+        $amount = $request->get("amount");
+
+        $patient->update([ "bill" => ($bill - $amount) ]);
+
+        // Return a success response
+        return response()->json([
+            "patientId" => $patientId,
+            "message" => "$$amount has been paid",
+            "bill" => $bill,
+        ], 200);
     }
 
     /**
