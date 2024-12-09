@@ -41,9 +41,29 @@
 			</table>
 
 			{{-- Pagination --}}
-			<div class="pagination">
-				{!! $data->withQueryString()->links('vendor.pagination.bootstrap-4') !!}
-			</div>
+			@isset($pagination)
+				<div class="pagination">
+					{{-- Button previous --}}
+					@if($pagination['prev_page_url'])
+						<a href="{{ $pagination['prev_page_url'] }}">Previous</a>
+					@endif
+
+					{{-- Page Numbers --}}
+					@foreach($pagination['pages'] as $page)
+						@if($page == $pagination['current_page'])
+							<span class="current-page">{{ $page }}</span>
+						@else
+							<a href="{{ $data->url($page) }}">{{ $page }}</a>
+						@endif
+					@endforeach
+
+					{{-- Button next --}}
+					@if($pagination['next_page_url'])
+						<a href="{{ $pagination['next_page_url'] }}">Next</a>
+					@endif
+				</div>
+			@endisset
+
 		</div>
 
 		@include('navbar')
