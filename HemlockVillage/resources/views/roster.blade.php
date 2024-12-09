@@ -45,5 +45,7 @@
 				</tbody>
 			</table>
 		@endif
+
+		@include("navbar");
 	</body>
 </html>

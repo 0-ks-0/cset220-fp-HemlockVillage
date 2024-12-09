@@ -135,7 +135,7 @@
                 @elseif ($accessLevel === 6) {{-- Family Member --}}
                     <li><a href="/home">Home</a></li>
                     {{-- <li><a href="{{ route('roster.index') }}">Roster</a></li> --}}
-                    <li><a href="/payment">Make Payment</a></li>
+                    {{-- <li><a href="/payment">Make Payment</a></li> --}}
                 @endif
                 <li><a href="{{ route('roster.show') }}">Roster</a></li>
 
