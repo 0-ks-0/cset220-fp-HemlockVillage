@@ -2,59 +2,46 @@
 namespace App\Http\Controllers\Regular;
 
 use App\Http\Controllers\Controller;
-use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\DB;
 
 class RegistrationApprovalController extends Controller
 {
     public function index()
     {
-        // Get all patients who need approval
-        // $patients = Patient::where('approved', false)->get();
-        // $patients = DB::table("users")
-        //     ->join("patients", "patients.user_id", "=", "users.id")
-        //     ->where("users.approved", false)
-        //     ->get()
-
-        // return $patients;
-        // USE this instead. can't figure out why the patients is returning []
-        $users = DB::table("users")
-            ->where("approved", false)
+        // Fetch all users who need approval
+        $users = DB::table('users')
+            ->where('approved', false)
             ->get();
 
-        return $users;
-
-        // Return the correct view for registration approval
-        return view('registrationapproval', compact('patients'));
+        return view('registrationapproval', compact('users'));
     }
 
-    // Approve patient
-    public function approve(Request $request, $patientId)
+    // Approve user
+    public function approve(Request $request, $userID)
     {
-        $patient = Patient::find($patientId);
-        if (!$patient) {
-            return redirect()->route('registrationapproval.index')->with('error', 'Patient not found');
+        $user = User::find($userID);
+        if (!$user) {
+            return redirect()->route('registrationapproval.index')->with('error', 'User not found');
         }
 
-        $patient->approved = true; // Set the patient as approved
-        $patient->save();
+        $user->approved = true; // Set the user as approved
+        $user->save();
 
-        return redirect()->route('registrationapproval.index')->with('success', 'Patient approved successfully.');
+        return redirect()->route('registrationapproval.index')->with('success', 'User approved successfully.');
     }
 
-    // Reject patient
-    public function reject(Request $request, $patientId)
+    // Reject user
+    public function reject(Request $request, $userID)
     {
-        $patient = Patient::find($patientId);
-        if (!$patient) {
-            return redirect()->route('registrationapproval.index')->with('error', 'Patient not found');
+        $user = User::find($userID);
+        if (!$user) {
+            return redirect()->route('registrationapproval.index')->with('error', 'User not found');
         }
 
-        $patient->approved = false; // Reject the patient
-        $patient->save();
+        $user->delete(); // Remove the user from the database
 
-        return redirect()->route('registrationapproval.index')->with('success', 'Patient rejected successfully.');
+        return redirect()->route('registrationapproval.index')->with('success', 'User rejected and removed successfully.');
     }
 }
