@@ -7,6 +7,25 @@
 
     <body>
         <div class="container">
+            {{-- Success Message --}}
+            @if (session('message'))
+                <div>
+                    {{ session('message') }}
+                </div>
+            @endif
+
+            {{-- Errors --}}
+            @if ($errors->any())
+                <div>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            {{-- Info --}}
             <h1>Patient of Doctor</h1>
 
             <div class="form-group">
