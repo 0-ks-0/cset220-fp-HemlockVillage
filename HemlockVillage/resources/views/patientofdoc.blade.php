@@ -97,9 +97,10 @@
                         <input type="text" id="night-meds" name="night_meds" placeholder="Enter night medications">
                     </div>
 
-                    {{-- Action button --}}
+                    {{-- Action buttons --}}
                     <div class="form-group">
-                        <button type="submit">Create New Prescription</button>
+                        <button type="submit">Create & Mark as Complete</button>
+                        <button type="reset">Cancel</button>
                     </div>
                 </form>
             @endif
