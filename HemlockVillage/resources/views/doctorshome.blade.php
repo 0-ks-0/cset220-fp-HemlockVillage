@@ -38,7 +38,7 @@
                             <tbody>
                                 @isset($data)
                                     @foreach($data as $d)
-                                        <tr>
+                                        <tr onclick="setTop(`/doctor/patients/{{ $d['patient_id'] }}`)">
                                             <td>{{ $d['patient_id'] }}</td>
                                             <td>{{ $d['patient_name'] }}</td>
                                             <td>{{ \Carbon\Carbon::parse($d['appointment_date'])->format('M d, Y') }}</td>
