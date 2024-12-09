@@ -19,17 +19,23 @@
 
             <div class="flexbox">
                 <label>Patient ID</label>
-                <input type="text" id="patient-id" name="patient_id" readonly value="1">
+                <input type="text" id="patient-id" name="patient_id" readonly
+                    value="{{ $data['patient_id'] ?? '' }}"
+                >
             </div>
 
             <div class="flexbox">
                 <label>Patient Name</label>
-                <input type="text" id="patient-name" name="patient_name" readonly value="Nicholas Helock">
+                <input type="text" id="patient-name" name="patient_name" readonly
+                    value="{{ $data['patient_name'] ?? '' }}"
+                >
             </div>
 
             <div class="flexbox">
                 <label>Date</label>
-                <input type="date" id="date" name="date" readonly value="2024-01-03">
+                <input type="date" id="date" name="date" readonly
+                    value="{{ $data['date'] ?? '' }}"
+                >
             </div>
 
             <div class="patient-info">
@@ -41,9 +47,9 @@
                         <th>Caregiver's Name</th>
                     </tr>
                     <tr>
-                        <td>Dr. Rupert Mclovin</td>
-                        <td>2024-05-12</td>
-                        <td>Ruberta</td>
+                        <td>{{ $data["doctor_name"] ?? "None" }}</td>
+                        <td>{{ $data["appointment_status"] ?? "None" }}</td>
+                        <td>{{ $data["caregiver_name"] ?? "None" }}</td>
                     </tr>
                 </table>
 
@@ -55,9 +61,9 @@
                         <th>Night</th>
                     </tr>
                     <tr>
-                        <td class="status-completed">Completed</td>
-                        <td class="status-pending">Pending</td>
-                        <td class="status-missing">Missing</td>
+                        <td>{{ $data["prescription_status"]["morning"] ?? "None" }}</td>
+                        <td>{{ $data["prescription_status"]["afternoon"] ?? "None" }}</td>
+                        <td>{{ $data["prescription_status"]["night"] ?? "None" }}</td>
                     </tr>
                 </table>
 
@@ -69,9 +75,9 @@
                         <th>Dinner</th>
                     </tr>
                     <tr>
-                        <td class="status-completed">Completed</td>
-                        <td class="status-pending">Pending</td>
-                        <td class="status-completed">Completed</td>
+                        <td>{{ $data["meal_status"]["breakfast"] ?? "None" }}</td>
+                        <td>{{ $data["meal_status"]["lunch"] ?? "None" }}</td>
+                        <td>{{ $data["meal_status"]["dinner"] ?? "None" }}</td>
                     </tr>
                 </table>
             </div>
