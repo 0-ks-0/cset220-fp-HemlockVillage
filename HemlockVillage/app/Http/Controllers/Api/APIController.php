@@ -404,6 +404,53 @@ class APIController extends Controller
         ], 200);
     }
 
+    public static function updateDoctorPatient(Request $request, $patientId)
+    {
+        $validatedData = Validator::make($request->all(), [
+            "appointment_id" => [ "required", "exists:appointments,id" ],
+            "comment" => [ "string", "nullable" ],
+            "morning_meds" => [ "string", "nullable" ],
+            "afternoon_meds" => [ "string", "nullable" ],
+            "night_meds" => [ "string", "nullable" ]
+        ]);
+
+        // Fail
+        if ($validatedData->fails())
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Could not update the comment and prescriptions",
+                "errors" => $validatedData->errors() ?? [ "Invalid input(s)" ]
+            ], 400);
+        }
+
+
+        $appointment = Appointment::find($request->appointment_id);
+
+        // TODO validate that it is current date
+
+        $appointment->update([
+            "comment" => $request->input("comment") ?? null,
+            "morning" => $request->input("morning_meds") ?? null,
+            "afternoon" => $request->input("afternoon_meds") ?? null,
+            "night" => $request->input("night_meds") ?? null,
+
+            "status" => "Completed"
+        ]);
+
+        // TODO update bill
+
+        return response()->json([
+            "success" => true,
+            "message" => "Appointment updated successfully",
+            "appointment" => $appointment
+        ]);
+
+
+        // pass apointment model for current day back for docotr patient
+        // show form if appointmetn pending and is current date
+    }
+
     /**
      * Remove the specified resource from storage.
      */
