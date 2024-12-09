@@ -301,12 +301,17 @@ class PageController extends Controller
     public static function showDoctorPatient($patientId)
     {
         $appointments = APIController::showDoctorPatient($patientId, Carbon::today());
+        $jsonDecoded = json_decode($appointments->getContent(), true);
 
         // return $jsonDecoded["appointments"];
-
         return view("patientofdoc")->with([
             "isAppointmentDay" => ControllerHelper::appointmentExists($patientId, Carbon::today()),
-            "appointments" => $appointments
+            "appointments" => $jsonDecoded["appointments"] ?? [],
+            "pagination" => $jsonDecoded["pagination"] ?? [],
+            "patientId" => $jsonDecoded["patientId"] ?? null,
+            "first_name" => $jsonDecoded["first_name"] ?? null,
+            "last_name" => $jsonDecoded["last_name"] ?? null,
+            "date_of_birth" => $jsonDecoded["date_of_birth"] ?? null,
         ]);
     }
 }
