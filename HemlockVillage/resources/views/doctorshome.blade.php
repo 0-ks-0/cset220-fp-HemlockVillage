@@ -5,6 +5,8 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Doctors Home</title>
         <link rel="stylesheet" href="css/doctorshome.css">
+
+        <script src="{{ asset('./js/navigator.js') }}"></script>
     </head>
         <body>
 
@@ -54,7 +56,7 @@
                     <h2>Upcoming Appointments</h2>
 
                     <div class="flexbox">
-                        <label for="date">Select Date</label>
+                        <label for="date">Date</label>
                         <input type="date" id="date" name="date" />
 
                         <table>
@@ -66,11 +68,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Gage Cooper</td>
-                                    <td>2024-04-12</td>
-                                    <td><button type="button">View Patient Details</button></td>
-                                </tr>
+                                @isset($upcoming)
+                                    @foreach($upcoming as $u)
+                                        <tr>
+                                            <td>{{ $u["patient_name"] }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($u["appointment_date"])->format("M d, Y") }}</td>
+                                            <td><button onclick="setTop(`/doctor/patients/{{ $u['patient_id'] }}`)">View Patient Details</button></td>
+                                        </tr>
+                                    @endforeach
+                                @endisset
                             </tbody>
                         </table>
                     </div>
