@@ -115,6 +115,7 @@
                 <label for="salary">Search by Salary</label>
                 <input type="text" id="salary" placeholder="Enter Salary">
             </div>
+            
 
             <button onclick="searchEmployees()">Search</button>
         </div>

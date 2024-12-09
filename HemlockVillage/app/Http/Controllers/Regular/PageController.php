@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\UserAPI;
@@ -67,9 +68,9 @@ class PageController extends Controller
 
             case 5: // Patient
                 $patientId = Patient::getId($userId);
-                
+
                 // return HomeAPI::showPatient($patientId, Carbon::today());
-                return HomeAPI::showPatient($patientId, "2024-11-03");
+                // return HomeAPI::showPatient($patientId, "2024-11-03");
 
                 return view("patientshome")->with([
                     "data" => HomeAPI::showPatient($patientId, Carbon::today())
@@ -214,5 +215,130 @@ class PageController extends Controller
         // Success
         return redirect()->back()
             ->with("message", $jsonDecoded["message"] ?? "Roster for date {$request->get('date')} has been created");
+    }
+
+    public static function showRoster()
+    {
+        /**
+         * Check response status
+         */
+        // To test, pass date as 2024-11-03
+        $reponse = APIController::showRoster(Carbon::today()->format("Y-m-d"));
+        $jsonDecoded = json_decode($reponse->getContent(), true);
+
+        // No roster
+        if ($reponse->getStatusCode() !== 200)
+        {
+            return view("roster")->with([
+                "message" => $jsonDecoded["message"],
+                "data" => $jsonDecoded["data"]
+            ]);
+        }
+
+        // Success
+        return view("roster")->with([
+            "data" => $jsonDecoded["data"]
+        ]);
+    }
+
+    /**
+     *
+     * Payment
+     *
+     */
+
+    public static function indexPayment()
+    {
+        return view("payments");
+    }
+
+    public static function showPayment($patientId)
+    {
+        $response = APIController::showPayment($patientId);
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        if ($response->getStatusCode() !== 200)
+        {
+            return view("payments")->with([
+                "patientId" => $jsonDecoded["patientId"] ?? $patientId,
+                "error" => $jsonDecoded["error"] ?? "Patient with id { {$patientId} } does not exist"
+            ]);
+        }
+
+        return view("payments")->with([
+            "patientId" => $jsonDecoded["patientId"] ?? $patientId,
+            "bill" => $jsonDecoded["bill"] ?? 0,
+        ]);
+    }
+
+    public static function updatePayment(Request $request, $patientId)
+    {
+        /**
+         * Check status
+         */
+        $response = APIController::updatePayment($request, $patientId);
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        // Failure
+        if ($response->getStatusCode() !== 200)
+        {
+            $errors =  $jsonDecoded["errors"] ?? [ "Patient with id { {$patientId} } does not exist OR the invalid amount" ];
+
+            return redirect()->back()
+                ->withErrors($errors)
+                ->withInput();
+        }
+
+        // Success
+        return redirect()->back()
+            ->with("message", $jsonDecoded["message"] ?? "$$request->amount has been paid");
+    }
+
+    /**
+     *
+     * Doctor's Patient
+     *
+     */
+    public static function showDoctorPatient($patientId)
+    {
+        $doctorId = DB::table("employees")
+            ->where("user_id", Auth::user()->id)
+            ->first()
+            ->id ?? null;
+
+        // To test, set date to "2025-01-01"
+        $appointments = APIController::showDoctorPatient($doctorId, $patientId, Carbon::today());
+        $jsonDecoded = json_decode($appointments->getContent(), true);
+
+        return view("patientofdoc")->with([
+            "pendingAppointment" => $jsonDecoded["pendingAppointment"] ?? null,
+            "appointments" => $jsonDecoded["appointments"] ?? [],
+            "pagination" => $jsonDecoded["pagination"] ?? [],
+            "patientId" => $jsonDecoded["patientId"] ?? null,
+            "first_name" => $jsonDecoded["first_name"] ?? null,
+            "last_name" => $jsonDecoded["last_name"] ?? null,
+            "date_of_birth" => $jsonDecoded["date_of_birth"] ?? null,
+        ]);
+    }
+
+    public static function updateDoctorPatient(Request $request, $patientId)
+    {
+        // Used to validate correct doctor for appointment
+        $doctorId = DB::table("employees")
+            ->where("user_id", Auth::user()->id)
+            ->first()
+            ->id ?? null;
+
+        $response =  APIController::updateDoctorPatient($request, $patientId, $doctorId);
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        if ($response->getStatusCode() !== 200)
+        {
+            return redirect()->back()
+                ->withErrors($jsonDecoded["errors"] ?? [ "Invalid input(s)" ]);
+        }
+
+        return redirect()->back()
+            ->with("message", $jsonDecoded["message"] ?? "Appointment updated successfully");
     }
 }

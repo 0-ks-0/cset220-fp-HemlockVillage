@@ -57,6 +57,8 @@ class ControllerHelper
 		->whereDate("appointment_date", "<=", $date)
 		->whereDate("appointment_date", ">=", Carbon::today()->format("Y-m-d"))
 		->select("id", "appointment_date", "doctor_id", "patient_id")
+		->orderBy("appointment_date", "asc")
+		->orderBy("patient_id", "asc")
 		->get();
 
 		return $appointments->map( function ($a)
@@ -72,6 +74,17 @@ class ControllerHelper
 		});
 	}
 
+	/**
+	 * Check if a patient has an apppointment for a given date
+	 * @return boolean true if an appointment can be found for the given date; false otherwise
+	 */
+	public static function appointmentExists($patientId, $date)
+	{
+		return DB::table("appointments")
+			->where("patient_id", $patientId)
+			->whereDate("appointment_date", $date)
+			->exists();
+	}
 
 	/**
 	 * Get the prescription status, appointment info for prescriptions, and the doctor info for a patient on a given date

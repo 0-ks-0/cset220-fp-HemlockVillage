@@ -6,7 +6,6 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-use App\Models\Role;
 use App\Models\User;
 
 class UserSeeder extends Seeder
@@ -108,6 +107,15 @@ class UserSeeder extends Seeder
         self::insertData("Lucas", "Evans", "lucas.evans@example.com", "1989-07-22", "555-724-8904", "supervisor123", 2, 1); // 75
         self::insertData("Dr. Isabella", "King", "isabella.king@example.com", "1985-12-03", "555-623-4517", "doctor123", 3, 1); // 76
         self::insertData("Sophia", "Morris", "sophia.morris@example.com", "1990-09-14", "555-302-8569", "caregiver123", 4, 1); // 77
+
+        // Don't touch
+        // Some unapproved users -Katy
+        self::insertData("admin", "unapproved", "au@example.com", "2001-01-01", "111-222-3333", "admin", 1, 0); // 78
+        self::insertData("supervisor", "unapproved", "su@example.com", "1990-04-22", "444-555-6666", "supervisor", 2, 0); // 79
+        self::insertData("doctor", "unapproved", "du@example.com", "1988-06-13", "555-666-7777", "doctor", 3, 0); // 80
+        self::insertData("caregiver", "unapproved", "cu@example.com", "1986-12-03", "666-777-8888", "caregiver", 4, 0); // 81
+        self::insertData("patient", "unapproved", "pu@example.com", "1965-11-30", "777-888-9999", "patient", 5, 0); // 82
+        self::insertData("family", "unapproved", "fu@example.com", "1998-08-19", "888-999-0000", "family", 6, 0); // 83
     }
 
     private static function insertData($firstName, $lastName, $email, $dob, $phone, $password, $roleID, $approved = 0): void

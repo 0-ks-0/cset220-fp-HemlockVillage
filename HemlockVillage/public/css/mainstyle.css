@@ -17,7 +17,7 @@ body {
 }
 
 h1, h2 {
-    color: #ae370f; 
+    color: #ae370f;
     margin-bottom: 20px;
     text-align: center;
 }
@@ -30,7 +30,7 @@ label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-    color: #481502; 
+    color: #481502;
 }
 
 input,
@@ -41,8 +41,13 @@ table {
     width: 100%;
     padding: 10px;
     font-size: 16px;
-    border: 1px solid #c0bba6; 
+    border: 1px solid #c0bba6;
     border-radius: 5px;
+}
+
+textarea
+{
+    resize: none;
 }
 
 table {
@@ -58,14 +63,14 @@ th, td {
 }
 
 th {
-    background-color: #ae370f; 
+    background-color: #ae370f;
     color: white;
     font-weight: bold;
 }
 
 button {
     margin-top: 10px;
-    background-color: #ae370f; 
+    background-color: #ae370f;
     color: white;
     font-weight: bold;
     cursor: pointer;
@@ -75,15 +80,15 @@ button {
 }
 
 button:hover {
-    background-color: #481502; 
+    background-color: #481502;
 }
 
 .btn-secondary {
-    background-color: #6c757d; 
+    background-color: #6c757d;
     color: white;
 }
 
 input[type="checkbox"] {
-    width: auto; 
+    width: auto;
     accent-color: #ae370f;
 }

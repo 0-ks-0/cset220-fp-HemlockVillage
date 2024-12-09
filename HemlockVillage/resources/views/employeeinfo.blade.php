@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Employee Information</title>
+        <title>Employee Info</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -18,100 +18,108 @@
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                 margin: auto;
             }
-            .info-box {
+            .employee-info {
                 margin-bottom: 20px;
+            }
+            .employee-info p {
+                margin: 5px 0;
+            }
+            .update-section {
+                margin-top: 20px;
+            }
+            input[type="number"] {
                 padding: 10px;
-                background-color: #e9ecef;
+                width: 100%;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
                 border-radius: 5px;
             }
-            .info-box label {
-                font-weight: bold;
-            }
             button {
-                display: block;
-                width: 100%;
-                padding: 10px;
+                padding: 10px 15px;
                 background-color: #28a745;
                 color: white;
                 border: none;
                 border-radius: 5px;
-                font-size: 16px;
                 cursor: pointer;
-                margin-top: 20px;
             }
             button:hover {
                 background-color: #218838;
+            }
+            .message {
+                margin-top: 10px;
+                padding: 10px;
+                border-radius: 5px;
+                display: none;
+            }
+            .success {
+                background-color: #d4edda;
+                color: #155724;
+            }
+            .error {
+                background-color: #f8d7da;
+                color: #721c24;
             }
         </style>
     </head>
         <body>
             <div class="container">
-                <h1>Employee Information</h1>
-
-                <div class="info-box">
-                    <label>Employee ID:</label>
-                    <p>{{ $employee->id }}</p>
+                <h1>Employee Info</h1>
+                <div class="employee-info">
+                    <p><strong>Name:</strong> {{ $employee->user->first_name }}</p>
+                    <p><strong>Email:</strong> {{ $employee->user->email }}</p>
+                    <p><strong>Role:</strong> {{ $employee->user->role_id }}</p>
+                    <p><strong>Salary:</strong> $<span id="current-salary">{{ $employee->salary }}</span></p>
                 </div>
 
-                <div class="info-box">
-                    <label>Name:</label>
-                    <p>{{ $employee->user->name ?? 'N/A' }}</p>
+                <div class="update-section">
+                    <h2>Update Salary</h2>
+                    <input type="number" id="new-salary" placeholder="Enter new salary">
+                    <button onclick="updateSalary({{ $employee->id }})">Update Salary</button>
+                    <div id="message" class="message"></div>
                 </div>
-
-                <div class="info-box">
-                    <label>Email:</label>
-                    <p>{{ $employee->user->email ?? 'N/A' }}</p>
-                </div>
-
-                <div class="info-box">
-                    <label>Role:</label>
-                    <p>{{ $employee->user->role->role ?? 'N/A' }}</p>
-                </div>
-
-                <div class="info-box">
-                    <label>Current Salary:</label>
-                    <p>${{ number_format($employee->salary, 2) ?? 'N/A' }}</p>
-                </div>
-
-                <form method="POST" action="{{ route('employees.updateSalary') }}">
-                    @csrf
-                    <input type="hidden" name="employee_id" value="{{ $employee->id }}">
-                    <div class="info-box">
-                        <label for="new-salary">New Salary:</label>
-                        <input type="text" id="new-salary" name="new_salary" required>
-                    </div>
-                    <button type="submit">Update Salary</button>
-                </form>
             </div>
 
             <script>
-                async function fetchEmployeeDetails() {
-                    const employeeId = window.location.pathname.split('/').pop();
-                    const response = await fetch(`/api/employees/${employeeId}`);
-                    const employee = await response.json();
-            
-                    if (response.ok) {
-                        const tbody = document.querySelector('#employee-info tbody');
-                        tbody.innerHTML = `
-                            <tr>
-                                <td>${employee.id}</td>
-                                <td>${employee.name || 'N/A'}</td>
-                                <td>${employee.email || 'N/A'}</td>
-                                <td>${employee.role || 'N/A'}</td>
-                                <td>${employee.salary !== 'N/A' ? `$${parseFloat(employee.salary).toFixed(2)}` : 'N/A'}</td>
-                            </tr>
-                        `;
-                    } else {
-                        alert('Employee not found');
+                function updateSalary(employeeId) {
+                    const newSalary = document.getElementById('new-salary').value;
+                    const message = document.getElementById('message');
+
+                    if (!newSalary) {
+                        message.innerHTML = 'Please enter a valid salary.';
+                        message.className = 'message error';
+                        message.style.display = 'block';
+                        return;
                     }
+
+                    fetch(`/employees/${employeeId}/update-salary`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ new_salary: newSalary })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            message.innerHTML = data.error;
+                            message.className = 'message error';
+                            message.style.display = 'block';
+                        } else {
+                            document.getElementById('current-salary').textContent = data.new_salary;
+                            message.innerHTML = data.message;
+                            message.className = 'message success';
+                            message.style.display = 'block';
+                        }
+                    })
+                    .catch(() => {
+                        message.innerHTML = 'An error occurred. Please try again.';
+                        message.className = 'message error';
+                        message.style.display = 'block';
+                    });
                 }
-            
-                fetchEmployeeDetails();
             </script>
         @include('navbar')
 
         </body>
 </html>
-
-
-

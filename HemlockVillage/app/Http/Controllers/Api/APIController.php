@@ -7,12 +7,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 use App\Helpers\ValidationHelper;
 use App\Helpers\ControllerHelper;
-
+use App\Helpers\UpdaterHelper;
 use App\Models\Patient;
 use App\Models\Roster;
+use App\Models\Appointment;
+
+use Carbon\Carbon;
 
 class APIController extends Controller
 {
@@ -167,12 +171,300 @@ class APIController extends Controller
         });
     }
 
+    public static function showRoster($date)
+    {
+        /**
+         * Validation
+         */
+        ValidationHelper::validateDateFormat($date);
+
+        /**
+         * Data retrieval
+         */
+        $roster = Roster::with([
+            "supervisor" => fn($q) => $q->select('id', 'user_id'),
+            "supervisor.user" => fn($q) => $q->select('id', 'first_name', 'last_name'),
+
+            "doctor" => fn($q) => $q->select('id', 'user_id'),
+            "doctor.user" => fn($q) => $q->select('id', 'first_name', 'last_name'),
+
+            "caregiverOne" => fn($q) => $q->select('id', 'user_id'),
+            "caregiverOne.user" => fn($q) => $q->select('id', 'first_name', 'last_name'),
+
+            "caregiverTwo" => fn($q) => $q->select('id', 'user_id'),
+            "caregiverTwo.user" => fn($q) => $q->select('id', 'first_name', 'last_name'),
+
+            "caregiverThree" => fn($q) => $q->select('id', 'user_id'),
+            "caregiverThree.user" => fn($q) => $q->select('id', 'first_name', 'last_name'),
+
+            "caregiverFour" => fn($q) => $q->select('id', 'user_id'),
+            "caregiverFour.user" => fn($q) => $q->select('id', 'first_name', 'last_name'),
+        ])
+        ->whereDate("date_assigned", $date)
+        ->select('id', 'date_assigned', 'supervisor_id', 'doctor_id', 'caregiver_one_id', 'caregiver_two_id', 'caregiver_three_id', 'caregiver_four_id')
+        ->first();
+
+        // No roster
+        if (!$roster) {
+            return response()->json([
+                "message" => "No roster found for date $date.",
+                "data" => [],
+            ], 404);
+        }
+
+        $data = [
+            "roster_id" => $roster->id,
+            "date" => $roster->date_assigned,
+
+            "supervisor_id" => $roster->supervisor_id,
+            "supervisor_name" => $roster->supervisor ? "{$roster->supervisor->user->first_name} {$roster->supervisor->user->last_name}" : null,
+
+            "doctor_id" => $roster->doctor_id,
+            "doctor_name" => $roster->doctor ? "{$roster->doctor->user->first_name} {$roster->doctor->user->last_name}" : null,
+
+            "caregivers" => [
+                "caregiver_one_id" => $roster->caregiver_one_id,
+                "caregiver_one_name" => $roster->caregiverOne ? "{$roster->caregiverOne->user->first_name} {$roster->caregiverOne->user->last_name}" : null,
+
+                "caregiver_two_id" => $roster->caregiver_two_id,
+                "caregiver_two_name" => $roster->caregiverTwo ? "{$roster->caregiverTwo->user->first_name} {$roster->caregiverTwo->user->last_name}" : null,
+
+                "caregiver_three_id" => $roster->caregiver_three_id,
+                "caregiver_three_name" => $roster->caregiverThree ? "{$roster->caregiverThree->user->first_name} {$roster->caregiverThree->user->last_name}" : null,
+
+                "caregiver_four_id" => $roster->caregiver_four_id,
+                "caregiver_four_name" => $roster->caregiverFour ? "{$roster->caregiverFour->user->first_name} {$roster->caregiverFour->user->last_name}" : null,
+            ]
+        ];
+
+        return response()->json([
+            "data" => $data
+        ], 200);
+    }
+
+    public static function showPayment($patientId)
+    {
+        /**
+         * Validation
+         */
+        $patient = Patient::find($patientId);
+
+        // Fails
+        if (!$patient)
+        {
+            return response()->json([
+                "patientId" => $patientId,
+                "error" => "Patient with id { {$patientId} } does not exist"
+            ], 404);
+        }
+
+        /**
+         *  Success
+         */
+        // Add new charges if needed
+        UpdaterHelper::addDailyCharge($patientId);
+        UpdaterHelper::addMonthlyPrescriptionCharge($patientId);
+
+        // Very important. It gets the most up-to-date data from the database
+        // Otherwise the bill will not update on client-side for the current request
+        $patient->refresh();
+
+        return response()->json([
+            "patientId" => $patientId,
+            "bill" => $patient->bill
+        ], 200);
+    }
+
+    public static function showDoctorPatient($doctorId, $patientId, $date)
+    {
+        /**
+         * Validation
+         */
+        ValidationHelper::validateDateFormat($date);
+
+        $patient = Patient::find($patientId);
+
+        // Patient does not exist
+        if (!$patient)
+            abort("Patient with id { {$patientId} } not found");
+
+        /**
+         * Data retrieval
+         */
+        $appointments = DB::table("appointments")
+            ->where("patient_id", $patientId)
+            ->where(function($query) use ($date)
+            {
+                $query->whereDate("appointment_date", "<", $date) // Include appointments before the given date
+                    ->orWhere(function($query) use ($date) // Include completed appointments for the given date
+                    {
+                        $query->whereDate("appointment_date", $date)
+                            ->where("status", "Completed");
+                    });
+            })
+            ->where("doctor_id", $doctorId)
+            ->orderBy("appointment_date", "desc")
+            ->select("id", "patient_id", "appointment_date", "comment", "morning", "afternoon", "night")
+            ->paginate(1);
+
+        $appointmentsData = $appointments->items();  // Actual appointment data as an array
+
+        // SO annoying to get pagination
+        $pagination = [
+            "current_page" => $appointments->currentPage(),
+            "last_page" => $appointments->lastPage(),
+            "per_page" => $appointments->perPage(),
+            "total" => $appointments->total(),
+            "next_page_url" => $appointments->nextPageUrl(),
+            "prev_page_url" => $appointments->previousPageUrl(),
+        ];
+
+        // Get pending patient appointment for current date
+        // To test, set date to 2025-01-01
+        $pendingAppointment = Appointment::where('patient_id', $patientId)
+            ->where("doctor_id", $doctorId)
+            ->whereDate('appointment_date', $date)
+            ->where('status', 'Pending')
+            ->first();
+
+        // Prepare the JSON response
+        return response()->json([
+            "appointments" => $appointmentsData,
+            "pagination" => $pagination,
+            "patientId" => $patientId,
+            "first_name" => $patient->user->first_name ?? null,
+            "last_name" => $patient->user->last_name ?? null,
+            "date_of_birth" => $patient->user->date_of_birth ?? null,
+            "pendingAppointment" => $pendingAppointment ?? null
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
         //
+    }
+
+    public static function updatePayment(Request $request, $patientId)
+    {
+        /**
+         * Validation
+         */
+        $patient = Patient::find($patientId);
+
+        // Patient doesn't exist
+        if (!$patient)
+        {
+            return response()->json([
+                "patientId" => $patientId,
+                "error" => "Patient with id {$patientId} does not exist"
+            ], 404);
+        }
+
+        // Get the bill for the patient
+        $bill = $patient->bill ?? null;
+
+        // No bill (should not happen)
+        if (!$bill) {
+            return response()->json([
+                "patientId" => $patientId,
+                "error" => "Patient does not have a bill"
+            ], 404);
+        }
+
+        // Validate submitted data
+        $validatedData = Validator::make($request->all(), [
+            "patient_id" => [ "required", "exists:patients,id" ],
+            "amount" => [ "required", "numeric", "min:0", "max:$bill" ]
+        ], ValidationHelper::$payment);
+
+        // Failure
+        if ($validatedData->fails()) {
+            return response()->json([
+                "patientId" => $patientId,
+                "bill" => $bill,
+                "errors" => $validatedData->errors()
+            ], 400);
+        }
+
+        /**
+         * Success on validation
+         */
+        $amount = $request->get("amount");
+
+        $patient->update([ "bill" => ($bill - $amount) ]);
+
+        // Return a success response
+        return response()->json([
+            "patientId" => $patientId,
+            "message" => "$$amount has been paid",
+            "bill" => $bill,
+        ], 200);
+    }
+
+    public static function updateDoctorPatient(Request $request, $patientId, $doctorId)
+    {
+        $validatedData = Validator::make($request->all(), [
+            "appointment_id" => [ "required", "exists:appointments,id" ],
+            "comment" => [ "string", "nullable" ],
+            "morning_meds" => [ "string", "nullable" ],
+            "afternoon_meds" => [ "string", "nullable" ],
+            "night_meds" => [ "string", "nullable" ]
+        ]);
+
+        // Fail
+        if ($validatedData->fails())
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Could not update the comment and prescriptions",
+                "errors" => $validatedData->errors() ?? [ "Invalid input(s)" ]
+            ], 400);
+        }
+
+        $appointment = Appointment::find($request->appointment_id);
+
+        // Validate that the doctor is the one for the appointment
+        if ($appointment->doctor_id !== $doctorId)
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Doctor id for appointment does not match the logged in doctor",
+                "errors" => [ "Could not update the comment and prescriptions" ]
+            ], 400);
+        }
+
+        // Validate status to be pending
+        if ($appointment->status !== "Pending")
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Cannot update an appointment that is completed or missing",
+                "errors" => [ "Could not update the comment and prescriptions" ]
+            ], 400);
+        }
+
+        // TODO validate that it is current date -- but, difficult to test this functionlity if this is here
+
+        $appointment->update([
+            "comment" => $request->input("comment") ?? null,
+            "morning" => $request->input("morning_meds") ?? null,
+            "afternoon" => $request->input("afternoon_meds") ?? null,
+            "night" => $request->input("night_meds") ?? null,
+
+            "status" => "Completed"
+        ]);
+
+        // Update bill
+        UpdaterHelper::addAppointmentCharge($patientId);
+
+        return response()->json([
+            "success" => true,
+            "message" => "Appointment updated successfully",
+            "appointment" => $appointment
+        ]);
     }
 
     /**

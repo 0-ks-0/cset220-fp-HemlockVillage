@@ -65,12 +65,21 @@ class ValidationHelper
 
 		"caregivers.*.exists" => "Each caregiver must exist.",
 
-		// Not working
 		"caregivers.0.distinct" => "Caregiver 1 has a duplicate value.",
 		"caregivers.1.distinct" => "Caregiver 2 has a duplicate value.",
 		"caregivers.2.distinct" => "Caregiver 3 has a duplicate value.",
 		"caregivers.3.distinct" => "Caregiver 4 has a duplicate value.",
 	];
+
+	public static $payment = [
+		'patient_id.required' => 'Please enter the patient ID.',
+        'patient_id.exists' => 'The patient does not exist.',
+
+        'amount.required' => 'Please enter an amount to proceed with the payment.',
+        'amount.numeric' => 'The payment amount must be a valid number.',
+        'amount.min' => 'The payment amount cannot be less than 0.',
+        'amount.max' => 'The payment amount cannot exceed the patient\'s bill of :max.',
+    ];
 
 	/**
 	 * Validate the date format. Aborts if not valid
