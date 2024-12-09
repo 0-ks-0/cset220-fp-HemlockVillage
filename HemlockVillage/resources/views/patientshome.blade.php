@@ -43,7 +43,7 @@
                 <table>
                     <tr>
                         <th>Doctor's Name</th>
-                        <th>Doctor's Appointment</th>
+                        <th>Appointment Status</th>
                         <th>Caregiver's Name</th>
                     </tr>
                     <tr>
