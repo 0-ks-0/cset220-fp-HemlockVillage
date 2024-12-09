@@ -311,6 +311,14 @@ class APIController extends Controller
             "prev_page_url" => $appointments->previousPageUrl(),
         ];
 
+        // Get pending patient appointment for current date
+        // To test, set date to 2025-01-01
+        $pendingAppointment = Appointment::where('patient_id', $patientId)
+            ->where("doctor_id", $doctorId)
+            ->whereDate('appointment_date', Carbon::today())
+            ->where('status', 'Pending')
+            ->first();
+
         // Prepare the JSON response
         return response()->json([
             "appointments" => $appointmentsData,
@@ -318,7 +326,8 @@ class APIController extends Controller
             "patientId" => $patientId,
             "first_name" => $patient->user->first_name ?? null,
             "last_name" => $patient->user->last_name ?? null,
-            "date_of_birth" => $patient->user->date_of_birth ?? null
+            "date_of_birth" => $patient->user->date_of_birth ?? null,
+            "pendingAppointment" => $pendingAppointment ?? null
         ]);
     }
 
