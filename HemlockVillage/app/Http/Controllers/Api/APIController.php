@@ -16,6 +16,8 @@ use App\Models\Patient;
 use App\Models\Roster;
 use App\Models\Appointment;
 
+use Carbon\Carbon;
+
 class APIController extends Controller
 {
     /**
@@ -273,7 +275,7 @@ class APIController extends Controller
         ], 200);
     }
 
-    public static function showDoctorPatient($patientId, $date)
+    public static function showDoctorPatient($doctorId, $patientId, $date)
     {
         /**
          * Validation
@@ -292,6 +294,7 @@ class APIController extends Controller
         $appointments = DB::table("appointments")
             ->where("patient_id", $patientId)
             ->whereDate("appointment_date", "<", $date)
+            ->where("doctor_id", $doctorId)
             ->orderBy("appointment_date", "desc")
             ->select("id", "patient_id", "appointment_date", "comment", "morning", "afternoon", "night")
             ->paginate(1);
