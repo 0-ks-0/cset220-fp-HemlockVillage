@@ -310,7 +310,7 @@ class PageController extends Controller
         $jsonDecoded = json_decode($appointments->getContent(), true);
 
         return view("patientofdoc")->with([
-            "isAppointmentDay" => ControllerHelper::appointmentExists($patientId, Carbon::today()),
+            "pendingAppointment" => $jsonDecoded["pendingAppointment"] ?? null,
             "appointments" => $jsonDecoded["appointments"] ?? [],
             "pagination" => $jsonDecoded["pagination"] ?? [],
             "patientId" => $jsonDecoded["patientId"] ?? null,
