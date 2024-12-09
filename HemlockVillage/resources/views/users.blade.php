@@ -47,7 +47,7 @@
 			</div>
 		</div>
 
-		{{-- @include('navbar') --}}
+		@include('navbar')
 
 	</body>
 </html>
