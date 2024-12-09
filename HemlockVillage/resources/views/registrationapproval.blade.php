@@ -104,5 +104,7 @@
 
             fetchPatients(); // Load patients on page load
         </script>
+    @include('navbar')
+
     </body>
 </html>

@@ -2,6 +2,11 @@
     <head>
         <title>Admin Report</title>
         <link rel="stylesheet" href="css/mainstyle.css">
+        <style>
+            body{
+                display: flex;
+            }
+        </style>
     </head>
         <body>
             <div class="container">

@@ -1,8 +1,11 @@
+body{
+    background-color:  #f7f4ec;
+}
 .container {
     max-width: 900px;
     margin: 40px auto;
     padding: 20px;
-    background: #f7f4ec;
+    background: #fcfcfc;
     border-radius: 10px;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
@@ -54,15 +57,14 @@ button:hover {
 }
 
 .secondbutton {
-    background: #c0bba6;
-    color: #481502;
+    background: #481502;
+    color: white;
     font-size: 14px;
     font-weight: bold;
 }
 
 .secondbutton:hover {
     background-color: #ae370f;
-    color: white;
 }
 
 table {

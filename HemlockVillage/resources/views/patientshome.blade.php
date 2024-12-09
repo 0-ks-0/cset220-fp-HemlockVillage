@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>Patients Home</title>
-        <link rel="stylesheet" href="css/app.css">
+        <link rel="stylesheet" href="css/patientshome.css">
 
     </head>
 
@@ -80,6 +80,8 @@
                 <button type="button">View Roster</button>
             </div>
         </div>
+        @include('navbar')
 
     </body>
+
 </html>

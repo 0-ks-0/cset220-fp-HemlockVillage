@@ -102,5 +102,7 @@
             
         </div>
     </div>
+    @include('navbar')
+
 </body>
 </html>

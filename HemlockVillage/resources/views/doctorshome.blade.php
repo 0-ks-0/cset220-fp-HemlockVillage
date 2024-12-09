@@ -71,6 +71,7 @@
                     </div>
                 </div>
             @endsection
+            @include('navbar')
 
         </body>
 </html>

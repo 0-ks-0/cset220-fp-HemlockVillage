@@ -108,6 +108,8 @@
             
                 fetchEmployeeDetails();
             </script>
+        @include('navbar')
+
         </body>
 </html>
 

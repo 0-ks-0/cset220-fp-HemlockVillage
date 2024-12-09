@@ -82,5 +82,7 @@
             <a href="/create-roster" class="btn-primary">Create Roster</a>
 
         </div>
+        @include('navbar')
+
     </body>
 </html>

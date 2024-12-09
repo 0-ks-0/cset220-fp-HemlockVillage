@@ -61,6 +61,7 @@
                 <button type="button" class="btn-secondary">Dashboard</button>
             </div>
         </div>
+        @include('navbar')
 
     </body>
 </html>
