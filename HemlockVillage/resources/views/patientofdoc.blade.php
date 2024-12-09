@@ -72,6 +72,13 @@
                 <h2>New Prescription</h2>
 
                 <form action="">
+                    {{-- Comment --}}
+                    <div class="form-group">
+                        <label for="create_comment">Comment</label>
+                        <textarea name="comment" id="create_comment" rows="5"></textarea>
+                    </div>
+
+                    {{-- Prescriptions --}}
                     <div class="form-group">
                         <label for="morning-meds">Morning Meds:</label>
                         <input type="text" id="morning-meds" name="morning_meds" placeholder="Enter morning medications">
@@ -87,6 +94,7 @@
                         <input type="text" id="night-meds" name="night_meds" placeholder="Enter night medications">
                     </div>
 
+                    {{-- Action button --}}
                     <div class="form-group">
                         <button type="submit">Create New Prescription</button>
                     </div>
