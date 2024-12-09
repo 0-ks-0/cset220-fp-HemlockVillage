@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\UserAPI;
@@ -300,10 +301,14 @@ class PageController extends Controller
      */
     public static function showDoctorPatient($patientId)
     {
-        $appointments = APIController::showDoctorPatient($patientId, Carbon::today());
+        $doctorId = DB::table("employees")
+            ->where("user_id", Auth::user()->id)
+            ->first()
+            ->id ?? null;
+
+        $appointments = APIController::showDoctorPatient($doctorId, $patientId, Carbon::today());
         $jsonDecoded = json_decode($appointments->getContent(), true);
 
-        // return $jsonDecoded["appointments"];
         return view("patientofdoc")->with([
             "isAppointmentDay" => ControllerHelper::appointmentExists($patientId, Carbon::today()),
             "appointments" => $jsonDecoded["appointments"] ?? [],
