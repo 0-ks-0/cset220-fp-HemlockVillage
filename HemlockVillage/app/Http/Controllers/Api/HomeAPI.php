@@ -59,7 +59,8 @@ class HomeAPI extends Controller
             "patient.user"
         ])
         ->where("doctor_id", $doctorId)
-        ->where("appointment_date", "<", Carbon::today())
+        ->where("appointment_date", "<=", Carbon::today())
+        ->where("status", "<>", "Pending")
         ->orderBy("appointment_date", "asc")
         ->orderBy("patient_id", "asc")
         ->get();
