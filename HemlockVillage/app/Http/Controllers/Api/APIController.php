@@ -445,10 +445,6 @@ class APIController extends Controller
             "message" => "Appointment updated successfully",
             "appointment" => $appointment
         ]);
-
-
-        // pass apointment model for current day back for docotr patient
-        // show form if appointmetn pending and is current date
     }
 
     /**
