@@ -11,7 +11,15 @@
 
             <div class="form-group">
                 <label>Patient ID Number</label>
-                <input type="text" id="patient-id" name="patient_id" placeholder="1">
+                <input type="text" id="patient-id" name="patient_id" readonly
+                    value="{{ $patientId ?? '' }}"
+                >
+            </div>
+
+            <div>
+                <p>First Name: {{ $first_name ?? "" }}</p>
+                <p>Last Name: {{ $last_name ?? "" }}</p>
+                <p>Date of Birth: {{ $date_of_birth ?? "" }}</p>
             </div>
 
             @foreach($appointments as $a)
@@ -19,14 +27,14 @@
                 <div class="form-group">
                     <label for="date">Date:</label>
                     <input type="date" id="date" readonly
-                        @isset($a->appointment_date) value="{{ $a->appointment_date }}" @endisset
+                        @isset($a['appointment_date']) value="{{ $a['appointment_date'] }}" @endisset
                     >
                 </div>
 
                 {{-- Comment section --}}
                 <div class="form-group">
                     <label for="comment">Comment:</label>
-                    <textarea id="comment" name="comment" rows="4" readonly>{{ $a->comment ?? "No comment" }}</textarea>
+                    <textarea id="comment" name="comment" rows="4" readonly>{{ $a['comment'] ?? "No comment" }}</textarea>
                 </div>
 
                 <h2>Prescription</h2>
@@ -43,17 +51,17 @@
                     <tbody>
                         <tr>
                             <td>Morning</td>
-                            <td>{{ $a->morning ?? 'Nothing prescribed' }}</td>
+                            <td>{{ $a['morning'] ?? 'Nothing prescribed' }}</td>
                         </tr>
 
                         <tr>
                             <td>Afternoon</td>
-                            <td>{{ $a->afternoon ?? 'Nothing prescribed' }}</td>
+                            <td>{{ $a['afternoon'] ?? 'Nothing prescribed' }}</td>
                         </tr>
 
                         <tr>
                             <td>Night</td>
-                            <td>{{ $a->night ?? 'Nothing prescribed' }}</td>
+                            <td>{{ $a['night'] ?? 'Nothing prescribed' }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -89,9 +97,19 @@
         </div>
 
         {{-- Pagination -- not showing up --}}
-        <div>
-            {!! $appointments->withQueryString()->links('pagination::bootstrap-5') !!}
-        </div>
+        @if($pagination)
+            <div class="pagination">
+                @if($pagination['prev_page_url'])
+                    <a href="{{ $pagination['prev_page_url'] }}">Previous</a>
+                @endif
+
+                <span>Page {{ $pagination['current_page'] }} of {{ $pagination['last_page'] }}</span>
+
+                @if($pagination['next_page_url'])
+                    <a href="{{ $pagination['next_page_url'] }}">Next</a>
+                @endif
+            </div>
+        @endif
 
         @include('navbar')
 
