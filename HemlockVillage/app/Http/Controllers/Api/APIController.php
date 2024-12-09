@@ -14,6 +14,7 @@ use App\Helpers\ControllerHelper;
 use App\Helpers\UpdaterHelper;
 use App\Models\Patient;
 use App\Models\Roster;
+use App\Models\Appointment;
 
 class APIController extends Controller
 {
@@ -285,12 +286,37 @@ class APIController extends Controller
         if (!$patient)
             abort("Patient with id { {$patientId} } not found");
 
-        return DB::table("appointments")
-			->where("patient_id", $patientId)
-			->whereDate("appointment_date", "<", $date)
-			->orderBy("appointment_date", "desc")
-			->select("id", "appointment_date", "comment", "morning", "afternoon", "night")
-			->paginate(1);
+        /**
+         * Data retrieval
+         */
+        $appointments = DB::table("appointments")
+            ->where("patient_id", $patientId)
+            ->whereDate("appointment_date", "<", $date)
+            ->orderBy("appointment_date", "desc")
+            ->select("id", "patient_id", "appointment_date", "comment", "morning", "afternoon", "night")
+            ->paginate(1);
+
+        $appointmentsData = $appointments->items();  // Actual appointment data as an array
+
+        // SO annoying to get pagination
+        $pagination = [
+            "current_page" => $appointments->currentPage(),
+            "last_page" => $appointments->lastPage(),
+            "per_page" => $appointments->perPage(),
+            "total" => $appointments->total(),
+            "next_page_url" => $appointments->nextPageUrl(),
+            "prev_page_url" => $appointments->previousPageUrl(),
+        ];
+
+        // Prepare the JSON response
+        return response()->json([
+            "appointments" => $appointmentsData,
+            "pagination" => $pagination,
+            "patientId" => $patientId,
+            "first_name" => $patient->user->first_name ?? null,
+            "last_name" => $patient->user->last_name ?? null,
+            "date_of_birth" => $patient->user->date_of_birth ?? null
+        ]);
     }
 
     /**
