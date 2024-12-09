@@ -155,7 +155,7 @@ class PageController extends Controller
                 // ];
 
                 return view("doctorshome")->with([
-                    "old" => HomeAPI::indexDoctor($userId),
+                    "data" => HomeAPI::indexDoctor($userId),
                     "upcoming" =>HomeAPI::showDoctor($doctorId, $date)
                 ]);
 
