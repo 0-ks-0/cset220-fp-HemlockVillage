@@ -77,6 +77,7 @@ Route::middleware([ CheckRole::class . ":3,5"])->group( function ()
 Route::middleware([ CheckRole::class . ":3"])->group( function ()
 {
     Route::get("/doctor/patients/{patientId}", fn($patientId) => PageController::showDoctorPatient($patientId));
+    Route::patch("/doctor/patients/{patientId}", fn($patientId) => PageController::updateDoctorPatient(request(), $patientId));
 });
 
 // ======== Employee Routes ========
