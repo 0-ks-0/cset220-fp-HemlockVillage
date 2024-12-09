@@ -71,7 +71,10 @@
             @if($isAppointmentDay)
                 <h2>New Prescription</h2>
 
-                <form action="">
+                <form action="/doctor/patients/{{ $patientId }}" method="post">
+                    @method("patch")
+                    @csrf
+
                     {{-- Comment --}}
                     <div class="form-group">
                         <label for="create_comment">Comment</label>
