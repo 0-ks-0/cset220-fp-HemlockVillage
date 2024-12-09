@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>Edit Role</title>
-        <link rel="stylesheet" href="css/editroles.css">
+		<link rel="stylesheet" href="{{ asset('./css/editroles.css') }}">
     </head>
 
     <body>

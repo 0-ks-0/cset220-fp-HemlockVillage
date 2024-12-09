@@ -20,17 +20,17 @@ class MealSeeder extends Seeder
         self::insertData(Patient::getId(5), "2024-11-01", "Missing", "Completed", "Completed");
 
         // Touchable
-        // self::insertData(Patient::getId(5), "2024-11-01", "Missing", "Completed", "Completed");
-        // self::insertData(Patient::getId(1), "2024-12-01", "Completed", "Completed", "Missing");
-        // self::insertData(Patient::getId(2), "2024-12-01", "Missing", "Completed", "Completed");
-        // self::insertData(Patient::getId(3), "2024-12-02", "Completed", "Missing", "Completed");
-        // self::insertData(Patient::getId(4), "2024-12-02", "Missing", "Missing", "Completed");
-        // self::insertData(Patient::getId(5), "2024-12-03", "Completed", "Completed", "Completed");
-        // self::insertData(Patient::getId(6), "2024-12-03", "Missing", "Completed", "Missing");
-        // self::insertData(Patient::getId(7), "2024-12-04", "Completed", "Missing", "Missing");
-        // self::insertData(Patient::getId(8), "2024-12-04", "Completed", "Completed", "Completed");
-        // self::insertData(Patient::getId(9), "2024-12-05", "Completed", "Completed", "Missing");
-        // self::insertData(Patient::getId(10), "2024-12-05", "Missing", "Missing", "Missing");
+        self::insertData(Patient::getId(35), "2024-11-10", "Missing", "Completed", "Completed");
+        self::insertData(Patient::getId(35), "2024-12-11", "Completed", "Completed", "Missing");
+        self::insertData(Patient::getId(37), "2024-12-09", "Missing", "Completed", "Completed");
+        self::insertData(Patient::getId(37), "2024-12-12", "Completed", "Missing", "Completed");
+        self::insertData(Patient::getId(39), "2024-12-11", "Missing", "Missing", "Completed");
+        self::insertData(Patient::getId(41), "2024-12-12", "Completed", "Completed", "Completed");
+        self::insertData(Patient::getId(41), "2024-12-11", "Missing", "Completed", "Missing");
+        self::insertData(Patient::getId(43), "2024-12-07", "Completed", "Missing", "Missing");
+        self::insertData(Patient::getId(43), "2024-12-08", "Completed", "Completed", "Completed");
+        self::insertData(Patient::getId(44), "2024-12-09", "Completed", "Completed", "Missing");
+        self::insertData(Patient::getId(45), "2024-12-09", "Missing", "Missing", "Missing");
     }
 
     private static function insertData($patientID, $mealDate, $breakfast, $lunch, $dinner): void

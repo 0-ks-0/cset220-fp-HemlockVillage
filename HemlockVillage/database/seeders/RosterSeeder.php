@@ -18,17 +18,17 @@ class RosterSeeder extends Seeder
         self::insertData("2024-11-03", 2, 3, 4, 5, 6, 7, 8);
 
         // Touchable - don't insert null values
-        // self::insertData("2024-11-03", 2, 3, 4, 5, 6, 7);
-        // self::insertData("2024-11-04", 1, 2, 8, 9, 10, null);
-        // self::insertData("2024-11-05", 3, 4, 11, 12, null, null);
-        // self::insertData("2024-11-06", 4, 5, 13, 14, 15, null);
-        // self::insertData("2024-11-07", 5, 6, 16, 17, 18, null);
-        // self::insertData("2024-11-08", 6, 7, 19, 20, 21, 22);
-        // self::insertData("2024-11-09", 7, 8, 23, 24, 25, null);
-        // self::insertData("2024-11-10", 8, 9, 26, 27, 28, null);
-        // self::insertData("2024-11-11", 9, 10, 29, 30, 31, null);
-        // self::insertData("2024-11-12", 10, 11, 32, 33, null, null);
-    }
+        self::insertData("2024-12-04", 21, 25, 4, 5, 6, 7);
+        self::insertData("2024-12-05", 22, 26, 8, 9, 10, 11);
+        self::insertData("2024-12-06", 23, 27, 11, 12, 13, 14);
+        self::insertData("2024-12-07", 24, 28, 13, 14, 15, 10);
+        self::insertData("2024-12-08", 21, 29, 14, 13, 12, 11);
+        self::insertData("2024-12-09", 22, 30, 13, 2, 3, 14);
+        self::insertData("2024-12-10", 23, 31, 13, 14, 15, 13);
+        self::insertData("2024-12-11", 24, 32, 5, 7, 8, 6);
+        self::insertData("2024-12-12", 21, 33, 13, 3, 2, 5);
+        self::insertData("2024-12-13", 22, 34, 12, 13, 2, 8);
+    } 
 
     private static function insertData($dateAssigned, $supervisorID, $doctorID, $caregiverOneID, $caregiverTwoID, $caregiverThreeID, $caregiverFourID): void
     {

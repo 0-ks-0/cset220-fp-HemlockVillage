@@ -1,7 +1,8 @@
 <html>
     <head>
         <title>Roster</title>
-        <link rel="stylesheet" href="css/mainstyle.css">
+		<link rel="stylesheet" href="{{ asset('./css/mainstyle.css') }}">
+
         <style>
             a{
                 color: #481502; 
@@ -82,5 +83,7 @@
             <a href="/create-roster" class="btn-primary">Create Roster</a>
 
         </div>
+        @include('navbar')
+
     </body>
 </html>

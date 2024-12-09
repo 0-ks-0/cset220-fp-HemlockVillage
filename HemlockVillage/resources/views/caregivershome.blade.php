@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>Caregiver's Home</title>
-        <link rel="stylesheet" href="css/mainstyle.css">
+		<link rel="stylesheet" href="{{ asset('./css/mainstyle.css') }}">
     </head>
 
     <body>
@@ -61,6 +61,7 @@
                 <button type="button" class="btn-secondary">Dashboard</button>
             </div>
         </div>
+        @include('navbar')
 
     </body>
 </html>

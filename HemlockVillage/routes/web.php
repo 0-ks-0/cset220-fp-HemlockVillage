@@ -24,6 +24,8 @@ Route::get("/test", function() {
     return view("editroster");
 });
 
+Route::get("/", fn() => PageController::landing());
+
 // ======== Authentication Routes ========
 Route::get("/signup", fn() => SignupController::index());
 Route::post("/signup", fn() => SignupController::store(request()));

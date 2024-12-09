@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>Family Home</title>
-        <link rel="stylesheet" href="css/mainstyle.css">
+		<link rel="stylesheet" href="{{ asset('./css/mainstyle.css') }}">
     </head>
     <body>
         <div class="container">

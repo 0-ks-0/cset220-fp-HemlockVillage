@@ -56,6 +56,8 @@
             top: 15px;
             right: 15px;
             z-index: 1;
+            text-align: right;
+            width: 50px;
         }
 
         .hamburger:hover {
@@ -86,18 +88,10 @@
             visibility: visible;
         }
 
-        .container {
-            margin-right: 250px;
-            padding: 20px;
-        }
-
         @media (max-width: 768px) {
             nav ul {
                 flex-direction: column;
                 align-items: center;
-            }
-            .container {
-                margin-right: 0;
             }
         }
     </style>
