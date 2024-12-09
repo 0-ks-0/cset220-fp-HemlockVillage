@@ -170,5 +170,7 @@
                 });
         }
     </script>
+    @include('navbar')
+
 </body>
 </html>

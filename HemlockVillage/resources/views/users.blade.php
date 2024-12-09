@@ -6,8 +6,7 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 		<title>Users</title>
-		<link rel="stylesheet" href="css/users.css">
-		{{-- <link rel="stylesheet" href="{{ asset("./css/style.css") }}"> --}}
+		<link rel="stylesheet" href="{{ asset("./css/users.css") }}">
 	</head>
 
 	<body>

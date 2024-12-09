@@ -6,8 +6,7 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 		<title>Sign Up</title>
-		<link rel="stylesheet" href="css/signup.css">
-		<link rel="stylesheet" href="{{ asset('./css/style.css') }}">
+		<link rel="stylesheet" href="{{ asset('./css/signup.css') }}">
 	</head>
 
 	<body>

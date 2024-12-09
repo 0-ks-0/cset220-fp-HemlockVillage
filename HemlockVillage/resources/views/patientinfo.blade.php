@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Information</title>
 
-    <link rel="stylesheet" href="{{ asset('./css/patientinfo.css') }}">
+    <link rel="stylesheet" href="{{ asset('./css/mainstyle.css') }}">
 </head>
 <body>
     <div class="container">
@@ -20,6 +20,20 @@
                     <th>Role</th>
                     <th>Date of Birth</th>
                     <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ $patient->id }}</td>
+                    <td>{{ $patient->user->first_name }} {{ $patient->user->last_name }}</td>
+                    <td>{{ $patient->user->email }}</td>
+                    <td>{{ $patient->user->role->role }}</td>
+                    <td>{{ $patient->user->date_of_birth }}</td>
+                    <td>{{ $patient->user->phone_number }}</td>
+                </tr>
+            </tbody>
+            <thead>
+                <tr>
                     <th>Family Code</th>
                     <th>Emergency Contact</th>
                     <th>Emergency Contact Phone</th>
@@ -30,12 +44,6 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ $patient->id }}</td>
-                    <td>{{ $patient->user->first_name }} {{ $patient->user->last_name }}</td>
-                    <td>{{ $patient->user->email }}</td>
-                    <td>{{ $patient->user->role->role }}</td>
-                    <td>{{ $patient->user->date_of_birth }}</td>
-                    <td>{{ $patient->phone }}</td>
                     <td>{{ $patient->family_code }}</td>
                     <td>{{ $patient->econtact_name }}</td>
                     <td>{{ $patient->econtact_phone }}</td>
@@ -46,17 +54,18 @@
             </tbody>
         </table>
 
-        <!-- Update Emergency Contact Form -->
         <div class="form-section">
-            <h2>Update Emergency Contact</h2>
-            <form action="{{ route('patients.updateEmergencyContact', $patient->id) }}" method="POST">
+            <h2>Update Group Number</h2>
+            <form action="{{ route('patients.updateGroupNumber', $patient->id) }}" method="POST">
                 @csrf
-                <label for="emergency_contact">Emergency Contact:</label>
-                <input type="text" id="emergency_contact" name="emergency_contact" value="{{ $patient->emergency_contact }}" required>
-                <button type="submit">Update Emergency Contact</button>
+                <label for="group_num">Group Number (1-4):</label>
+                <input type="number" id="group_num" name="group_num" value="{{ $patient->group_num }}" min="1" max="4" required>
+                <button type="submit">Update Group Number</button>
             </form>
-
         </div>
+
     </div>
+    @include('navbar')
+
 </body>
 </html>

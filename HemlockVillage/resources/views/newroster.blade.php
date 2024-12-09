@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>Create New Roster</title>
-        <link rel="stylesheet" href="css/mainstyle.css">
+        <link rel="stylesheet" href="{{ asset('./css/mainstyle.css') }}">
     </head>
 
     <body>
@@ -178,6 +178,7 @@
                 </div>
             </form>
         </div>
+        @include('navbar')
 
     </body>
 </html>

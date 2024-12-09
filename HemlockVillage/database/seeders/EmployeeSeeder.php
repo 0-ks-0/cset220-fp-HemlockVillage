@@ -27,14 +27,15 @@ class EmployeeSeeder extends Seeder
         self::insertData(12, 67_000);
 
         // Jamie's data
-        // self::insertData(1, 120_000);
-        // self::insertData(2, 90_000);
-        // self::insertData(3, 100_000);
-        // self::insertData(4, 65_000);
-        // self::insertData(7, 90_000);
-        // self::insertData(8, 45_500);
-        // self::insertData(9, 50_000);
-        // self::insertData(10, 70_500);
+        self::insertData(13, 24_000);        
+        self::insertData(14, 140_000);
+        self::insertData(15, 80_000);
+        self::insertData(16, 17_000);
+        self::insertData(17, 54_500);
+        self::insertData(23, 90_000);
+        self::insertData(22, 49_000);
+        self::insertData(21, 62_000);
+
     }
 
     private static function insertData($userID, $salary): void

@@ -56,6 +56,8 @@
             top: 15px;
             right: 15px;
             z-index: 1;
+            text-align: right;
+            width: 50px;
         }
 
         .hamburger:hover {
@@ -86,18 +88,10 @@
             visibility: visible;
         }
 
-        .container {
-            margin-right: 250px;
-            padding: 20px;
-        }
-
         @media (max-width: 768px) {
             nav ul {
                 flex-direction: column;
                 align-items: center;
-            }
-            .container {
-                margin-right: 0;
             }
         }
     </style>
@@ -116,17 +110,15 @@
                     <li><a href="{{ route('patientsearch') }}">Patients</a></li>
                     <li><a href="{{ route('employeesearch') }}">Employees</a></li>
                     <li><a href="{{ route('registrationapproval.index') }}">Registration Approval</a></li>
-                    <li><a href="">Roles</a></li>
+                    <li><a href="{{ route('rolecreation.index') }}">Roles</a></li>  
                     <li><a href="/report">Report</a></li>
                     <li><a href="/payment">Bills</a></li>
                 @elseif ($accessLevel === 2) {{-- Supervisor --}}
-                    <li><a href="{{ route('patientinfo.index') }}">Patients</a></li>
+                    <li><a href="{{ route('patientsearch') }}">Patients</a></li>
                     <li><a href="{{ route('employeesearch') }}">Employees</a></li>
-                    {{-- <li><a href="{{ route('roster.index') }}">Roster</a></li> --}}
                     <li><a href="/report">Report</a></li>
                 @elseif ($accessLevel === 3) {{-- Doctor --}}
                     <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li>
-                    {{-- <li><a href="{{ route('roster.index') }}">Roster</a></li> --}}
                     <li><a href="/home">Home</a></li>
                 @elseif ($accessLevel === 4) {{-- Caregiver --}}
                     <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li>
