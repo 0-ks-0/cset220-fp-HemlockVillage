@@ -306,6 +306,7 @@ class PageController extends Controller
             ->first()
             ->id ?? null;
 
+        // To test, set date to "2025-01-01"
         $appointments = APIController::showDoctorPatient($doctorId, $patientId, Carbon::today());
         $jsonDecoded = json_decode($appointments->getContent(), true);
 
