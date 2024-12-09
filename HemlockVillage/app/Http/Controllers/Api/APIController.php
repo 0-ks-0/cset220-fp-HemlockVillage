@@ -426,6 +426,16 @@ class APIController extends Controller
 
         $appointment = Appointment::find($request->appointment_id);
 
+        // Validate status to be pending
+        if ($appointment->status !== "Pending")
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Cannot update an appointment that is completed or missing",
+                "errors" => [ "Could not update the comment and prescriptions" ]
+            ], 400);
+        }
+
         // TODO validate that it is current date
 
         $appointment->update([
