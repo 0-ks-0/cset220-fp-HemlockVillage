@@ -17,30 +17,39 @@
 
                     <h2>Old Appointments</h2>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Patient ID</th>
-                                <th>Name</th>
-                                <th>Date</th>
-                                <th>Comment</th>
-                                <th>Morning Meds</th>
-                                <th>Afternoon Meds</th>
-                                <th>Night Meds</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Nicholas Hemlock</td>
-                                <td>2024-01-03</td>
-                                <td>- This dude is going to be zooted</td>
-                                <td>Perc 30</td>
-                                <td>Pepto</td>
-                                <td>Dogwater</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    @if($data->isEmpty())
+                        <p>No past appointments available.</p>
+                    @else
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Patient ID</th>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Comment</th>
+                                    <th>Morning Meds</th>
+                                    <th>Afternoon Meds</th>
+                                    <th>Night Meds</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @isset($data)
+                                    @foreach($data as $d)
+                                        <tr>
+                                            <td>{{ $d['patient_id'] }}</td>
+                                            <td>{{ $d['patient_name'] }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($d['appointment_date'])->format('M d, Y') }}</td>
+                                            <td>{{ $d['comment'] }}</td>
+                                            <td>{{ $d['prescription']['morning'] ?? 'N/A' }}</td>
+                                            <td>{{ $d['prescription']['afternoon'] ?? 'N/A' }}</td>
+                                            <td>{{ $d['prescription']['night'] ?? 'N/A' }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endisset
+                            </tbody>
+                        </table>
+                    @endif
 
                     <h2>Upcoming Appointments</h2>
 
