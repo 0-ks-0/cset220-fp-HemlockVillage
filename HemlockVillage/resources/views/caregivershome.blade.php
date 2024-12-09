@@ -89,12 +89,8 @@
                     @endisset
                 </table>
             @endif
-
-
-            <div class="form-group">
-                <button type="button" class="btn-secondary">Dashboard</button>
-            </div>
         </div>
+
         @include('navbar')
 
     </body>
