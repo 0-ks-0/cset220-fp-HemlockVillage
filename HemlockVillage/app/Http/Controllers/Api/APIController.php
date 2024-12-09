@@ -436,7 +436,7 @@ class APIController extends Controller
             ], 400);
         }
 
-        // TODO validate that it is current date
+        // TODO validate that it is current date -- but, difficult to test this functionlity if this is here
 
         $appointment->update([
             "comment" => $request->input("comment") ?? null,
