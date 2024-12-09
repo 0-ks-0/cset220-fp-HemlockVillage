@@ -214,7 +214,11 @@ class HomeAPI extends Controller
         // No roster created
         // --- Comment out for testing bypass
         if (!$roster)
-            return response()->json("No roster has been created for today { " . Carbon::today()->format("Y-m-d") . " }");
+        {
+            return response()->json([
+                "message" => "No roster has been created for today { " . Carbon::today()->format("Y-m-d") . " }"
+            ], 204); // 204 - No content
+        }
 
         /**
          * Find group num that caregiver is assigned for
@@ -234,7 +238,11 @@ class HomeAPI extends Controller
         // Caregiver is not on the roster
         // --- Comment out for testing bypass
         if (!$groupNum)
-            return response()->json("You are not assigned on the roster today { " . Carbon::today()->format("Y-m-d") . " }");
+        {
+            return response()->json([
+                "message" => "You are not assigned on the roster today { " . Carbon::today()->format("Y-m-d") . " }"
+            ], 204); // 204 - No content
+        }
 
         /**
          * Find all the patients under this group num
@@ -263,7 +271,10 @@ class HomeAPI extends Controller
                 "meal_status" => $meal["status_data"]
             ];
         }
-        return $data;
+
+        return response()->json([
+            "data" => $data
+        ]);
     }
 
     public static function showFamily($patientId, $familyCode, $date)
