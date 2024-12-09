@@ -28,14 +28,14 @@
             <form
                 id="payment_form"
 
-                {{-- For family --}}
-                @if(isset($accessLevel) && $accessLevel == 6 && isset($patientId))
+                {{-- For admin --}}
+                @if(isset($accessLevel) && $accessLevel == 1 && isset($patientId))
                     action="/payment/{{ $patientId }}"
                     method="post"
                 @endif
             >
-                {{-- Add token if family --}}
-                @if(isset($accessLevel) && $accessLevel == 6 && isset($patientId))
+                {{-- Add token if admin --}}
+                @if(isset($accessLevel) && $accessLevel == 1 && isset($patientId))
                     @csrf
                     @method("patch")
                 @endif
@@ -61,7 +61,7 @@
                         <p>{{ $bill }}</p>
                     </div>
 
-                    @if(isset($accessLevel) && $accessLevel == 6 && isset($patientId))
+                    @if(isset($accessLevel) && $accessLevel == 1 && isset($patientId))
                         <div class="form-group">
                             <label for="new-payment">New Payment:</label>
                             <input type="number" id="new-payment"

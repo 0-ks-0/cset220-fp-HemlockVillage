@@ -4,7 +4,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Doctors Home</title>
-        <link rel="stylesheet" href="css/doctorshome.css">
+        <link rel="stylesheet" href="{{ asset('css/doctorshome.css') }}">
+
+        <script src="{{ asset('./js/navigator.js') }}"></script>
+        <script src="{{ asset('./js/script.js') }}"></script>
     </head>
         <body>
 
@@ -17,36 +20,53 @@
 
                     <h2>Old Appointments</h2>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Patient ID</th>
-                                <th>Name</th>
-                                <th>Date</th>
-                                <th>Comment</th>
-                                <th>Morning Meds</th>
-                                <th>Afternoon Meds</th>
-                                <th>Night Meds</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Nicholas Hemlock</td>
-                                <td>2024-01-03</td>
-                                <td>- This dude is going to be zooted</td>
-                                <td>Perc 30</td>
-                                <td>Pepto</td>
-                                <td>Dogwater</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    @if($data->isEmpty())
+                        <p>No past appointments available.</p>
+                    @else
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Comment</th>
+                                    <th>Morning Meds</th>
+                                    <th>Afternoon Meds</th>
+                                    <th>Night Meds</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @isset($data)
+                                    @foreach($data as $d)
+                                        <tr onclick="setTop(`/doctor/patients/{{ $d['patient_id'] }}`)">
+                                            <td>{{ $d['patient_name'] }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($d['appointment_date'])->format('M d, Y') }}</td>
+                                            <td>{{ $d['status'] }}</td>
+                                            <td>{{ $d['comment'] }}</td>
+                                            <td>{{ $d['prescription']['morning'] ?? 'N/A' }}</td>
+                                            <td>{{ $d['prescription']['afternoon'] ?? 'N/A' }}</td>
+                                            <td>{{ $d['prescription']['night'] ?? 'N/A' }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endisset
+                            </tbody>
+                        </table>
+                    @endif
 
                     <h2>Upcoming Appointments</h2>
 
                     <div class="flexbox">
-                        <label for="date">Select Date</label>
-                        <input type="date" id="date" name="date" />
+                        <form method="get"
+                            onsubmit="submitHomePageWithDate(event)"
+                        >
+                            <label for="date">Till Date</label>
+                            <input type="date" id="date" name="date"
+                                min="{{ \Carbon\Carbon::today()->toDateString() }}"
+                            />
+
+                            <button type="submit">Submit</button>
+                        </form>
 
                         <table>
                             <thead>
@@ -57,17 +77,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Gage Cooper</td>
-                                    <td>2024-04-12</td>
-                                    <td><button type="button">View Patient Details</button></td>
-                                </tr>
+                                @isset($upcoming)
+                                    @if($upcoming->isEmpty())
+                                        <p>No upcoming appointments up to that date.</p>
+
+                                    @else
+                                        @foreach($upcoming as $u)
+                                            <tr>
+                                                <td>{{ $u["patient_name"] }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($u["appointment_date"])->format("M d, Y") }}</td>
+                                                <td><button onclick="setTop(`/doctor/patients/{{ $u['patient_id'] }}`)">View Patient Details</button></td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                @endisset
                             </tbody>
                         </table>
-                    </div>
-
-                    <div class="flexbox">
-                        <button class="secondbutton" onclick="window.location.href='/home'">View Dashboard</button>
                     </div>
                 </div>
             @endsection

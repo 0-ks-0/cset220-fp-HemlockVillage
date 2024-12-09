@@ -58,9 +58,10 @@ class PageController extends Controller
                 ]);
 
             case 4: // Caregiver
-                // return HomeAPI::showCaregiver(4, "2024-11-03");
-
                 $caregiverId = Employee::getId($userId);
+
+                // return HomeAPI::showCaregiver($caregiverId, "2024-11-03");
+                // return HomeAPI::showCaregiver($caregiverId, Carbon::today());
 
                 return view("caregivershome")->with([
                     "data" => HomeAPI::showCaregiver($caregiverId, Carbon::today())
@@ -154,7 +155,7 @@ class PageController extends Controller
                 // ];
 
                 return view("doctorshome")->with([
-                    "old" => HomeAPI::indexDoctor($userId),
+                    "data" => HomeAPI::indexDoctor($userId),
                     "upcoming" =>HomeAPI::showDoctor($doctorId, $date)
                 ]);
 
@@ -224,6 +225,7 @@ class PageController extends Controller
          */
         // To test, pass date as 2024-11-03
         $reponse = APIController::showRoster(Carbon::today()->format("Y-m-d"));
+        // $reponse = APIController::showRoster("2024-11-03");
         $jsonDecoded = json_decode($reponse->getContent(), true);
 
         // No roster

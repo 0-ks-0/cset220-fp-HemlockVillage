@@ -47,8 +47,8 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
     Route::post("/roster/create", fn() => PageController::storeRosterForm(request()));
 });
 
-// ======== Admin and Family Access Routes ========
-Route::middleware([CheckRole::class . ":1,6"])->group(function ()
+// ======== Admin Access Routes ========
+Route::middleware([CheckRole::class . ":1"])->group(function ()
 {
     // Payment / Bill
     Route::get("/payment", fn() => PageController::indexPayment());
