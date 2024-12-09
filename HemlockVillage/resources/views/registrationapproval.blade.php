@@ -8,41 +8,46 @@
     <link rel="stylesheet" href="{{ asset('./css/mainstyle.css') }}">
 </head>
 <body>
-
     <div class="container">
         <h1>Registration Approval</h1>
 
         @if(session('success'))
-            <div class="alert alert-success">
+            <div style="color: green; margin-bottom: 20px;">
                 {{ session('success') }}
             </div>
         @endif
+
         @if(session('error'))
-            <div class="alert alert-danger">
+            <div style="color: red; margin-bottom: 20px;">
                 {{ session('error') }}
             </div>
         @endif
 
-        @foreach ($patients as $patient)
-            <div class="approval-form">
-                <h3>{{ $patient->user->name }}</h3>
-                <p>Role: {{ $patient->user->role->role ?? 'N/A' }}</p>
-                <p>Email: {{ $patient->user->email }}</p>
-                <p>DOB: {{ $patient->user->date_of_birth }}</p>
-                <p>Phone Number: {{ $patient->user->phone_number }}</p>
+        @if ($users->isEmpty())
+            <p>No pending registrations found.</p>
+        @else
+            @foreach ($users as $user)
+                <div class="user-card">
+                    <h3>{{ $user->first_name }} {{ $user->last_name }}</h3>
+                    <p>Email: {{ $user->email }}</p>
+                    <p>Date of Birth: {{ $user->date_of_birth }}</p>
+                    <p>Role: {{ $user->role_id }}</p>
+                    <p>Phone: {{ $user->phone_number }}</p>
 
-                <form action="{{ route('patients.approve', ['patientId' => $patient->id]) }}" method="POST">
-                    @csrf
-                    <button type="submit">Approve</button>
-                </form>
+                    <div class="action-buttons">
+                        <form action="{{ route('users.approve', $user->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-approve">Approve</button>
+                        </form>
 
-                <form action="{{ route('patients.reject', ['patientId' => $patient->id]) }}" method="POST">
-                    @csrf
-                    <button type="submit">Reject</button>
-                </form>
-            </div>
-        @endforeach
+                        <form action="{{ route('users.reject', $user->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-reject">Reject</button>
+                        </form>
+                    </div>
+                </div>
+            @endforeach
+        @endif
     </div>
-
 </body>
 </html>
