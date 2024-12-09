@@ -184,6 +184,9 @@ class HomeAPI extends Controller
         ])->first();
 
         return [
+            "patient_id" => $patient->id ?? null,
+            "patient_name" => $patient->user ? "{$patient->user->first_name} {$patient->user->last_name}" : null,
+            "date" => Carbon::parse($date)->toDateString() ?? "",
             "doctor_name" => $appointment ? "{$appointment->doctor->user->first_name} {$appointment->doctor->user->last_name}" : null, // Not null if there is an appointment that date
             "appointment_status" => $appointment ? $appointment->status : null, // Not null if there is an appointment that date
             "caregiver_name" => $caregiver ? "{$caregiver->first_name} {$caregiver->last_name}" : null,
