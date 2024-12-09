@@ -59,7 +59,9 @@
                             onsubmit="submitHomePageWithDate(event)"
                         >
                             <label for="date">Till Date</label>
-                            <input type="date" id="date" name="date" />
+                            <input type="date" id="date" name="date"
+                                min="{{ \Carbon\Carbon::today()->toDateString() }}"
+                            />
 
                             <button type="submit">Submit</button>
                         </form>
