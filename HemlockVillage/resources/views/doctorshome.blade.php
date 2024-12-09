@@ -29,6 +29,7 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Date</th>
+                                    <th>Status</th>
                                     <th>Comment</th>
                                     <th>Morning Meds</th>
                                     <th>Afternoon Meds</th>
@@ -41,6 +42,7 @@
                                         <tr onclick="setTop(`/doctor/patients/{{ $d['patient_id'] }}`)">
                                             <td>{{ $d['patient_name'] }}</td>
                                             <td>{{ \Carbon\Carbon::parse($d['appointment_date'])->format('M d, Y') }}</td>
+                                            <td>{{ $d['status'] }}</td>
                                             <td>{{ $d['comment'] }}</td>
                                             <td>{{ $d['prescription']['morning'] ?? 'N/A' }}</td>
                                             <td>{{ $d['prescription']['afternoon'] ?? 'N/A' }}</td>
