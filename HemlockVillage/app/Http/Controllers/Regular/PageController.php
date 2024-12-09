@@ -58,9 +58,10 @@ class PageController extends Controller
                 ]);
 
             case 4: // Caregiver
-                // return HomeAPI::showCaregiver(4, "2024-11-03");
-
                 $caregiverId = Employee::getId($userId);
+
+                // return HomeAPI::showCaregiver($caregiverId, "2024-11-03");
+                // return HomeAPI::showCaregiver($caregiverId, Carbon::today());
 
                 return view("caregivershome")->with([
                     "data" => HomeAPI::showCaregiver($caregiverId, Carbon::today())
