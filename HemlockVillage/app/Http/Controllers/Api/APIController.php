@@ -293,7 +293,15 @@ class APIController extends Controller
          */
         $appointments = DB::table("appointments")
             ->where("patient_id", $patientId)
-            ->whereDate("appointment_date", "<", $date)
+            ->where(function($query) use ($date)
+            {
+                $query->whereDate("appointment_date", "<", $date) // Include appointments before the given date
+                    ->orWhere(function($query) use ($date) // Include completed appointments for the given date
+                    {
+                        $query->whereDate("appointment_date", $date)
+                            ->where("status", "Completed");
+                    });
+            })
             ->where("doctor_id", $doctorId)
             ->orderBy("appointment_date", "desc")
             ->select("id", "patient_id", "appointment_date", "comment", "morning", "afternoon", "night")
