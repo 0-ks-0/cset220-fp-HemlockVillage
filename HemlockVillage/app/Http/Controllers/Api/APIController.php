@@ -323,7 +323,7 @@ class APIController extends Controller
         // To test, set date to 2025-01-01
         $pendingAppointment = Appointment::where('patient_id', $patientId)
             ->where("doctor_id", $doctorId)
-            ->whereDate('appointment_date', Carbon::today())
+            ->whereDate('appointment_date', $date)
             ->where('status', 'Pending')
             ->first();
 
