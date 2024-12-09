@@ -7,12 +7,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 use App\Helpers\ValidationHelper;
 use App\Helpers\ControllerHelper;
 use App\Helpers\UpdaterHelper;
 use App\Models\Patient;
 use App\Models\Roster;
+use App\Models\Appointment;
+
+use Carbon\Carbon;
 
 class APIController extends Controller
 {
@@ -271,6 +275,70 @@ class APIController extends Controller
         ], 200);
     }
 
+    public static function showDoctorPatient($doctorId, $patientId, $date)
+    {
+        /**
+         * Validation
+         */
+        ValidationHelper::validateDateFormat($date);
+
+        $patient = Patient::find($patientId);
+
+        // Patient does not exist
+        if (!$patient)
+            abort("Patient with id { {$patientId} } not found");
+
+        /**
+         * Data retrieval
+         */
+        $appointments = DB::table("appointments")
+            ->where("patient_id", $patientId)
+            ->where(function($query) use ($date)
+            {
+                $query->whereDate("appointment_date", "<", $date) // Include appointments before the given date
+                    ->orWhere(function($query) use ($date) // Include completed appointments for the given date
+                    {
+                        $query->whereDate("appointment_date", $date)
+                            ->where("status", "Completed");
+                    });
+            })
+            ->where("doctor_id", $doctorId)
+            ->orderBy("appointment_date", "desc")
+            ->select("id", "patient_id", "appointment_date", "comment", "morning", "afternoon", "night")
+            ->paginate(1);
+
+        $appointmentsData = $appointments->items();  // Actual appointment data as an array
+
+        // SO annoying to get pagination
+        $pagination = [
+            "current_page" => $appointments->currentPage(),
+            "last_page" => $appointments->lastPage(),
+            "per_page" => $appointments->perPage(),
+            "total" => $appointments->total(),
+            "next_page_url" => $appointments->nextPageUrl(),
+            "prev_page_url" => $appointments->previousPageUrl(),
+        ];
+
+        // Get pending patient appointment for current date
+        // To test, set date to 2025-01-01
+        $pendingAppointment = Appointment::where('patient_id', $patientId)
+            ->where("doctor_id", $doctorId)
+            ->whereDate('appointment_date', $date)
+            ->where('status', 'Pending')
+            ->first();
+
+        // Prepare the JSON response
+        return response()->json([
+            "appointments" => $appointmentsData,
+            "pagination" => $pagination,
+            "patientId" => $patientId,
+            "first_name" => $patient->user->first_name ?? null,
+            "last_name" => $patient->user->last_name ?? null,
+            "date_of_birth" => $patient->user->date_of_birth ?? null,
+            "pendingAppointment" => $pendingAppointment ?? null
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -334,6 +402,69 @@ class APIController extends Controller
             "message" => "$$amount has been paid",
             "bill" => $bill,
         ], 200);
+    }
+
+    public static function updateDoctorPatient(Request $request, $patientId, $doctorId)
+    {
+        $validatedData = Validator::make($request->all(), [
+            "appointment_id" => [ "required", "exists:appointments,id" ],
+            "comment" => [ "string", "nullable" ],
+            "morning_meds" => [ "string", "nullable" ],
+            "afternoon_meds" => [ "string", "nullable" ],
+            "night_meds" => [ "string", "nullable" ]
+        ]);
+
+        // Fail
+        if ($validatedData->fails())
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Could not update the comment and prescriptions",
+                "errors" => $validatedData->errors() ?? [ "Invalid input(s)" ]
+            ], 400);
+        }
+
+        $appointment = Appointment::find($request->appointment_id);
+
+        // Validate that the doctor is the one for the appointment
+        if ($appointment->doctor_id !== $doctorId)
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Doctor id for appointment does not match the logged in doctor",
+                "errors" => [ "Could not update the comment and prescriptions" ]
+            ], 400);
+        }
+
+        // Validate status to be pending
+        if ($appointment->status !== "Pending")
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Cannot update an appointment that is completed or missing",
+                "errors" => [ "Could not update the comment and prescriptions" ]
+            ], 400);
+        }
+
+        // TODO validate that it is current date -- but, difficult to test this functionlity if this is here
+
+        $appointment->update([
+            "comment" => $request->input("comment") ?? null,
+            "morning" => $request->input("morning_meds") ?? null,
+            "afternoon" => $request->input("afternoon_meds") ?? null,
+            "night" => $request->input("night_meds") ?? null,
+
+            "status" => "Completed"
+        ]);
+
+        // Update bill
+        UpdaterHelper::addAppointmentCharge($patientId);
+
+        return response()->json([
+            "success" => true,
+            "message" => "Appointment updated successfully",
+            "appointment" => $appointment
+        ]);
     }
 
     /**

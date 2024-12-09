@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\UserAPI;
@@ -291,5 +292,53 @@ class PageController extends Controller
         // Success
         return redirect()->back()
             ->with("message", $jsonDecoded["message"] ?? "$$request->amount has been paid");
+    }
+
+    /**
+     *
+     * Doctor's Patient
+     *
+     */
+    public static function showDoctorPatient($patientId)
+    {
+        $doctorId = DB::table("employees")
+            ->where("user_id", Auth::user()->id)
+            ->first()
+            ->id ?? null;
+
+        // To test, set date to "2025-01-01"
+        $appointments = APIController::showDoctorPatient($doctorId, $patientId, Carbon::today());
+        $jsonDecoded = json_decode($appointments->getContent(), true);
+
+        return view("patientofdoc")->with([
+            "pendingAppointment" => $jsonDecoded["pendingAppointment"] ?? null,
+            "appointments" => $jsonDecoded["appointments"] ?? [],
+            "pagination" => $jsonDecoded["pagination"] ?? [],
+            "patientId" => $jsonDecoded["patientId"] ?? null,
+            "first_name" => $jsonDecoded["first_name"] ?? null,
+            "last_name" => $jsonDecoded["last_name"] ?? null,
+            "date_of_birth" => $jsonDecoded["date_of_birth"] ?? null,
+        ]);
+    }
+
+    public static function updateDoctorPatient(Request $request, $patientId)
+    {
+        // Used to validate correct doctor for appointment
+        $doctorId = DB::table("employees")
+            ->where("user_id", Auth::user()->id)
+            ->first()
+            ->id ?? null;
+
+        $response =  APIController::updateDoctorPatient($request, $patientId, $doctorId);
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        if ($response->getStatusCode() !== 200)
+        {
+            return redirect()->back()
+                ->withErrors($jsonDecoded["errors"] ?? [ "Invalid input(s)" ]);
+        }
+
+        return redirect()->back()
+            ->with("message", $jsonDecoded["message"] ?? "Appointment updated successfully");
     }
 }

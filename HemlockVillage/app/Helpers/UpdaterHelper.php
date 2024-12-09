@@ -155,4 +155,32 @@ class UpdaterHelper
 			"patient" => $patient
 		]);
 	}
+
+	/**
+	 * Add an appointment charge. To be used when appointment is completed
+	 */
+	public static function addAppointmentCharge($patientId)
+	{
+		/**
+		 * Validation
+		 */
+		$patient = Patient::find($patientId);
+
+		if (!$patient)
+		{
+			abort(400, "Patient could not be found");
+		}
+
+		/**
+		 * Adding charge
+		 */
+		$patient->update([
+			"bill" => ( $patient->bill + self::$appointmentCharge ),
+		]);
+
+		return response()->json([
+			"message" => "The bill has been updated",
+			"patient" => $patient
+		]);
+	}
 }
