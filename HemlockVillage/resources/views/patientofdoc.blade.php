@@ -68,12 +68,15 @@
             @endforeach
 
             {{-- New prescription if appointment date --}}
-            @if($isAppointmentDay)
+            @if($pendingAppointment)
                 <h2>New Prescription</h2>
 
                 <form action="/doctor/patients/{{ $patientId }}" method="post">
                     @method("patch")
                     @csrf
+
+                    {{-- json_decode(.., true) converts to array --}}
+                    <input type="number" name="appointment_id" value="{{ $pendingAppointment['id'] ?? null }}" hidden>
 
                     {{-- Comment --}}
                     <div class="form-group">
