@@ -128,7 +128,7 @@
             @endif
         </div>
 
-        {{-- Pagination -- not showing up --}}
+        {{-- Pagination --}}
         @if($pagination)
             <div class="pagination">
                 @if($pagination['prev_page_url'])
