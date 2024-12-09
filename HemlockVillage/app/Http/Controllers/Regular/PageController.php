@@ -320,4 +320,22 @@ class PageController extends Controller
             "date_of_birth" => $jsonDecoded["date_of_birth"] ?? null,
         ]);
     }
+
+    public static function updateDoctorPatient(Request $request, $patientId)
+    {
+
+        // TODO validate doctor id with appointment later
+
+        $response =  APIController::updateDoctorPatient($request, $patientId);
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        if ($response->getStatusCode() !== 200)
+        {
+            return redirect()->back()
+                ->withErrors($jsonDecoded["errors"] ?? [ "Invalid input(s)" ]);
+        }
+
+        return redirect()->back()
+            ->with("message", $jsonDecoded["message"] ?? "Appointment updated successfully");
+    }
 }
