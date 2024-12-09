@@ -89,8 +89,6 @@
 
                     <div class="form-group">
                         <button type="submit">Create New Prescription</button>
-                        <button type="button">Patient Home</button>
-                        <button type="button" class="btn-secondary">Dashboard</button>
                     </div>
                 </form>
             @endif
