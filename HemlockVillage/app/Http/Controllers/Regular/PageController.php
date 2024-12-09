@@ -224,6 +224,7 @@ class PageController extends Controller
          */
         // To test, pass date as 2024-11-03
         $reponse = APIController::showRoster(Carbon::today()->format("Y-m-d"));
+        // $reponse = APIController::showRoster("2024-11-03");
         $jsonDecoded = json_decode($reponse->getContent(), true);
 
         // No roster
