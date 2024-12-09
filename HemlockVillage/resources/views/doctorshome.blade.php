@@ -26,7 +26,6 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Patient ID</th>
                                     <th>Name</th>
                                     <th>Date</th>
                                     <th>Comment</th>
@@ -39,7 +38,6 @@
                                 @isset($data)
                                     @foreach($data as $d)
                                         <tr onclick="setTop(`/doctor/patients/{{ $d['patient_id'] }}`)">
-                                            <td>{{ $d['patient_id'] }}</td>
                                             <td>{{ $d['patient_name'] }}</td>
                                             <td>{{ \Carbon\Carbon::parse($d['appointment_date'])->format('M d, Y') }}</td>
                                             <td>{{ $d['comment'] }}</td>
