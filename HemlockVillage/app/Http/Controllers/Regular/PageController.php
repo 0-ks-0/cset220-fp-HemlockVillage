@@ -28,8 +28,21 @@ class PageController extends Controller
 
     public static function users()
     {
+        $data = UserAPI::index();
+
+        $pagination = [
+            "current_page" => $data->currentPage(),
+            "last_page" => $data->lastPage(),
+            "per_page" => $data->perPage(),
+            "total" => $data->total(),
+            "next_page_url" => $data->nextPageUrl(),
+            "prev_page_url" => $data->previousPageUrl(),
+            "pages" => range(max(1, $data->currentPage() - 2), min($data->lastPage(), $data->currentPage() + 2))
+        ];
+
         return view("users")->with([
-            "data" => UserAPI::index()
+            "data" => UserAPI::index(),
+            "pagination" => $pagination
         ]);
     }
 
