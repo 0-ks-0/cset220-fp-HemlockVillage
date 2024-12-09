@@ -56,6 +56,7 @@ class ControllerHelper
 		->where("doctor_id", $doctorId)
 		->whereDate("appointment_date", "<=", $date)
 		->whereDate("appointment_date", ">=", Carbon::today()->format("Y-m-d"))
+		->where("status", "Pending")
 		->select("id", "appointment_date", "doctor_id", "patient_id")
 		->orderBy("appointment_date", "asc")
 		->orderBy("patient_id", "asc")
