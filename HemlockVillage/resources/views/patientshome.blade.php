@@ -1,8 +1,8 @@
 <html>
     <head>
         <title>Patients Home</title>
-        <link rel="stylesheet" href="css/app.css">
 
+        <link rel="stylesheet" href="{{ asset('./css/patientshome.css') }}">
     </head>
 
 
