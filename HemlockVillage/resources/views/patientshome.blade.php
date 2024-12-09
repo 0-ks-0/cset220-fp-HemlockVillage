@@ -3,9 +3,9 @@
         <title>Patients Home</title>
 
         <link rel="stylesheet" href="{{ asset('./css/patientshome.css') }}">
+
+        <script src="{{ asset('./js/script.js') }}"></script>
     </head>
-
-
 
     <body>
 
@@ -31,13 +31,22 @@
                 >
             </div>
 
+            {{-- Date form --}}
             <div class="flexbox">
-                <label>Date</label>
-                <input type="date" id="date" name="date" readonly
-                    value="{{ $data['date'] ?? '' }}"
+                <form method="get"
+                    onsubmit="submitHomePageWithDate(event)"
                 >
+                    <label>Date</label>
+                    <input type="date" id="date" name="date"
+                        value="{{ $data['date'] ?? '' }}"
+                        max="{{ \Carbon\Carbon::today()->toDateString() }}" {{-- Up to current date only --}}
+                    >
+
+                    <button type="submit">Submit</button>
+                </form>
             </div>
 
+            {{-- Patient info specific to a date --}}
             <div class="patient-info">
                 <h3>Appointments and Caregivers</h3>
                 <table>
