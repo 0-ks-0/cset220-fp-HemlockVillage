@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="{{ asset('css/doctorshome.css') }}">
 
         <script src="{{ asset('./js/navigator.js') }}"></script>
+        <script src="{{ asset('./js/script.js') }}"></script>
     </head>
         <body>
 
@@ -54,8 +55,14 @@
                     <h2>Upcoming Appointments</h2>
 
                     <div class="flexbox">
-                        <label for="date">Date</label>
-                        <input type="date" id="date" name="date" />
+                        <form method="get"
+                            onsubmit="submitHomePageWithDate(event)"
+                        >
+                            <label for="date">Till Date</label>
+                            <input type="date" id="date" name="date" />
+
+                            <button type="submit">Submit</button>
+                        </form>
 
                         <table>
                             <thead>
