@@ -9,12 +9,23 @@
 
         @section('content')
 
+        @php
+            $authUser = Auth::user();
+            $caregiverId = $authUser->employees->first()->id ?? null;
+            $caregiverName = "{$authUser->first_name} {$authUser->last_name}" ?? null;
+        @endphp
+
         <div class="container">
             <h1>Caregiver's Home</h1>
 
             <div class="form-group">
                 <label for="caregiver-id">Caregiver ID:</label>
-                <input type="text" id="caregiver-id" value="257" readonly>
+                <input type="text" id="caregiver-id" value="{{ $caregiverId ?? '' }}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="caregiver-id">Name:</label>
+                <input type="text" id="caregiver-id" value="{{ $caregiverName ?? ''}}" readonly>
             </div>
 
             <h2>List of Patients Today</h2>
