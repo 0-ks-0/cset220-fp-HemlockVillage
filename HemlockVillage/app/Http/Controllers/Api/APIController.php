@@ -424,7 +424,6 @@ class APIController extends Controller
             ], 400);
         }
 
-
         $appointment = Appointment::find($request->appointment_id);
 
         // TODO validate that it is current date
@@ -438,7 +437,8 @@ class APIController extends Controller
             "status" => "Completed"
         ]);
 
-        // TODO update bill
+        // Update bill
+        UpdaterHelper::addAppointmentCharge($patientId);
 
         return response()->json([
             "success" => true,
