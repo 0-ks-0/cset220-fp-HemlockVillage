@@ -78,10 +78,6 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="flexbox">
-                        <button class="secondbutton" onclick="window.location.href='/home'">View Dashboard</button>
-                    </div>
                 </div>
             @endsection
 
