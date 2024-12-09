@@ -75,10 +75,6 @@
                     </tr>
                 </table>
             </div>
-
-            <div class="flexbox">
-                <button type="button">View Roster</button>
-            </div>
         </div>
 
     </body>
