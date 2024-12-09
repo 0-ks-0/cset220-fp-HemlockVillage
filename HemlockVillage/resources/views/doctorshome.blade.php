@@ -78,13 +78,18 @@
                             </thead>
                             <tbody>
                                 @isset($upcoming)
-                                    @foreach($upcoming as $u)
-                                        <tr>
-                                            <td>{{ $u["patient_name"] }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($u["appointment_date"])->format("M d, Y") }}</td>
-                                            <td><button onclick="setTop(`/doctor/patients/{{ $u['patient_id'] }}`)">View Patient Details</button></td>
-                                        </tr>
-                                    @endforeach
+                                    @if($upcoming->isEmpty())
+                                        <p>No upcoming appointments up to that date.</p>
+
+                                    @else
+                                        @foreach($upcoming as $u)
+                                            <tr>
+                                                <td>{{ $u["patient_name"] }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($u["appointment_date"])->format("M d, Y") }}</td>
+                                                <td><button onclick="setTop(`/doctor/patients/{{ $u['patient_id'] }}`)">View Patient Details</button></td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 @endisset
                             </tbody>
                         </table>
