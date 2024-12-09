@@ -323,10 +323,13 @@ class PageController extends Controller
 
     public static function updateDoctorPatient(Request $request, $patientId)
     {
+        // Used to validate correct doctor for appointment
+        $doctorId = DB::table("employees")
+            ->where("user_id", Auth::user()->id)
+            ->first()
+            ->id ?? null;
 
-        // TODO validate doctor id with appointment later
-
-        $response =  APIController::updateDoctorPatient($request, $patientId);
+        $response =  APIController::updateDoctorPatient($request, $patientId, $doctorId);
         $jsonDecoded = json_decode($response->getContent(), true);
 
         if ($response->getStatusCode() !== 200)

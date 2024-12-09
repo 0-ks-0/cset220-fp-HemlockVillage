@@ -404,7 +404,7 @@ class APIController extends Controller
         ], 200);
     }
 
-    public static function updateDoctorPatient(Request $request, $patientId)
+    public static function updateDoctorPatient(Request $request, $patientId, $doctorId)
     {
         $validatedData = Validator::make($request->all(), [
             "appointment_id" => [ "required", "exists:appointments,id" ],
@@ -425,6 +425,16 @@ class APIController extends Controller
         }
 
         $appointment = Appointment::find($request->appointment_id);
+
+        // Validate that the doctor is the one for the appointment
+        if ($appointment->doctor_id !== $doctorId)
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Doctor id for appointment does not match the logged in doctor",
+                "errors" => [ "Could not update the comment and prescriptions" ]
+            ], 400);
+        }
 
         // Validate status to be pending
         if ($appointment->status !== "Pending")
