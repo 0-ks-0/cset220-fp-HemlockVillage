@@ -93,9 +93,6 @@
                 flex-direction: column;
                 align-items: center;
             }
-            .container {
-                margin-right: 0;
-            }
         }
     </style>
 </head>

@@ -1,7 +1,9 @@
 <html>
     <head>
         <title>Role Creation</title>
-        <link rel="stylesheet" href="css/rolecreation.css">
+		<link rel="stylesheet" href="{{ asset('./css/rolecreation.css') }}">
+
+    
     </head>
 
 

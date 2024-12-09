@@ -1,7 +1,8 @@
 <html>
     <head>
         <title>List of Patients / Search Patient</title>
-        <link rel="stylesheet" href="css/searchpatient.css">
+        <link rel="stylesheet" href="{{ asset('./css/searchpatient.css') }}">
+
     </head>
 
     <body>

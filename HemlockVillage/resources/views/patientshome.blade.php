@@ -1,12 +1,8 @@
 <html>
     <head>
         <title>Patients Home</title>
-        <link rel="stylesheet" href="css/patientshome.css">
-
+		<link rel="stylesheet" href="{{ asset('./css/patientshome.css') }}">
     </head>
-
-
-
     <body>
 
         {{-- @extends('layouts.app')

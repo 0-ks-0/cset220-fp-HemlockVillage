@@ -1,7 +1,8 @@
 <html>
     <head>
         <title>Create Prescription</title>
-        <link rel="stylesheet" href="css/createprescription.css">
+		<link rel="stylesheet" href="{{ asset('./css/createprescription.css') }}">
+
     </head>
 
     <body>

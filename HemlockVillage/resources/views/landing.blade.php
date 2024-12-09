@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>Home</title>
-    <link rel="stylesheet" href="css/landing.css">
+    <link rel="stylesheet" href="{{ asset('./css/landing.css') }}">
     <style>
         #home{
             background-image: url("images/homepic.jpg");

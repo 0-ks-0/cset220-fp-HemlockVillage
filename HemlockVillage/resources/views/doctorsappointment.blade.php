@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>Doctors Appointment Scheduling</title>
-        <link rel="stylesheet" href="css/doctorsappointments.css">
+		<link rel="stylesheet" href="{{ asset('./css/doctorsappointment.css') }}">
     </head>
 
 

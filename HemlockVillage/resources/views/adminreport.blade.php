@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>Admin Report</title>
-        <link rel="stylesheet" href="css/mainstyle.css">
+		<link rel="stylesheet" href="{{ asset('./css/mainstyle.css') }}">
         <style>
             body{
                 display: flex;
