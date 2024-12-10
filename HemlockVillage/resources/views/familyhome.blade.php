@@ -37,11 +37,13 @@
                     <thead>
                         <tr>
                             <th>Doctor's Name</th>
-                            <th>Doctor's Appointment</th>
+                            <th>Appointment Status</th>
                             <th>Caregiver's Name</th>
+
                             <th>Morning Meds</th>
                             <th>Afternoon Meds</th>
                             <th>Night Meds</th>
+
                             <th>Breakfast</th>
                             <th>Lunch</th>
                             <th>Dinner</th>
@@ -50,15 +52,30 @@
 
                     <tbody>
                         <tr>
-                            <td>Dr. Cooper</td>
-                            <td>2024-11-20</td>
-                            <td>Nicholas Helock</td>
-                            <td><input type="checkbox" name="morning-meds" id="morning_meds"></td>
-                            <td><input type="checkbox" name="afternoon-meds" id="afternoon_meds"></td>
-                            <td><input type="checkbox" name="night-meds" id="night_meds"></td>
-                            <td><input type="checkbox" name="breakfast" id="breakfast"></td>
-                            <td><input type="checkbox" name="lunch" id="lunch"></td>
-                            <td><input type="checkbox" name="dinner" id="dinner"></td>
+                            <td>{{ $data["doctor_name"] ?? "None"}}</td>
+                            <td>{{ $data["appointment_status"] ?? "None"}}</td>
+                            <td>{{ $data["caregiver_name"] ?? "None"}}</td>
+
+                            {{-- Meds --}}
+                            <td>
+                                <p>{{ $data["prescriptions"]["morning"] ?? "None" }}</p>
+                                <p>{{ $data["prescription_status"]["morning"] ?? "None" }}</p>
+                            </td>
+
+                            <td>
+                                <p>{{ $data["prescriptions"]["afternoon"] ?? "None" }}</p>
+                                <p>{{ $data["prescription_status"]["afternoon"] ?? "None" }}</p>
+                            </td>
+
+                            <td>
+                                <p>{{ $data["prescriptions"]["night"] ?? "None" }}</p>
+                                <p>{{ $data["prescription_status"]["night"] ?? "None" }}</p>
+                            </td>
+
+                            {{-- Meals --}}
+                            <td>{{ $data["meal_status"]["breakfast"] ?? "None" }}</td>
+                            <td>{{ $data["meal_status"]["lunch"] ?? "None" }}</td>
+                            <td>{{ $data["meal_status"]["dinner"] ?? "None" }}</td>
                         </tr>
                     </tbody>
                 </table>
