@@ -110,7 +110,7 @@
                     <li><a href="{{ route('patientsearch') }}">Patients</a></li>
                     <li><a href="{{ route('employeesearch') }}">Employees</a></li>
                     <li><a href="{{ route('registrationapproval.index') }}">Registration Approval</a></li>
-                    <li><a href="{{ route('rolecreation.index') }}">Roles</a></li>  
+                    <li><a href="{{ route('rolecreation.index') }}">Roles</a></li>
                     <li><a href="/report">Report</a></li>
                     <li><a href="/payment">Bills</a></li>
                 @elseif ($accessLevel === 2) {{-- Supervisor --}}
@@ -118,10 +118,10 @@
                     <li><a href="{{ route('employeesearch') }}">Employees</a></li>
                     <li><a href="/report">Report</a></li>
                 @elseif ($accessLevel === 3) {{-- Doctor --}}
-                    <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li>
+                    {{-- <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li> --}}
                     <li><a href="/home">Home</a></li>
                 @elseif ($accessLevel === 4) {{-- Caregiver --}}
-                    <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li>
+                    {{-- <l/i><a href="{{ route('patientofdoc.index') }}">Patients</a></li> --}}
                     {{-- <li><a href="{{ route('roster.index') }}">Roster</a></li> --}}
                     <li><a href="/home">Home</a></li>
                 @elseif ($accessLevel === 5) {{-- Patient --}}
