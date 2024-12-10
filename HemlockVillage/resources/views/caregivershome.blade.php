@@ -28,6 +28,24 @@
                 <input type="text" id="caregiver-id" value="{{ $caregiverName ?? ''}}" readonly>
             </div>
 
+            {{-- Error from PUT --}}
+            @if ($errors->any())
+                <div>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            {{-- Message from PUT --}}
+            @if (session('message'))
+                <div>
+                    <p>{{ session('message') }}</p>
+                </div>
+            @endif
+
             {{-- No roster created or not on roster --}}
             @if(isset($message))
                 <div>{{ $message }}</div>
