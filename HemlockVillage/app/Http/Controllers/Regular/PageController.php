@@ -16,6 +16,7 @@ use App\Models\Patient;
 use App\Models\Employee;
 
 use App\Helpers\ControllerHelper;
+use App\Helpers\ValidationHelper;
 use App\Http\Controllers\Api\APIController;
 use Carbon\Carbon;
 
@@ -109,9 +110,9 @@ class PageController extends Controller
                  * Validate that both patient id and family code are submitted
                  */
                 $validatedPatient = Validator::make(request()->all(), [
-                    "patient_id" => [ "required", "exists:patients,id" ],
-                    "family_code" => [ "required", "exists:patients,family_code" ],
-                ]);
+                    "patient_id" => [ "required", "size:16", "exists:patients,id" ],
+                    "family_code" => [ "required", "size:16", "exists:patients,family_code" ],
+                ], ValidationHelper::$familyHome);
 
                 // Fails validation
                 if ($validatedPatient->fails())
@@ -130,6 +131,7 @@ class PageController extends Controller
                 /**
                  * Retrieve response to check if success or failure
                  */
+                // $response = HomeAPI::showFamily($patientId, $familyCode, "2024-11-03");
                 $response = HomeAPI::showFamily($patientId, $familyCode, Carbon::today()->format("Y-m-d"));
                 $jsonContent = json_decode($response->getContent(), true);
 
