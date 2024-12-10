@@ -114,20 +114,16 @@ class PageController extends Controller
                     "family_code" => [ "required", "size:16", "exists:patients,family_code" ],
                 ], ValidationHelper::$familyHome);
 
+                $patientId = request()->get("patient_id");
+                $familyCode = request()->get("family_code");
+
+                session()->flash("familyCode", $familyCode);
+                session()->flash("patientId", $patientId);
+
                 // Fails validation
                 if ($validatedPatient->fails())
                     return redirect()->back()->withErrors($validatedPatient->errors());
 
-                /**
-                 * Data retrieval
-                 */
-                $patientId = request()->get("patient_id");
-                $familyCode = request()->get("family_code");
-
-                // --- To test, set date to 2024-11-03
-                // $date = "2024-11-03";
-
-                // http://127.0.0.1:8000/home?family_code=i0G6Go5kXoZtbvoN&patient_id=4i8x59jTnu7uNAo7
                 /**
                  * Retrieve response to check if success or failure
                  */
