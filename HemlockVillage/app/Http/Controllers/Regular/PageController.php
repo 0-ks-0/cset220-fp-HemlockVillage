@@ -460,13 +460,5 @@ class PageController extends Controller
             "doctorName" => $roster->doctor ? "{$roster->doctor->user->first_name} {$roster->doctor->user->last_name}" : null,
             "doctorId" => $roster->doctor->id ?? null
         ]);
-
-        return view("doctorsappointment")->with([
-            "appointmentDate" => $appointmentDate ?? null,
-            "patientId" => $patient->id ?? null,
-            "patientName" => "{$patient->user->first_name} {$patient->user->last_name}" ?? null,
-            "doctorName" => "{$roster->doctor->user->first_name} {$roster->doctor->user->last_name}" ?? null,
-            "doctorId" => $roster->doctor->id ?? null
-        ]);
     }
 }
