@@ -15,6 +15,8 @@ use App\Helpers\UpdaterHelper;
 use App\Models\Patient;
 use App\Models\Roster;
 use App\Models\Appointment;
+use App\Models\PrescriptionStatus;
+use App\Models\Meal;
 
 use Carbon\Carbon;
 
@@ -464,6 +466,106 @@ class APIController extends Controller
             "success" => true,
             "message" => "Appointment updated successfully",
             "appointment" => $appointment
+        ]);
+    }
+
+    public static function updateCaregiverHome(Request $request, $caregiverId, $patientId, $date)
+    {
+        /**
+         * Validation
+         */
+        // Check if it is the correct caregiver of a patient on date
+        $isCaregiverOfPatient = ControllerHelper::getPatientCaregiverByDate($patientId, $date)["caregiver_id"] === $caregiverId;
+
+        if (!$isCaregiverOfPatient)
+            abort(400, "Incorrect caregiver updating patient status or caregiver could not be found");
+
+        // Validate sent data for updating
+        $validatedData = Validator::make($request->all(), [
+            "prescription_status_id" => [ "nullable", "exists:prescription_statuses,id" ],
+            "meal_id" => [ "nullable", "exists:meals,id" ],
+
+            "morning_med" => [ "nullable", "in:Missing,Pending,Completed" ],
+            "afternoon_med" => [ "nullable", "in:Missing,Pending,Completed" ],
+            "night_med" => [ "nullable", "in:Missing,Pending,Completed" ],
+
+            "breakfast" => [ "nullable", "in:Missing,Pending,Completed" ],
+            "lunch" => [ "nullable", "in:Missing,Pending,Completed" ],
+            "dinner" => [ "nullable", "in:Missing,Pending,Completed" ]
+        ]);
+
+        // Fail
+        if ($validatedData->fails())
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Could not update status",
+                "errors" => $validatedData->errors()
+            ], 400);
+        }
+
+        /**
+         * Prescription status updation
+         */
+        // Validate prescription_status_id to belong to the patient
+        $prescriptionStatus = PrescriptionStatus::whereHas('appointment', function($q) use ($patientId)
+        {
+            $q->where('patient_id', $patientId);
+        })
+        ->where('id', $request->get('prescription_status_id'))
+        ->first();
+
+        if ($prescriptionStatus)
+        {
+            // Get the columns needed to update
+            $medToUpdate = [];
+
+            if ($request->has("morning_med")) $medToUpdate["morning"] = $request->input("morning_med");
+            if ($request->has("afternoon_med")) $medToUpdate["afternoon"] = $request->input("afternoon_med");
+            if ($request->has("night_med")) $medToUpdate["night"] = $request->input("night_med");
+
+            // Update if there is something to update
+            // TODO actually check if the value changed
+            if (!empty($prescriptionStatus)) $prescriptionStatus->update($medToUpdate);
+        }
+
+        /**
+         * Meal status updation
+         */
+        // Validate meal_id to belong to patient
+        $mealStatus = Meal::where('patient_id', $patientId)
+            ->where('id', $request->get("meal_id"))
+            ->whereDate("meal_date", $date)
+            ->first();
+
+        if ($mealStatus) {
+            // Get the columns needed to update for meals
+            $mealToUpdate = [];
+
+            if ($request->has("breakfast")) $mealToUpdate["breakfast"] = $request->input("breakfast");
+            if ($request->has("lunch")) $mealToUpdate["lunch"] = $request->input("lunch");
+            if ($request->has("dinner")) $mealToUpdate["dinner"] = $request->input("dinner");
+
+            // Update if there is something to update
+            // TODO actually check if the value changed
+            if (!empty($mealToUpdate)) $mealStatus->update($mealToUpdate);
+        }
+
+        // Updating did happen
+        if (!empty($prescriptionStatus) || !empty($mealToUpdate))
+        {
+            return response()->json([
+                "message" => "Patient data updated successfully",
+                "prescription_status" => $prescriptionStatus,
+                "meal_status" => $mealStatus
+            ]);
+        }
+
+        // Nothing to update
+        return response()->json([
+            "message" => "Nothing to update",
+            "prescription_status" => $prescriptionStatus,
+            "meal_status" => $mealStatus
         ]);
     }
 

@@ -18,7 +18,7 @@ class AppointmentSeeder extends Seeder
     public function run(): void
     {
         // Don't touch
-        self::insertData(Patient::getId(5), "2024-11-01", "2024-11-02", 3, "Completed", "low on iron", "take 6mg iron supplement", "take 6mg iron supplement", "take 7mg iron supplement");
+        self::insertData(Patient::getId(5), "2024-11-01", "2024-11-02", 3, "Completed", "low on iron", "take 6mg iron supplement", "take 6mg iron supplement", null);
         self::insertData(Patient::getId(5), "2024-11-02", "2024-12-03", 3, "Completed", "slightly low on iron", "take 6mg iron supplement", null, null);
         self::insertData(Patient::getId(5), date("Y-m-d"), "2025-01-01", 3, "Pending");
 

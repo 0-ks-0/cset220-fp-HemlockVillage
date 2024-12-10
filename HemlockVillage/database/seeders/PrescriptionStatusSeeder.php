@@ -15,7 +15,7 @@ class PrescriptionStatusSeeder extends Seeder
     public function run(): void
     {
         // Don't touch
-        self::insertData(1, "2024-11-03", "Completed", "Completed", "Completed");
+        self::insertData(1, "2024-11-03", "Completed", "Completed", null);
         self::insertData(2, "2024-12-04", "Completed", null, null);
 
         // Touchable

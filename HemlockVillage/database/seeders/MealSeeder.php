@@ -18,6 +18,7 @@ class MealSeeder extends Seeder
     {
         // Don't touch
         self::insertData(Patient::getId(5), "2024-11-01", "Missing", "Completed", "Completed");
+        self::insertData(Patient::getId(5), "2024-11-03", "Missing", "Completed", "Completed");
 
         // Touchable
         self::insertData(Patient::getId(35), "2024-11-10", "Missing", "Completed", "Completed");
