@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Meal extends Model
 {
-    protected $filalble = [
+    protected $fillable = [
         "patient_id",
         "meal_date",
         "breakfast",

@@ -192,7 +192,7 @@ class ControllerHelper
 		$patient = ModelHelper::getRow(Patient::class, "id", $patientId);
 
 		// Patient could not be found
-		if (!$patient) abort(404);
+		if (!$patient) abort(403, "Patient not found");
 
 		// Column to get the employee id in the rosters table
 		$column = self::convertGroupNumToRosterCaregiverColumn($patient->group_num);

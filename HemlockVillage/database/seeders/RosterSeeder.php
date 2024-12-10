@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use App\Models\Roster;
+use App\Models\Employee;
 
 class RosterSeeder extends Seeder
 {
@@ -18,17 +19,18 @@ class RosterSeeder extends Seeder
         self::insertData("2024-11-03", 2, 3, 4, 5, 6, 7, 8);
 
         // Touchable - don't insert null values
-        self::insertData("2024-12-04", 21, 25, 4, 5, 6, 7);
-        self::insertData("2024-12-05", 22, 26, 8, 9, 10, 11);
-        self::insertData("2024-12-06", 23, 27, 11, 12, 13, 14);
-        self::insertData("2024-12-07", 24, 28, 13, 14, 15, 10);
-        self::insertData("2024-12-08", 21, 29, 14, 13, 12, 11);
-        self::insertData("2024-12-09", 22, 30, 13, 2, 3, 14);
-        self::insertData("2024-12-10", 23, 31, 13, 14, 15, 13);
-        self::insertData("2024-12-11", 24, 32, 5, 7, 8, 6);
-        self::insertData("2024-12-12", 21, 33, 13, 3, 2, 5);
-        self::insertData("2024-12-13", 22, 34, 12, 13, 2, 8);
-    } 
+        // the caregiver ids should be within these values 4, 7-20, 71, 77
+        self::insertData("2024-12-04", Employee::getId(21), Employee::getId(25), Employee::getId(4), Employee::getId(5), Employee::getId(6), Employee::getId(7));
+        self::insertData("2024-12-05", Employee::getId(22), Employee::getId(26), Employee::getId(8), Employee::getId(9), Employee::getId(10), Employee::getId(11));
+        self::insertData("2024-12-06", Employee::getId(23), Employee::getId(27), Employee::getId(11), Employee::getId(12), Employee::getId(13), Employee::getId(14));
+        self::insertData("2024-12-07", Employee::getId(24), Employee::getId(28), Employee::getId(13), Employee::getId(14), Employee::getId(15), Employee::getId(10));
+        self::insertData("2024-12-08", Employee::getId(21), Employee::getId(29), Employee::getId(14), Employee::getId(13), Employee::getId(12), Employee::getId(11));
+        self::insertData("2024-12-09", Employee::getId(22), Employee::getId(30), Employee::getId(13), Employee::getId(2), Employee::getId(3), Employee::getId(14));
+        self::insertData("2024-12-10", Employee::getId(23), Employee::getId(31), Employee::getId(13), Employee::getId(14), Employee::getId(15), Employee::getId(13));
+        self::insertData("2024-12-11", Employee::getId(24), Employee::getId(32), Employee::getId(5), Employee::getId(7), Employee::getId(8), Employee::getId(6));
+        self::insertData("2024-12-12", Employee::getId(21), Employee::getId(33), Employee::getId(13), Employee::getId(3), Employee::getId(2), Employee::getId(5));
+        self::insertData("2024-12-13", Employee::getId(22), Employee::getId(34), Employee::getId(12), Employee::getId(13), Employee::getId(2), Employee::getId(8));
+    }
 
     private static function insertData($dateAssigned, $supervisorID, $doctorID, $caregiverOneID, $caregiverTwoID, $caregiverThreeID, $caregiverFourID): void
     {

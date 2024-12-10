@@ -184,6 +184,9 @@ class HomeAPI extends Controller
         ])->first();
 
         return [
+            "patient_id" => $patient->id ?? null,
+            "patient_name" => $patient->user ? "{$patient->user->first_name} {$patient->user->last_name}" : null,
+            "date" => Carbon::parse($date)->toDateString() ?? "",
             "doctor_name" => $appointment ? "{$appointment->doctor->user->first_name} {$appointment->doctor->user->last_name}" : null, // Not null if there is an appointment that date
             "appointment_status" => $appointment ? $appointment->status : null, // Not null if there is an appointment that date
             "caregiver_name" => $caregiver ? "{$caregiver->first_name} {$caregiver->last_name}" : null,
@@ -211,7 +214,11 @@ class HomeAPI extends Controller
         // No roster created
         // --- Comment out for testing bypass
         if (!$roster)
-            return response()->json("No roster has been created for today { " . Carbon::today()->format("Y-m-d") . " }");
+        {
+            return response()->json([
+                "message" => "No roster has been created for today { " . Carbon::today()->format("Y-m-d") . " }"
+            ], 204); // 204 - No content
+        }
 
         /**
          * Find group num that caregiver is assigned for
@@ -231,7 +238,11 @@ class HomeAPI extends Controller
         // Caregiver is not on the roster
         // --- Comment out for testing bypass
         if (!$groupNum)
-            return response()->json("You are not assigned on the roster today { " . Carbon::today()->format("Y-m-d") . " }");
+        {
+            return response()->json([
+                "message" => "You are not assigned on the roster today { " . Carbon::today()->format("Y-m-d") . " }"
+            ], 204); // 204 - No content
+        }
 
         /**
          * Find all the patients under this group num
@@ -250,7 +261,7 @@ class HomeAPI extends Controller
             $meal = ControllerHelper::getPatientMealStatusByDate(Patient::getId($p->id), $date);
 
             $data[] = [
-                "patient_id" => $p->id,
+                "patient_id" => Patient::getId($p->id),
                 "prescription_status_id" => $PrescriptionStatusAppointment->id ?? null,
                 "meal_id" => $meal["meal_id"],
                 "patient_name" => "{$p->first_name} {$p->last_name}",
@@ -260,7 +271,10 @@ class HomeAPI extends Controller
                 "meal_status" => $meal["status_data"]
             ];
         }
-        return $data;
+
+        return response()->json([
+            "data" => $data
+        ]);
     }
 
     public static function showFamily($patientId, $familyCode, $date)

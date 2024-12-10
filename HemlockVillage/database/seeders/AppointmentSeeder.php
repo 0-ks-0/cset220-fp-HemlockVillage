@@ -18,9 +18,12 @@ class AppointmentSeeder extends Seeder
     public function run(): void
     {
         // Don't touch
-        self::insertData(Patient::getId(5), "2024-11-01", "2024-11-02", 3, "Completed", "low on iron", "take 6mg iron supplement", "take 6mg iron supplement", "take 7mg iron supplement");
-        // self::insertData(Patient::getId(5), "2024-11-02", "2024-12-03", 3, "Completed", "slightly low on iron", "take 6mg iron supplement", null, null);
-        // self::insertData(Patient::getId(5), date("Y-m-d"), "2025-01-01", 3, "Pending");
+        self::insertData(Patient::getId(5), "2024-11-01", "2024-11-02", 3, "Completed", "low on iron", "take 6mg iron supplement", "take 6mg iron supplement", null);
+        self::insertData(Patient::getId(5), "2024-11-02", "2024-12-03", 3, "Completed", "slightly low on iron", "take 6mg iron supplement", null, null);
+        self::insertData(Patient::getId(5), date("Y-m-d"), "2025-01-01", 3, "Pending");
+
+        self::insertData(Patient::getId(5), '2024-11-05', '2024-11-06', 3, 'Completed', 'test order date', null, null, null, null, null);
+        self::insertData(Patient::getId(5), '2024-11-05', '2024-12-25', 3, 'Completed', 'test ordering of future date. this comment in reality should not be here, but just here to inform its purpose...', null, null, null, null, null);
 
         // // Touchable
         // self::insertData(Patient::getId(37), '2024-12-01', '2024-12-10', 25, "Pending", "Back pain", "apply heat therapy", "Take rest", 'morning');
@@ -33,7 +36,7 @@ class AppointmentSeeder extends Seeder
         // self::insertData(Patient::getId(47), '2024-12-01', '2024-12-09', 27, "Completed", "General fatigue", "increase rest",  "Hydrate regularly", 'afternoon');
         // self::insertData(Patient::getId(48), '2024-12-07', '2024-12-11', 26, "Pending", "Checkup after surgery", "monitor recovery",  "Follow post-surgery guidelines", 'night');
         // self::insertData(Patient::getId(35), '2024-12-05', '2024-12-09', 25, "Completed", "Minor injury", "apply antiseptic",  "Avoid heavy lifting", null);
-        
+
     }
 
     private static function insertData($patientID, $dateScheduled, $appointmentDate, $doctorID, $status, $comment = null, $morning = null, $afternoon = null, $night = null): void

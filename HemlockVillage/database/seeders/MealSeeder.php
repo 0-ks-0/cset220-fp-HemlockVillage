@@ -18,6 +18,7 @@ class MealSeeder extends Seeder
     {
         // Don't touch
         self::insertData(Patient::getId(5), "2024-11-01", "Missing", "Completed", "Completed");
+        self::insertData(Patient::getId(5), "2024-11-03", "Missing", "Completed", "Completed");
 
         // Touchable
         self::insertData(Patient::getId(35), "2024-11-10", "Missing", "Completed", "Completed");
@@ -29,8 +30,10 @@ class MealSeeder extends Seeder
         self::insertData(Patient::getId(41), "2024-12-11", "Missing", "Completed", "Missing");
         self::insertData(Patient::getId(43), "2024-12-07", "Completed", "Missing", "Missing");
         self::insertData(Patient::getId(43), "2024-12-08", "Completed", "Completed", "Completed");
-        self::insertData(Patient::getId(44), "2024-12-09", "Completed", "Completed", "Missing");
-        self::insertData(Patient::getId(45), "2024-12-09", "Missing", "Missing", "Missing");
+
+        // These patients don't exist in the patients table
+        // self::insertData(Patient::getId(44), "2024-12-09", "Completed", "Completed", "Missing");
+        // self::insertData(Patient::getId(45), "2024-12-09", "Missing", "Missing", "Missing");
     }
 
     private static function insertData($patientID, $mealDate, $breakfast, $lunch, $dinner): void

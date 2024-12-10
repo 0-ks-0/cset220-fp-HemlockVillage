@@ -81,6 +81,16 @@ class ValidationHelper
         'amount.max' => 'The payment amount cannot exceed the patient\'s bill of :max.',
     ];
 
+	public static $familyHome = [
+		"patient_id.required" => "The patient ID is mandatory.",
+		"patient_id.size" => "The patient ID must be exactly 16 characters long.",
+		"patient_id.exists" => "The patient ID does not exist in our records.",
+
+		"family_code.required" => "The family code is required.",
+		"family_code.size" => "The family code must be exactly 16 characters long.",
+		"family_code.exists" => "The family code does not exist in our records.",
+	];
+
 	/**
 	 * Validate the date format. Aborts if not valid
 	 *

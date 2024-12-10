@@ -16,6 +16,7 @@ use App\Models\Patient;
 use App\Models\Employee;
 
 use App\Helpers\ControllerHelper;
+use App\Helpers\ValidationHelper;
 use App\Http\Controllers\Api\APIController;
 use Carbon\Carbon;
 
@@ -28,8 +29,21 @@ class PageController extends Controller
 
     public static function users()
     {
+        $data = UserAPI::index();
+
+        $pagination = [
+            "current_page" => $data->currentPage(),
+            "last_page" => $data->lastPage(),
+            "per_page" => $data->perPage(),
+            "total" => $data->total(),
+            "next_page_url" => $data->nextPageUrl(),
+            "prev_page_url" => $data->previousPageUrl(),
+            "pages" => range(max(1, $data->currentPage() - 2), min($data->lastPage(), $data->currentPage() + 2))
+        ];
+
         return view("users")->with([
-            "data" => UserAPI::index()
+            "data" => UserAPI::index(),
+            "pagination" => $pagination
         ]);
     }
 
@@ -49,8 +63,6 @@ class PageController extends Controller
                 return redirect("/users");
 
             case 3: // Doctor
-                // TODO dynamically generate page with data
-
                 // return  HomeAPI::indexDoctor($userId);
 
                 return view("doctorshome")->with([
@@ -63,9 +75,18 @@ class PageController extends Controller
                 // return HomeAPI::showCaregiver($caregiverId, "2024-11-03");
                 // return HomeAPI::showCaregiver($caregiverId, Carbon::today());
 
-                return view("caregivershome")->with([
-                    "data" => HomeAPI::showCaregiver($caregiverId, Carbon::today())
-                ]);
+                // $response = HomeAPI::showCaregiver($caregiverId, "2024-11-03");
+                $response = HomeAPI::showCaregiver($caregiverId, Carbon::today());
+                $jsonDecoded = json_decode($response->getContent(), true);
+
+                if ($response->getStatusCode() === 201)
+                {
+                    return view("caregivershome")
+                        ->with("message", $jsonDecoded["message"] ?? "Could not locate data");
+                }
+
+                return view("caregivershome")
+                    ->with("data", $jsonDecoded["data"] ?? []);
 
             case 5: // Patient
                 $patientId = Patient::getId($userId);
@@ -89,9 +110,9 @@ class PageController extends Controller
                  * Validate that both patient id and family code are submitted
                  */
                 $validatedPatient = Validator::make(request()->all(), [
-                    "patient_id" => [ "required", "exists:patients,id" ],
-                    "family_code" => [ "required", "exists:patients,family_code" ],
-                ]);
+                    "patient_id" => [ "required", "size:16", "exists:patients,id" ],
+                    "family_code" => [ "required", "size:16", "exists:patients,family_code" ],
+                ], ValidationHelper::$familyHome);
 
                 // Fails validation
                 if ($validatedPatient->fails())
@@ -110,6 +131,7 @@ class PageController extends Controller
                 /**
                  * Retrieve response to check if success or failure
                  */
+                // $response = HomeAPI::showFamily($patientId, $familyCode, "2024-11-03");
                 $response = HomeAPI::showFamily($patientId, $familyCode, Carbon::today()->format("Y-m-d"));
                 $jsonContent = json_decode($response->getContent(), true);
 
@@ -342,5 +364,29 @@ class PageController extends Controller
 
         return redirect()->back()
             ->with("message", $jsonDecoded["message"] ?? "Appointment updated successfully");
+    }
+
+    /**
+     *
+     * Cargiver
+     *
+     */
+    public static function updateCaregiverHome(Request $request, $patientId)
+    {
+        $caregiverId = Auth::user()->employees->first()->id ?? null;
+
+        // $response = APIController::updateCaregiverHome($request, $caregiverId, $patientId, "2024-11-03");
+        $response = APIController::updateCaregiverHome($request, $caregiverId, $patientId, Carbon::today()->toDateString());
+
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        if ($response->getStatusCode() !== 200)
+        {
+            return redirect()->back()
+            ->withErrors($jsonDecoded["errors"] ?? [ "Fail to update" ]);
+        }
+
+        return redirect()->back()
+            ->with("message", $jsonDecoded["message"] ?? "No issues with updating");
     }
 }
