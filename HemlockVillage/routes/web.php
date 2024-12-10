@@ -82,6 +82,11 @@ Route::middleware([ CheckRole::class . ":3"])->group( function ()
     Route::patch("/doctor/patients/{patientId}", fn($patientId) => PageController::updateDoctorPatient(request(), $patientId));
 });
 
+// ======== Caregiver Access ========
+Route::middleware([ CheckRole::class . ":4"])->group( function ()
+{
+    Route::put("/caregiver/update/{patientId}", fn($patientId) => PageController::updateCaregiverHome(request(), $patientId));
+});
 // ======== Employee Routes ========
 // ***** Undefined variable $employee.
 // ***** Property [user] does not exist on this collection instance. This is because you are not looping through all the employees in the blade file so it is trying to find a key called `user` in the INDEX array
@@ -134,7 +139,7 @@ Route::post('/users/{userId}/reject', [RegistrationApprovalController::class, 'r
 
 
 
-// ======== Role Creation ========== 
+// ======== Role Creation ==========
 Route::get('/rolecreation', fn() => view('rolecreation'))->name('rolecreation.index');
 
 Route::post('/create-role', [RoleController::class, 'createRole'])->name('rolecreation.create');
