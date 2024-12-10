@@ -59,8 +59,14 @@
                                         @method("put")
                                         @csrf
 
+
                                         <tr>
-                                            <td>{{ $d["patient_name"] }}</td>
+                                            <td>{{ $d["patient_name"] }}
+
+                                                {{-- Ids --}}
+                                                <input type="number" name="prescription_status_id" value="{{ $d['prescription_status_id'] }}" readonly hidden>
+                                                <input type="number" name="meal_id" value="{{ $d['meal_id'] }}" readonly hidden>
+                                            </td>
 
                                             {{-- Meds --}}
                                             <td>
