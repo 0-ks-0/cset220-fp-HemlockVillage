@@ -341,6 +341,60 @@ class APIController extends Controller
         ]);
     }
 
+
+    public static function showSearchPatients(Request $request)
+    {
+        $query = DB::table("users")
+            ->join("patients", "users.id", "=", "patients.user_id")
+            ->select("users.id as user_id", "users.first_name as first_name", "users.last_name as last_name", "users.date_of_birth as date_of_birth", "patients.id as patient_id", "patients.econtact_name as econtact_name", "patients.econtact_phone as econtact_phone");
+
+        // Patient ID
+        if ($request->has("patient_id") && $request->patient_id != "")
+            $query->where("patients.id", $request->patient_id);
+
+        // User ID
+        if ($request->has("user_id")  && $request->user_id != "")
+            $query->where("patients.user_id", $request->user_id);
+
+        // Name
+        if ($request->has("name") && $request->name != "")
+            $query->whereRaw("concat(first_name, ' ', last_name) like ?", [ "%{$request->name}%" ]);
+
+        // Age
+        if ($request->has("age")  && $request->age != "")
+            $query->whereRaw("TIMESTAMPDIFF(YEAR, users.date_of_birth, NOW()) = ?", [ $request->age ]);
+
+        // Emergency contact phone
+        if ($request->has("emergency_contact")  && $request->emergency_contact != "")
+            $query->where("patients.econtact_phone",  "like", "%{$request->emergency_contact}%");
+
+        // Emergency contact name
+        if ($request->has("emergency_contact_name")  && $request->emergency_contact_name != "")
+            $query->where("patients.econtact_name", "like", "%{$request->emergency_contact_name}%");
+
+
+        // dd($query->toSql(), $query->getBindings());
+
+        // Execute the query and get the results
+        $patients = $query->get();
+
+        $patients = $patients->map(function ($patient) {
+            return [
+                'patient_id' => $patient->patient_id,
+                'user_id' => $patient->user_id,
+                'name' => "{$patient->first_name} {$patient->last_name}",
+                'date_of_birth' => $patient->date_of_birth,
+                'emergency_contact' => $patient->econtact_phone,
+                'emergency_contact_name' => $patient->econtact_name,
+            ];
+        });
+
+        // Return filtered patients in JSON format
+        return response()->json([
+            "data" => $patients ?? []
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      */
