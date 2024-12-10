@@ -19,6 +19,7 @@ class RosterSeeder extends Seeder
         self::insertData("2024-11-03", 2, 3, 4, 5, 6, 7, 8);
 
         // Touchable - don't insert null values
+        // the caregiver ids should be within these values 4, 7-20, 71, 77
         self::insertData("2024-12-04", Employee::getId(21), Employee::getId(25), Employee::getId(4), Employee::getId(5), Employee::getId(6), Employee::getId(7));
         self::insertData("2024-12-05", Employee::getId(22), Employee::getId(26), Employee::getId(8), Employee::getId(9), Employee::getId(10), Employee::getId(11));
         self::insertData("2024-12-06", Employee::getId(23), Employee::getId(27), Employee::getId(11), Employee::getId(12), Employee::getId(13), Employee::getId(14));
