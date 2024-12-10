@@ -27,18 +27,33 @@ class EmployeeSeeder extends Seeder
         self::insertData(12, 67_000);
 
         // Jamie's data
-        self::insertData(13, 24_000);        
+        self::insertData(13, 24_000);
         self::insertData(14, 140_000);
         self::insertData(15, 80_000);
         self::insertData(16, 17_000);
         self::insertData(17, 54_500);
-        self::insertData(23, 90_000);
-        self::insertData(22, 49_000);
         self::insertData(21, 62_000);
+        self::insertData(22, 49_000);
+        self::insertData(23, 90_000);
 
+        for ($i = 18; $i < 34; $i++)
+        {
+            if ($i >= 21 && $i <= 23) continue;
+
+            self::insertData($i);
+        }
+
+        self::insertData(68);
+        self::insertData(69);
+        self::insertData(70);
+        self::insertData(71);
+        self::insertData(74);
+        self::insertData(75);
+        self::insertData(76);
+        self::insertData(77);
     }
 
-    private static function insertData($userID, $salary): void
+    private static function insertData($userID, $salary = null): void
     {
         Employee::create([
             "user_id" => $userID,
