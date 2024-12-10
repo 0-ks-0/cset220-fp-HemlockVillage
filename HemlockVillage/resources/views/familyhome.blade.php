@@ -7,27 +7,32 @@
         <div class="container">
             <h1>Family Home</h1>
 
-            <div class="form-group">
-                <label for="date">Date:</label>
-                <input type="date" id="date" >
-            </div>
+            <form action="/home" method="get">
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" readonly
+                        value="{{ \Carbon\Carbon::today()->toDateString() }}"
+                    >
+                </div>
 
-            <div class="form-group">
-                <label for="family-code">Family Code:</label>
-                <input type="text" id="family-code" placeholder="Enter Family Code">
-            </div>
+                <div class="form-group">
+                    <label for="family-code">Family Code:</label>
+                    <input type="text" id="family-code" name="family_code" placeholder="Enter Family Code" maxlength="16" required>
+                </div>
 
-            <div class="form-group">
-                <label for="patient-id">Patient ID:</label>
-                <input type="text" id="patient-id" placeholder="Enter Patient ID">
-            </div>
+                <div class="form-group">
+                    <label for="patient-id">Patient ID:</label>
+                    <input type="text" id="patient-id" name="patient_id" placeholder="Enter Patient ID" maxlength="16" required>
+                </div>
 
-            <div class="form-group">
-                <button type="button">Search for Patient</button>
-                <button type="button" class="btn-secondary">Dashboard</button>
-            </div>
+                <div class="form-group">
+                    <button type="submit">Search for Patient</button>
+                </div>
+            </form>
 
-            <h2>Patient Information</h2>
+            @isset($data)
+                <h2>Patient Information</h2>
+
                 <table>
                     <thead>
                         <tr>
@@ -42,6 +47,7 @@
                             <th>Dinner</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <tr>
                             <td>Dr. Cooper</td>
@@ -56,6 +62,7 @@
                         </tr>
                     </tbody>
                 </table>
+            @endisset
         </div>
 
         @include('navbar')
