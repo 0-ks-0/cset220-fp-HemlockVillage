@@ -140,7 +140,7 @@
                                                     @else
                                                         <select name="breakfast" id="" required>
                                                             <option value="Missing" @selected($d["meal_status"]["breakfast"] === "Missing")>Missing</option>
-                                                            <option value="Pending" @selected($dd["meal_status"]["breakfast"] === "Pending")>Pending</option>
+                                                            <option value="Pending" @selected($d["meal_status"]["breakfast"] === "Pending")>Pending</option>
                                                             <option value="Completed" @selected($d["meal_status"]["breakfast"] === "Completed")>Completed</option>
                                                         </select>
                                                     @endif
