@@ -386,4 +386,23 @@ class PageController extends Controller
         return redirect()->back()
             ->with("message", $jsonDecoded["message"] ?? "No issues with updating");
     }
+
+    /**
+     *
+     * Search
+     *
+     */
+    public static function searchPatients(Request $request)
+    {
+        // Default search page
+        if (count(request()->all()) < 1)
+            return view("newPatientSearch");
+
+        // Actaully searching
+        $response = APIController::showSearchPatients($request);
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        return view("newPatientSearch")
+            ->with("data", $jsonDecoded["data"] ?? []);
+    }
 }
