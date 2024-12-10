@@ -365,4 +365,28 @@ class PageController extends Controller
         return redirect()->back()
             ->with("message", $jsonDecoded["message"] ?? "Appointment updated successfully");
     }
+
+    /**
+     *
+     * Cargiver
+     *
+     */
+    public static function updateCaregiverHome(Request $request, $patientId)
+    {
+        $caregiverId = Auth::user()->employees->first()->id ?? null;
+
+        // $response = APIController::updateCaregiverHome($request, $caregiverId, $patientId, "2024-11-03");
+        $response = APIController::updateCaregiverHome($request, $caregiverId, $patientId, Carbon::today()->toDateString());
+
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        if ($response->getStatusCode() !== 200)
+        {
+            return redirect()->back()
+            ->withErrors($jsonDecoded["errors"] ?? [ "Fail to update" ]);
+        }
+
+        return redirect()->back()
+            ->with("message", $jsonDecoded["message"] ?? "No issues with updating");
+    }
 }
