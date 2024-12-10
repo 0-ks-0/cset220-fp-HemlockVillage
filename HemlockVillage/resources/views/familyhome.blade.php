@@ -18,11 +18,18 @@
                 <div class="form-group">
                     <label for="family-code">Family Code:</label>
                     <input type="text" id="family-code" name="family_code" placeholder="Enter Family Code" maxlength="16" required>
+
+                    {{-- Error --}}
+                    @error("family_code") <div>{{ $message }}</div> @enderror
+
                 </div>
 
                 <div class="form-group">
                     <label for="patient-id">Patient ID:</label>
                     <input type="text" id="patient-id" name="patient_id" placeholder="Enter Patient ID" maxlength="16" required>
+
+                    {{-- Error --}}
+                    @error("patient_id") <div>{{ $message }}</div> @enderror
                 </div>
 
                 <div class="form-group">
