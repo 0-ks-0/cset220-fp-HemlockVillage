@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search for Employees</title>
     <style>
-        /* Styling remains unchanged */
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -108,8 +107,8 @@
 
             <div>
                 <label for="role">Search by Role</label>
-                <input type="text" id="role" placeholder="Enter Role">
-            </div>
+                <input type="number" id="role" placeholder="Enter Role ID (1-6)">
+            </div>            
 
             <div>
                 <label for="salary">Search by Salary</label>
@@ -125,52 +124,54 @@
 
     <script>
         function searchEmployees() {
-            const employeeId = document.getElementById('employee-id').value;
-            const userId = document.getElementById('user-id').value;
-            const name = document.getElementById('name').value;
-            const role = document.getElementById('role').value;
-            const salary = document.getElementById('salary').value;
+    const employeeId = document.getElementById('employee-id').value;
+    const userId = document.getElementById('user-id').value;
+    const name = document.getElementById('name').value;
+    const role = document.getElementById('role').value;
+    const salary = document.getElementById('salary').value;
 
-            const params = new URLSearchParams({
-                employee_id: employeeId,
-                user_id: userId,
-                name: name,
-                role: role,
-                salary: salary
+    const params = new URLSearchParams({
+        employee_id: employeeId,
+        user_id: userId,
+        name: name,
+        role: role,
+        salary: salary
+    });
+
+    fetch(`/employees/search?${params}`)
+        .then(response => response.json())
+        .then(data => {
+            const employeeList = document.getElementById('employee-list');
+            employeeList.innerHTML = ''; // Clear the current list
+
+            // Check if there are any results, if not, display message
+            if (data.length === 0) {
+                employeeList.innerHTML = '<p>No employees found matching your criteria.</p>';
+                return;
+            }
+
+            data.forEach(employee => {
+                const card = document.createElement('div');
+                card.classList.add('employee-card');
+                card.innerHTML = `
+                    <h3>Employee Name: ${employee.name}</h3>
+                    <p>User ID: ${employee.user_id}</p>
+                    <p>Employee ID: ${employee.employee_id}</p>
+                    <p>Role: ${employee.role}</p>
+                    <p>Salary: $${employee.salary}</p>
+                    <button onclick="window.location.href='/employeeinfo/${employee.employee_id}'">View Employee Info</button>
+                `;
+                employeeList.appendChild(card);
             });
+        })
+        .catch(err => {
+            console.error('Error:', err);
+            alert('An error occurred while searching for employees.');
+        });
+}
 
-            fetch(`/employees/search?${params}`)
-                .then(response => response.json())
-                .then(data => {
-                    const employeeList = document.getElementById('employee-list');
-                    employeeList.innerHTML = ''; // Clear the current list
-
-                    // Check if there are any results, if not, display message
-                    if (data.length === 0) {
-                        employeeList.innerHTML = '<p>No employees found matching your criteria.</p>';
-                    } else {
-                        data.forEach(employee => {
-                            const card = document.createElement('div');
-                            card.classList.add('employee-card');
-                            card.innerHTML = `
-                                <h3>Employee Name: ${employee.name}</h3>
-                                <p>User ID: ${employee.user_id}</p>
-                                <p>Employee ID: ${employee.employee_id}</p>
-                                <p>Role: ${employee.role}</p>
-                                <p>Salary: $${employee.salary}</p>
-                                <button onclick="window.location.href='/employeeinfo/${employee.employee_id}'">View Employee Info</button>
-                            `;
-                            employeeList.appendChild(card);
-                        });
-                    }
-                })
-                .catch(err => {
-                    console.error('Error:', err);
-                    alert('An error occurred while searching for employees.');
-                });
-        }
     </script>
-    @include('navbar')
+    
 
 </body>
 </html>

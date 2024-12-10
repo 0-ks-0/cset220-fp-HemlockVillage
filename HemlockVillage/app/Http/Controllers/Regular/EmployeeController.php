@@ -52,12 +52,12 @@ public function search(Request $request)
     }
     if ($request->name) {
         $query->whereHas('user', function ($q) use ($request) {
-            $q->where('first_name', 'like', '%' . $request->name . '%'); // Filter by first_name
+            $q->where('first_name', 'like', '%' . $request->name . '%');
         });
     }
-    if ($request->role_id) {
+    if ($request->role) {
         $query->whereHas('user', function ($q) use ($request) {
-            $q->where('role_id', $request->role_id); // Filter by role_id
+            $q->where('role_id', $request->role); // Filter by role_id
         });
     }
     if ($request->salary) {
@@ -72,12 +72,13 @@ public function search(Request $request)
         return [
             'employee_id' => $employee->id,
             'user_id' => $employee->user->id,
-            'name' => "{$employee->user->first_name} {$employee->user->last_name}", // Use first_name and last_name from the `users` table
-            'role' => $employee->user->role->role, // Include role name from `roles` table
-            'salary' => $employee->salary, // Include salary from the employees table
+            'name' => "{$employee->user->first_name} {$employee->user->last_name}",
+            'role' => $employee->user->role_id, // Include role_id from the `users` table
+            'salary' => $employee->salary,
         ];
     }));
 }
+
 
 
 

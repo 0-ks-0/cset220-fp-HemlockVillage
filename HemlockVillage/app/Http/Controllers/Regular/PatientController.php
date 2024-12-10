@@ -132,58 +132,54 @@ class PatientController extends Controller
 
     // This method handles patient search functionality with filters
     public function search(Request $request)
-    {
-        $query = Patient::with('user'); // Load user data associated with the patient
+{
+    $query = Patient::with('user'); // Load user data associated with the patient
 
-        // Search by patient_id
-        if ($request->patient_id) {
-            $query->where('id', $request->patient_id);
-        }
-
-        // Search by user_id
-        if ($request->user_id) {
-            $query->where('user_id', $request->user_id);
-        }
-
-        // Search by first name (from the `users` table)
-        if ($request->name) {
-            $query->whereHas('user', function ($q) use ($request) {
-                $q->where('first_name', 'like', '%' . $request->name . '%');
-            });
-        }
-
-        // Search by DOB (from the `users` table)
-        if ($request->age) {
-            $query->whereHas('user', function ($q) use ($request) {
-                $q->whereDate('date_of_birth', $request->age);
-            });
-        }
-
-        // Search by emergency contact (from the `patients` table)
-        if ($request->emergency_contact) {
-            $query->where('econtact_phone', 'like', '%' . $request->emergency_contact . '%');
-        }
-
-        // Search by emergency contact name (from the `patients` table)
-        if ($request->emergency_contact_name) {
-            $query->where('econtact_name', 'like', '%' . $request->emergency_contact_name . '%');
-        }
-
-        // Execute the query and get the results
-        $patients = $query->get();
-
-        // Return filtered patients in JSON format
-        return response()->json($patients->map(function ($patient) {
-            return [
-                'patient_id' => $patient->id,
-                'user_id' => $patient->user->id,
-                'name' => $patient->user->first_name,
-                'date_of_birth' => $patient->user->date_of_birth,
-                'emergency_contact' => $patient->econtact_phone,
-                'emergency_contact_name' => $patient->econtact_name,
-            ];
-        }));
+    // Add filters based on the request
+    if ($request->patient_id) {
+        $query->where('id', $request->patient_id);
     }
+    if ($request->user_id) {
+        $query->where('user_id', $request->user_id);
+    }
+    if ($request->name) {
+        $query->whereHas('user', function ($q) use ($request) {
+            $q->where('first_name', 'like', '%' . $request->name . '%');
+        });
+    }
+    if ($request->age) {
+        // Calculate the start and end range for the given age
+        $startDate = now()->subYears($request->age + 1)->addDay();
+        $endDate = now()->subYears($request->age);
+
+        $query->whereHas('user', function ($q) use ($startDate, $endDate) {
+            $q->whereBetween('date_of_birth', [$startDate, $endDate]);
+        });
+    }
+    if ($request->emergency_contact) {
+        $query->where('econtact_phone', 'like', '%' . $request->emergency_contact . '%');
+    }
+    if ($request->emergency_contact_name) {
+        $query->where('econtact_name', 'like', '%' . $request->emergency_contact_name . '%');
+    }
+
+    $patients = $query->get();
+
+    // Return filtered patients in JSON format
+    return response()->json($patients->map(function ($patient) {
+        return [
+            'patient_id' => $patient->id,
+            'user_id' => $patient->user->id,
+            'name' => "{$patient->user->first_name} {$patient->user->last_name}",
+            'age' => $patient->user->date_of_birth
+                ? now()->diffInYears($patient->user->date_of_birth) // Calculate age
+                : null,
+            'emergency_contact' => $patient->econtact_phone,
+            'emergency_contact_name' => $patient->econtact_name,
+        ];
+    }));
+}
+
 
     // Fetch all unapproved patients
     public function getUnapprovedPatients()
