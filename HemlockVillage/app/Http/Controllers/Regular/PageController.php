@@ -194,8 +194,6 @@ class PageController extends Controller
 
     public static function report()
     {
-        // insert into rosters values (null, "2024-11-01", 2,3,4, null, null, null, null, null);
-
         // return APIController::getReport(Carbon::today());
         // return APIController::getReport("2024-11-01");
 
