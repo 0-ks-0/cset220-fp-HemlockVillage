@@ -62,8 +62,6 @@ class PageController extends Controller
                 return redirect("/users");
 
             case 3: // Doctor
-                // TODO dynamically generate page with data
-
                 // return  HomeAPI::indexDoctor($userId);
 
                 return view("doctorshome")->with([
