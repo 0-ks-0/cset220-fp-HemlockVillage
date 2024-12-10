@@ -114,20 +114,16 @@ class PageController extends Controller
                     "family_code" => [ "required", "size:16", "exists:patients,family_code" ],
                 ], ValidationHelper::$familyHome);
 
+                $patientId = request()->get("patient_id");
+                $familyCode = request()->get("family_code");
+
+                session()->flash("familyCode", $familyCode);
+                session()->flash("patientId", $patientId);
+
                 // Fails validation
                 if ($validatedPatient->fails())
                     return redirect()->back()->withErrors($validatedPatient->errors());
 
-                /**
-                 * Data retrieval
-                 */
-                $patientId = request()->get("patient_id");
-                $familyCode = request()->get("family_code");
-
-                // --- To test, set date to 2024-11-03
-                // $date = "2024-11-03";
-
-                // http://127.0.0.1:8000/home?family_code=i0G6Go5kXoZtbvoN&patient_id=4i8x59jTnu7uNAo7
                 /**
                  * Retrieve response to check if success or failure
                  */
@@ -198,11 +194,12 @@ class PageController extends Controller
 
     public static function report()
     {
-        // insert into rosters values (null, "2024-11-01", 2,3,4, null, null, null, null, null);
-
         // return APIController::getReport(Carbon::today());
         // return APIController::getReport("2024-11-01");
 
+        // TODO pagiante in APIController::getReport
+
+        // return view("adminreport")->with("data", APIController::getReport("2024-11-03"));
         return view("adminreport")->with("data", APIController::getReport(Carbon::today()));
     }
 
@@ -388,5 +385,24 @@ class PageController extends Controller
 
         return redirect()->back()
             ->with("message", $jsonDecoded["message"] ?? "No issues with updating");
+    }
+
+    /**
+     *
+     * Search
+     *
+     */
+    public static function searchPatients(Request $request)
+    {
+        // Default search page
+        if (count(request()->all()) < 1)
+            return view("newPatientSearch");
+
+        // Actaully searching
+        $response = APIController::showSearchPatients($request);
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        return view("newPatientSearch")
+            ->with("data", $jsonDecoded["data"] ?? []);
     }
 }

@@ -11,50 +11,52 @@ class PatientController extends Controller
 {
     public function index(Request $request)
     {
-        $patients = collect();
+        // $patients = collect();
 
-        // Search logic
-        if ($request->hasAny(['patient_id', 'user_id', 'name', 'DOB', 'emergency_contact', 'emergency_contact_name'])) {
-            $query = Patient::with('user');
+        // // Search logic
+        // if ($request->hasAny(['patient_id', 'user_id', 'name', 'DOB', 'emergency_contact', 'emergency_contact_name'])) {
+        //     $query = Patient::with('user');
 
-            // Search by patient ID
-            if ($request->patient_id) {
-                $query->where('id', $request->patient_id);
-            }
-            // Search by user ID
-            if ($request->user_id) {
-                $query->where('user_id', $request->user_id);
-            }
-            // Search by first name
-            if ($request->name) {
-                $query->whereHas('user', function ($q) use ($request) {
-                    $q->where('first_name', 'like', '%' . $request->name . '%');
-                });
-            }
-            // Search by DOB
-            if ($request->DOB) {
-                $query->whereHas('user', function ($q) use ($request) {
-                    // Match the DOB exactly
-                    $q->whereDate('date_of_birth', $request->DOB);
-                });
-            }
-            // Search by emergency contact
-            if ($request->emergency_contact) {
-                $query->where('econtact_phone', 'like', '%' . $request->emergency_contact . '%');
-            }
-            // Search by emergency contact name
-            if ($request->emergency_contact_name) {
-                $query->where('econtact_name', 'like', '%' . $request->emergency_contact_name . '%');
-            }
+        //     // Search by patient ID
+        //     if ($request->patient_id) {
+        //         $query->where('id', $request->patient_id);
+        //     }
+        //     // Search by user ID
+        //     if ($request->user_id) {
+        //         $query->where('user_id', $request->user_id);
+        //     }
+        //     // Search by first name
+        //     if ($request->name) {
+        //         $query->whereHas('user', function ($q) use ($request) {
+        //             $q->where('first_name', 'like', '%' . $request->name . '%');
+        //         });
+        //     }
+        //     // Search by DOB
+        //     if ($request->DOB) {
+        //         $query->whereHas('user', function ($q) use ($request) {
+        //             // Match the DOB exactly
+        //             $q->whereDate('date_of_birth', $request->DOB);
+        //         });
+        //     }
+        //     // Search by emergency contact
+        //     if ($request->emergency_contact) {
+        //         $query->where('econtact_phone', 'like', '%' . $request->emergency_contact . '%');
+        //     }
+        //     // Search by emergency contact name
+        //     if ($request->emergency_contact_name) {
+        //         $query->where('econtact_name', 'like', '%' . $request->emergency_contact_name . '%');
+        //     }
 
-            $patients = $query->get();
-        }
+        //     $patients = $query->get();
+        // }
+
+        $patients = Patient::all();
 
         return response()->json($patients->map(function ($patient) {
             return [
                 'patient_id' => $patient->id,
                 'user_id' => $patient->user->id,
-                'name' => $patient->user->first_name ?? '',
+                'name' => "{$patient->user->first_name} {$patient->user->last_name}" ?? '',
                 'dob' => $patient->user->date_of_birth ?? '',
                 'emergency_contact' => $patient->econtact_phone,
                 'emergency_contact_name' => $patient->econtact_name,

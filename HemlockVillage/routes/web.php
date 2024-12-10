@@ -68,6 +68,13 @@ Route::middleware("auth")->group(function ()
      Route::get("/roster", fn() => PageController::showRoster())->name("roster.show");
 });
 
+// ======== Everyone but patient and family Access Routes ========
+Route::middleware([CheckRole::class . ":1,2,3,4"])->group(function ()
+{
+    // Search
+    Route::get("/search/patients", fn() => PageController::searchPatients(request()));
+});
+
 // ======== Doctor and Patient Access ========
 Route::middleware([ CheckRole::class . ":3,5"])->group( function ()
 {
