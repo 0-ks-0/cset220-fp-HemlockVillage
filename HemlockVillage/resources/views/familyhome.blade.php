@@ -40,20 +40,13 @@
             @isset($data)
                 <h2>Patient Information</h2>
 
+                {{-- Appointment and Caregiver --}}
                 <table>
                     <thead>
                         <tr>
                             <th>Doctor's Name</th>
                             <th>Appointment Status</th>
                             <th>Caregiver's Name</th>
-
-                            <th>Morning Meds</th>
-                            <th>Afternoon Meds</th>
-                            <th>Night Meds</th>
-
-                            <th>Breakfast</th>
-                            <th>Lunch</th>
-                            <th>Dinner</th>
                         </tr>
                     </thead>
 
@@ -62,24 +55,55 @@
                             <td>{{ $data["doctor_name"] ?? "None"}}</td>
                             <td>{{ $data["appointment_status"] ?? "None"}}</td>
                             <td>{{ $data["caregiver_name"] ?? "None"}}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-                            {{-- Meds --}}
+                {{-- Meds --}}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Morning Meds</th>
+                            <th>Afternoon Meds</th>
+                            <th>Night Meds</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            {{--  Morning --}}
                             <td>
-                                <p>{{ $data["prescriptions"]["morning"] ?? "None" }}</p>
+                                <textarea name="morning_prescription" id="morning_prescription" cols="30" rows="2">{{ $data["prescriptions"]["morning"] ?? "None" }}</textarea>
                                 <p>{{ $data["prescription_status"]["morning"] ?? "None" }}</p>
                             </td>
 
+                            {{-- Afternoon --}}
                             <td>
-                                <p>{{ $data["prescriptions"]["afternoon"] ?? "None" }}</p>
+                                <textarea name="afternoon_prescription" id="afternoon_prescription" cols="30" rows="2">{{ $data["prescriptions"]["afternoon"] ?? "None" }}</textarea>
                                 <p>{{ $data["prescription_status"]["afternoon"] ?? "None" }}</p>
                             </td>
 
+                            {{-- Night --}}
                             <td>
-                                <p>{{ $data["prescriptions"]["night"] ?? "None" }}</p>
+                                <textarea name="night_prescription" id="night_prescription" cols="30" rows="2">{{ $data["prescriptions"]["night"] ?? "None" }}</textarea>
                                 <p>{{ $data["prescription_status"]["night"] ?? "None" }}</p>
                             </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-                            {{-- Meals --}}
+                {{-- Meals --}}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Breakfast</th>
+                            <th>Lunch</th>
+                            <th>Dinner</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
                             <td>{{ $data["meal_status"]["breakfast"] ?? "None" }}</td>
                             <td>{{ $data["meal_status"]["lunch"] ?? "None" }}</td>
                             <td>{{ $data["meal_status"]["dinner"] ?? "None" }}</td>
