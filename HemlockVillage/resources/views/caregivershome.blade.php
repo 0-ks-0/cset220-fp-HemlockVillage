@@ -55,31 +55,111 @@
 
                             <tbody>
                                 @foreach($data as $d)
-                                    <form action="">
+                                    <form action="/caregiver/update/{{ $d['patient_id'] }}" method="post">
+                                        @method("put")
+                                        @csrf
+
                                         <tr>
-                                            <td>John Doe</td>
-                                            <td>Perc 30</td>
+                                            <td>{{ $d["patient_name"] }}</td>
+
+                                            {{-- Meds --}}
                                             <td>
-                                                <label><input type="checkbox" checked> Breakfast</label><br>
-                                                <label><input type="checkbox"> Lunch</label><br>
-                                                <label><input type="checkbox"> Dinner</label>
+                                                {{-- Morning --}}
+                                                <label for="">Morning</label>
+                                                <textarea name="" id="" cols="5" rows="1">{{ $d["prescriptions"]["morning"] ?? 'None' }}</textarea>
+
+                                                @if($d["prescriptions"]["morning"])
+                                                    <select name="morning_med" id="" required>
+                                                        <option value="Missing" @selected($d["prescription_status"]["morning"] === "Missing")>Missing</option>
+                                                        <option value="Pending" @selected($d["prescription_status"]["morning"] === "Pending")>Pending</option>
+                                                        <option value="Completed" @selected($d["prescription_status"]["morning"] === "Completed")>Completed</option>
+                                                    </select>
+                                                @endif
+
+                                                {{-- Afternoon --}}
+                                                    <label for="">Afternoon</label>
+                                                    <textarea name="" id="" cols="5" rows="1">{{ $d["prescriptions"]["afternoon"] ?? 'None' }}</textarea>
+
+                                                    @if($d["prescriptions"]["afternoon"])
+                                                        <select name="afternoon_med" id="" required>
+                                                            <option value="Missing" @selected($d["prescription_status"]["afternoon"] === "Missing")>Missing</option>
+                                                            <option value="Pending" @selected($d["prescription_status"]["afternoon"] === "Pending")>Pending</option>
+                                                            <option value="Completed" @selected($d["prescription_status"]["afternoon"] === "Completed")>Completed</option>
+                                                        </select>
+                                                    @endif
+
+                                                    {{-- Night --}}
+                                                    <label for="">Night</label>
+                                                    <textarea name="" id="" cols="5" rows="1">{{ $d["prescriptions"]["night"] ?? 'None' }}</textarea>
+
+                                                    @if($d["prescriptions"]["night"])
+                                                        <select name="night_med" id="" required>
+                                                            <option value="Missing" @selected($d["prescription_status"]["night"] === "Missing")>Missing</option>
+                                                            <option value="Pending" @selected($d["prescription_status"]["night"] === "Pending")>Pending</option>
+                                                            <option value="Completed" @selected($d["prescription_status"]["night"] === "Completed")>Completed</option>
+                                                        </select>
+                                                    @endif
+
                                             </td>
+
+                                            {{-- Meals --}}
                                             <td>
-                                                <button type="button" class="btn-success">Update Task Completion</button>
-                                                <button type="button" class="btn-primary">Patient Details</button>
+                                                {{-- Breakfast --}}
+                                                <div>
+                                                    <label for="">Breakfast</label>
+
+                                                    {{-- No status --}}
+                                                    @if(!$d["meal_status"]["breakfast"])
+                                                        None
+
+                                                    {{-- Status exists --}}
+                                                    @else
+                                                        <select name="breakfast" id="" required>
+                                                            <option value="Missing" @selected($d["meal_status"]["breakfast"] === "Missing")>Missing</option>
+                                                            <option value="Pending" @selected($dd["meal_status"]["breakfast"] === "Pending")>Pending</option>
+                                                            <option value="Completed" @selected($d["meal_status"]["breakfast"] === "Completed")>Completed</option>
+                                                        </select>
+                                                    @endif
+                                                </div>
+
+                                                {{-- Lunch --}}
+                                                <div>
+                                                    <label for="">Lunch</label>
+
+                                                    {{-- No status --}}
+                                                    @if(!$d["meal_status"]["lunch"])
+                                                        None
+                                                    {{-- Status exists --}}
+                                                    @else
+                                                        <select name="lunch" id="" required>
+                                                            <option value="Missing" @selected($d["meal_status"]["lunch"] === "Missing")>Missing</option>
+                                                            <option value="Pending" @selected($d["meal_status"]["lunch"] === "Pending")>Pending</option>
+                                                            <option value="Completed" @selected($d["meal_status"]["lunch"] === "Completed")>Completed</option>
+                                                        </select>
+                                                    @endif
+                                                </div>
+
+                                                {{-- Dinner --}}
+                                                <div>
+                                                    <label for="">Dinner</label>
+
+                                                    {{-- No status --}}
+                                                    @if(!$d["meal_status"]["dinner"])
+                                                        None
+                                                    {{-- Status exists --}}
+                                                    @else
+                                                        <select name="dinner" id="" required>
+                                                            <option value="Missing" @selected($d["meal_status"]["dinner"] === "Missing")>Missing</option>
+                                                            <option value="Pending" @selected($d["meal_status"]["dinner"] === "Pending")>Pending</option>
+                                                            <option value="Completed" @selected($d["meal_status"]["dinner"] === "Completed")>Completed</option>
+                                                        </select>
+                                                    @endif
+                                                </div>
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jane Smith</td>
-                                            <td>Perc 40</td>
+
+                                            {{-- Action button --}}
                                             <td>
-                                                <label><input type="checkbox" checked> Breakfast</label><br>
-                                                <label><input type="checkbox" checked> Lunch</label><br>
-                                                <label><input type="checkbox"> Dinner</label>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn-success">Update Task Completion</button>
-                                                <button type="button" class="btn-primary">Patient Details</button>
+                                                <button type="submit">Update</button>
                                             </td>
                                         </tr>
                                     </form>
