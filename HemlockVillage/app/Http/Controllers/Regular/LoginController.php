@@ -36,6 +36,8 @@ class LoginController extends Controller
 
     public static function logout(Request $request)
     {
+        $loggedIn = Auth::check();
+
         // Logout the authenticated user
         Auth::logout();
 
@@ -45,7 +47,8 @@ class LoginController extends Controller
         // Regenerate the session ID for security
         $request->session()->regenerateToken();
 
-        session()->flash('success', 'Logged out successfully!');
+        // Only display message if the user was logged in and successfully logged out
+        if ($loggedIn) session()->flash('success', 'Logged out successfully!');
 
         return redirect()->route("login.form");
     }
