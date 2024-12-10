@@ -101,5 +101,6 @@
 
                 fetchRoles();
             </script>
+            @include('navbar')
         </body>
 </html>

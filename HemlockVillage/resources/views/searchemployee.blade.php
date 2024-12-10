@@ -6,84 +6,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search for Employees</title>
     <style>
-        /* Styling remains unchanged */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .search-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .search-bar label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .search-bar input {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 100%;
-        }
-        .search-bar button {
-            grid-column: span 4;
-            background-color: #007bff;
-            color: white;
-            font-size: 16px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .search-bar button:hover {
-            background-color: #0056b3;
-        }
-        .employee-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            background: #fff;
-        }
-        .employee-card h3 {
-            margin: 0;
-            font-size: 18px;
-        }
-        .employee-card p {
-            margin: 5px 0;
-            font-size: 14px;
-            color: #555;
-        }
-        .employee-card button {
-            margin-top: 10px;
-            background-color: #28a745;
-            color: white;
-            font-size: 14px;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .employee-card button:hover {
-            background-color: #218838;
-        }
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f7f4ec;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ae370f;
+}
+
+.search-bar {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.search-bar label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 14px;
+    color: #481502;
+}
+
+.search-bar input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #c0bba6;
+    border-radius: 5px;
+    width: 80%;
+}
+
+.search-bar button {
+    grid-column: span 4;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #ae370f;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: center;
+}
+
+.search-bar button:hover {
+    background-color: #481502;
+}
+
+.employee-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
+
+.employee-card h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #ae370f;
+}
+
+.employee-card p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.employee-card button {
+    margin-top: 10px;
+    color: white;
+    font-size: 14px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #481502;
+    cursor: pointer;
+}
+
+.employee-card button:hover {
+    background-color: #ae370f;
+}
+
     </style>
 </head>
 <body>

@@ -49,5 +49,6 @@
             @endforeach
         @endif
     </div>
+    @include('navbar')
 </body>
 </html>
