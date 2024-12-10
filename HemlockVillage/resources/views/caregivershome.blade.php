@@ -2,6 +2,8 @@
     <head>
         <title>Caregiver's Home</title>
 		<link rel="stylesheet" href="{{ asset('./css/mainstyle.css') }}">
+
+        <script src="{{ asset("./js/navigator.js") }}"></script>
     </head>
 
     <body>
@@ -181,9 +183,10 @@
                                                 </div>
                                             </td>
 
-                                            {{-- Action button --}}
+                                            {{-- Action buttons --}}
                                             <td>
                                                 <button type="submit">Update</button>
+                                                <button type="button" onclick="setTop(`/patients/{{ $d['patient_id'] }}`)" >View Patient</button>
                                             </td>
                                         </tr>
                                     </form>
