@@ -261,7 +261,7 @@ class HomeAPI extends Controller
             $meal = ControllerHelper::getPatientMealStatusByDate(Patient::getId($p->id), $date);
 
             $data[] = [
-                "patient_id" => $p->id,
+                "patient_id" => Patient::getId($p->id),
                 "prescription_status_id" => $PrescriptionStatusAppointment->id ?? null,
                 "meal_id" => $meal["meal_id"],
                 "patient_name" => "{$p->first_name} {$p->last_name}",
