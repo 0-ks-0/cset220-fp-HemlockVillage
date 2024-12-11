@@ -65,9 +65,9 @@
             <div class="container">
                 <h1>Employee Info</h1>
                 <div class="employee-info">
-                    <p><strong>Name:</strong> {{ $employee->user->first_name }}</p>
+                    <p><strong>Name:</strong> {{ $employee->user->first_name }}  {{ $employee->user->last_name }}</p>
                     <p><strong>Email:</strong> {{ $employee->user->email }}</p>
-                    <p><strong>Role:</strong> {{ $employee->user->role_id }}</p>
+                    <p><strong>Role:</strong> {{ $employee->user->role->role }}</p>
                     <p><strong>Salary:</strong> $<span id="current-salary">{{ $employee->salary }}</span></p>
                 </div>
 
