@@ -50,6 +50,7 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
 
     // Appointment scheduling
     Route::get("/schedule", fn() => PageController::indexSchedule());
+    Route::post("/schedule", fn() => PageController::storeSchedule(request()));
 });
 
 // ======== Admin Access Routes ========
