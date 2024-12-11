@@ -4,25 +4,9 @@ namespace App\Http\Controllers\Regular; // This defines the namespace of your co
 
 use Illuminate\Support\Facades\Route;
 
-// Name space is defined in a way that you don't need to import all these controllers under app\Http\Controllers\Regular
-// use App\Http\Controllers\Regular\EmployeeController;
-// use App\Http\Controllers\Regular\PatientController;
-// use App\Http\Controllers\Regular\RosterController;
-// use App\Http\Controllers\Regular\HomeController;
-// use App\Http\Controllers\Regular\AuthController;
-// use App\Http\Controllers\Regular\DoctorController;
-// use App\Http\Controllers\Regular\RegistrationApprovalController;
-
 use App\Http\Middleware\CheckRole;
 
 require("rapi.php");
-
-Route::get("/", fn() => PageController::landing());
-
-// Nav Bar Routes
-Route::get("/test", function() {
-    return view("editroster");
-});
 
 Route::get("/", fn() => PageController::landing());
 
@@ -51,6 +35,21 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
     // Appointment scheduling
     Route::get("/schedule", fn() => PageController::indexSchedule());
     Route::post("/schedule", fn() => PageController::storeSchedule(request()));
+
+    // Employee search
+    Route::get('/searchemployee', fn() => view('searchemployee'))->name('employeesearch'); // Search form
+    Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search'); // Search logic
+
+    // Employee Info
+    Route::get('/employeeinfo/{id}', [EmployeeController::class, 'show'])->name('employeeinfo.show'); // Employee details
+
+    // Patient info updating group num
+    Route::post('/patients/{patientId}/update-group-num', [PatientController::class, 'updateGroupNumber'])->name('patients.updateGroupNumber');
+
+    // Rgistration approval
+    Route::get('/registration-approval', [RegistrationApprovalController::class, 'index'])->name('registrationapproval.index');
+    Route::post('/users/{userId}/approve', [RegistrationApprovalController::class, 'approve'])->name('users.approve');
+    Route::post('/users/{userId}/reject', [RegistrationApprovalController::class, 'reject'])->name('users.reject');
 });
 
 // ======== Admin Access Routes ========
@@ -60,6 +59,14 @@ Route::middleware([CheckRole::class . ":1"])->group(function ()
     Route::get("/payment", fn() => PageController::indexPayment());
     Route::get("/payment/{patientId}", fn($patientId) => PageController::showPayment($patientId));
     Route::patch("/payment/{patientId}", fn($patientId) => PageController::updatePayment(request(), $patientId));
+
+    // Role Creation
+    Route::get('/rolecreation', fn() => view('rolecreation'))->name('rolecreation.index');
+    Route::post('/create-role', [RoleController::class, 'createRole'])->name('rolecreation.create');
+    Route::get('/roles', [RoleController::class, 'getRoles'])->name('roles.fetch');
+
+    // Update salary
+    Route::post('/employees/{employeeId}/update-salary', [EmployeeController::class, 'updateSalary'])->name('employees.updateSalary');
 });
 
 // ======== All Authenticated Users Routes ========
@@ -77,6 +84,9 @@ Route::middleware([CheckRole::class . ":1,2,3,4"])->group(function ()
 {
     // Search
     Route::get("/search/patients", fn() => PageController::searchPatients(request()));
+
+    // Patient info
+    Route::get('/patients/{id}', [PatientController::class, 'show'])->name('patients.show'); // View patient info
 });
 
 // ======== Doctor and Patient Access ========
@@ -105,13 +115,13 @@ Route::get('/employees', [EmployeeController::class, 'index'])->name('employeein
 
 // Interesting... ideally, you would have the same route names for GET with search parameters (the things after the `?` in the url) since it should be the same page, hence the same url
 // Don't bother rn. need to get back end done ASAP
-Route::get('/searchemployee', fn() => view('searchemployee'))->name('employeesearch'); // Search form
-Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search'); // Search logic
-Route::get('/employeeinfo/{id}', [EmployeeController::class, 'show'])->name('employeeinfo.show'); // Employee details
+// Route::get('/searchemployee', fn() => view('searchemployee'))->name('employeesearch'); // Search form
+// Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search'); // Search logic
+// Route::get('/employeeinfo/{id}', [EmployeeController::class, 'show'])->name('employeeinfo.show'); // Employee details
 
 // Since these bring up the same page, just name the routes `/employees/{employeeId}`.
 // If you do change it, make sure to change the fetch API url or form action, whichever you were using
-Route::post('/employees/{employeeId}/update-salary', [EmployeeController::class, 'updateSalary'])->name('employees.updateSalary');
+// Route::post('/employees/{employeeId}/update-salary', [EmployeeController::class, 'updateSalary'])->name('employees.updateSalary');
 
 // ======== Patient Routes ========
 // It appears that you are trying to search in this function... so you get nothing if there are no query parameters. there is no view being returned
@@ -119,7 +129,7 @@ Route::post('/employees/{employeeId}/update-salary', [EmployeeController::class,
 // I didn't check how you coded and connected the code to the view, if it was through JS with fetch API, so double check this
 // what you can do is change `/patients/search` to `/patients` and change this function from `index` to `search`. Make sure to change the url for fetch API if you do change
 Route::get('/patients', [PatientController::class, 'index'])->name('patientinfo.index'); // Patient list
-Route::post('/patients/{patientId}/update-group-num', [PatientController::class, 'updateGroupNumber'])->name('patients.updateGroupNumber');
+// Route::post('/patients/{patientId}/update-group-num', [PatientController::class, 'updateGroupNumber'])->name('patients.updateGroupNumber');
 
 // this seems to get the data for all patients at least, and then applies the searching. this means that this will dispaly all the patients, even if there are no query parameters
 Route::get('/patients/search', [PatientController::class, 'search'])->name('patients.search'); // Search patient
@@ -127,35 +137,31 @@ Route::get('/patients/search', [PatientController::class, 'search'])->name('pati
 // Nice. I did not connect the two together that you can just return the patients table and use the relation functions to access values
 // I did fix the incorrect column names in the blade file so the name, role, and emergency contact name shows up
 // Also added some other info
-Route::get('/patients/{id}', [PatientController::class, 'show'])->name('patients.show'); // View patient info
+// Route::get('/patients/{id}', [PatientController::class, 'show'])->name('patients.show'); // View patient info
 
 // I think this was what you were thinking with the updating patient stuff.
 // Should allow updating of admission date and group num. It is not the emergency contact info
-Route::post('/patients/{patientId}/updateEmergencyContact', [PatientController::class, 'updateEmergencyContact'])->name('patients.updateEmergencyContact'); // Update emergency contact
+// Route::post('/patients/{patientId}/updateEmergencyContact', [PatientController::class, 'updateEmergencyContact'])->name('patients.updateEmergencyContact'); // Update emergency contact
 
-Route::post('/patients/{patientId}/approve', [PatientController::class, 'approveRegistration'])->name('patients.approve'); // Approve patient registration
+// Route::post('/patients/{patientId}/approve', [PatientController::class, 'approveRegistration'])->name('patients.approve'); // Approve patient registration
 
 // ======== Registration Approval Routes ========
 
 // Routes for approving or rejecting patients
-Route::post('/patients/{patientId}/approve', [RegistrationApprovalController::class, 'approvePatient'])->name('patients.approve');
-Route::post('/patients/{patientId}/reject', [RegistrationApprovalController::class, 'rejectPatient'])->name('patients.reject');
+// Route::post('/patients/{patientId}/approve', [RegistrationApprovalController::class, 'approvePatient'])->name('patients.approve');
+// Route::post('/patients/{patientId}/reject', [RegistrationApprovalController::class, 'rejectPatient'])->name('patients.reject');
 
+// Route::get('/registration-approval', [RegistrationApprovalController::class, 'index'])->name('registrationapproval.index');
 
-Route::get('/registration-approval', [RegistrationApprovalController::class, 'index'])->name('registrationapproval.index');
+// Route::post('/users/{userId}/approve', [RegistrationApprovalController::class, 'approve'])->name('users.approve');
+// Route::post('/users/{userId}/reject', [RegistrationApprovalController::class, 'reject'])->name('users.reject');
 
+// // ======== Role Creation ==========
+// Route::get('/rolecreation', fn() => view('rolecreation'))->name('rolecreation.index');
 
-Route::post('/users/{userId}/approve', [RegistrationApprovalController::class, 'approve'])->name('users.approve');
-Route::post('/users/{userId}/reject', [RegistrationApprovalController::class, 'reject'])->name('users.reject');
+// Route::post('/create-role', [RoleController::class, 'createRole'])->name('rolecreation.create');
 
-
-
-// ======== Role Creation ==========
-Route::get('/rolecreation', fn() => view('rolecreation'))->name('rolecreation.index');
-
-Route::post('/create-role', [RoleController::class, 'createRole'])->name('rolecreation.create');
-
-Route::get('/roles', [RoleController::class, 'getRoles'])->name('roles.fetch');
+// Route::get('/roles', [RoleController::class, 'getRoles'])->name('roles.fetch');
 
 
 
@@ -168,7 +174,7 @@ Route::get('/roles', [RoleController::class, 'getRoles'])->name('roles.fetch');
 // /home is the home page for ALL users. The page will load the correct data for each type of access level
 // Route::get('/doctorshome', [DoctorController::class, 'index'])->name('doctorshome.index'); // Doctor's homepage
 
-Route::get('/patientofdoc', [DoctorController::class, 'patients'])->name('patientofdoc.index'); // Patient list for doctor
+// Route::get('/patientofdoc', [DoctorController::class, 'patients'])->name('patientofdoc.index'); // Patient list for doctor
 
 // What is this? shows the same page as /patientofdoc. Again, /home for all users
 // Route::get('/caregivershome', [DoctorController::class, 'patients'])->name('caregivershome.index'); // Caregiver's homepage
