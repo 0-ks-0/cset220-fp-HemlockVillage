@@ -11,16 +11,15 @@
         <div class="container">
             <h1>Doctors Appointment Scheduling</h1>
 
-            @if ($errors->any())
-                <div class="">
-                    @foreach ($errors->all() as $error)
-                        <p>{{ $error }}</p>
-                    @endforeach
-                </div>
+            {{-- POST Success --}}
+            @if(session("message"))
+                <div>{{ session("message") }}</div>
             @endif
 
             {{-- Date and patient id --}}
             <form id="appointment-form" method="post" action="/schedule">
+                @csrf
+
                 {{-- Appointment date --}}
                 <div class="flexbox">
                     <label>Appointment Date</label>
@@ -46,6 +45,12 @@
                     @error("patient_id") <div>{{ $message }}</div> @enderror
                 </div>
 
+                {{-- Errors --}}
+                @if ($errors->has("doctor")) <div>{{ $errors->first("doctor") }}</div> @endif
+                @if ($errors->has("roster")) <div>{{ $errors->first("roster") }}</div> @endif
+                @if ($errors->has("duplicate")) <div>{{ $errors->first("duplicate") }}</div> @endif
+
+                {{--  --}}
                 @isset($patientId)
                     <div class="flexbox">
                         Patient Name: {{ $patientName ?? 'Could not retrieve name'}}
@@ -62,7 +67,7 @@
 
                         <select id="doctor" name="doctor" required>
                             <option value="" selected disabled>Choose a Doctor</option>
-                            <option value="{{ $doctorId ?? '' }}">{{ $doctorName ?? '' }}</option>
+                            <option value="{{ $doctorId ?? '' }}" @selected(old("doctor") === $doctorId)>{{ $doctorName ?? '' }}</option>
                         </select>
                     </div>
 
