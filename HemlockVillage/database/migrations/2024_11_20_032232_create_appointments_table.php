@@ -42,7 +42,7 @@ return new class extends Migration
         });
 
         // Ensure that the appointment date is after the day it was scheduled
-        DB::statement("ALTER TABLE appointments ADD CONSTRAINT CHECK (appointment_date > date_scheduled);");
+        // DB::statement("ALTER TABLE appointments ADD CONSTRAINT CHECK (appointment_date > date_scheduled);");
     }
 
     /**

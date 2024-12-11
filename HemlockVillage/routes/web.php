@@ -47,6 +47,10 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
     // Route::get('/rosters', [RosterController::class, 'index'])->name('rosters.index'); // Roster overview
     Route::get("/roster/create", fn() => PageController::indexrosterForm());
     Route::post("/roster/create", fn() => PageController::storeRosterForm(request()));
+
+    // Appointment scheduling
+    Route::get("/schedule", fn() => PageController::indexSchedule());
+    Route::post("/schedule", fn() => PageController::storeSchedule(request()));
 });
 
 // ======== Admin Access Routes ========
