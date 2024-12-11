@@ -118,6 +118,8 @@
                     <li><a href="/search/patients">Patients</a></li>
                     <li><a href="{{ route('employeesearch') }}">Employees</a></li>
                     <li><a href="/report">Report</a></li>
+                    <li><a href="/roster/create">Create Roster</a></li>
+
                 @elseif ($accessLevel === 3) {{-- Doctor --}}
                     {{-- <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li> --}}
                     <li><a href="/home">Home</a></li>
