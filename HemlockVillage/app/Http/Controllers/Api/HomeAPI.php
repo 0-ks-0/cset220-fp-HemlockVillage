@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Helpers\ControllerHelper;
-
+use App\Helpers\UpdaterHelper;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
@@ -183,6 +183,11 @@ class HomeAPI extends Controller
             [ "meal_date", "=", $date ]
         ])->first();
 
+        $response = UpdaterHelper::updateMeal($patientId, $date);
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        $mealStatus = $jsonDecoded["meal"];
+
         return [
             "patient_id" => $patient->id ?? null,
             "patient_name" => $patient->user ? "{$patient->user->first_name} {$patient->user->last_name}" : null,
@@ -196,9 +201,9 @@ class HomeAPI extends Controller
                 "night" => $prescriptionStatus->night ?? null,
                 ],
             "meal_status" => [
-                "breakfast" => $mealStatus->breakfast ?? null,
-                "lunch" => $mealStatus->lunch ?? null,
-                "dinner" => $mealStatus->dinner ?? null,
+                "breakfast" => $mealStatus->breakfast ?? $mealStatus["breakfast"] ?? null,
+                "lunch" => $mealStatus->lunch ?? $mealStatus["breakfast"] ?? null,
+                "dinner" => $mealStatus->dinner ?? $mealStatus["breakfast"] ?? null,
                 ]
         ];
     }
