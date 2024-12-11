@@ -18,6 +18,10 @@ class PatientSeeder extends Seeder
         // Don't touch
         self::insertData(Str::random(16), 5, Str::random(16), "John Doe", '111-111-1111', "Brother", "2024-11-01", "1", "2024-11-02", "2024-12-01", 15);
 
+        // Unapproved Patients
+        self::insertData(Str::random(16), 82, Str::random(16), "Mary Janes", '213-231-9786', "Brother", null, null, null, null, 0);
+        self::insertData(Str::random(16), 84, Str::random(16), "Mike Bender", '152-348-3480', "Brother", null, null, null, null, 0);
+
         // Touchable -- all these will need prescriptionUpdatedDate added
         self::insertData(Str::random(16), 35, Str::random(16), "Jane Smith", '111-222-3333', "Sister", "2024-09-01", 2, "2024-09-05", "2024-12-01", 20);
         self::insertData(Str::random(16), 36, Str::random(16), "Emily Johnson", '111-333-4444', "Mother", "2024-08-15", 3, "2024-08-20", "2024-12-02", 25);
