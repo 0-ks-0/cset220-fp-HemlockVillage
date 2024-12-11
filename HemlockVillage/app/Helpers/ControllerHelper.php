@@ -125,6 +125,23 @@ class ControllerHelper
 		];
 	}
 
+	public static function getPatientAppointmentByDate($patientId, $date)
+	{
+		$appointment = Appointment::where("patient_id", $patientId)
+			->whereDate("appointment_date", $date)->first();
+
+		return [
+			"appointment_id" => $appointment->id ?? null,
+			"doctor_id" => $appointment->doctor_id ?? null,
+			"doctor_name" => $appointment  ? "{$appointment->doctor->user->first_name} {$appointment->doctor->user->first_name}" : null,
+			"status" => $appointment->status ?? null,
+			"comment" => $appointment->comment ?? null,
+			"morning" => $appointment->morning ?? null,
+			"afternoon" => $appointment->afternoon ?? null,
+			"night" => $appointment->night ?? null,
+		];
+	}
+
 	/**
 	 * Get the prescription info from the appointments table
 	 *
