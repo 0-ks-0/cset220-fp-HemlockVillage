@@ -9,7 +9,6 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
         }
 
         nav {
@@ -48,7 +47,7 @@
         .hamburger {
             font-size: 30px;
             color: black;
-            background: #f4f4f4;
+            background: none;
             border: none;
             padding: 10px;
             cursor: pointer;
@@ -67,6 +66,7 @@
 
         .hamburger:focus {
             outline: none;
+            background-color: #f7f4ec;
         }
 
         nav.open {
@@ -113,6 +113,7 @@
                     <li><a href="{{ route('rolecreation.index') }}">Roles</a></li>
                     <li><a href="/report">Report</a></li>
                     <li><a href="/payment">Bills</a></li>
+                    <li><a href="/roster/create">Create Roster</a></li>
                 @elseif ($accessLevel === 2) {{-- Supervisor --}}
                     <li><a href="/search/patients">Patients</a></li>
                     <li><a href="{{ route('employeesearch') }}">Employees</a></li>

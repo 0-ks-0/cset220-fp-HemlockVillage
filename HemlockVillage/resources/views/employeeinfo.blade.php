@@ -5,60 +5,84 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Employee Info</title>
         <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f4f4;
-                margin: 20px;
-            }
-            .container {
-                max-width: 600px;
-                background: #ffffff;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                margin: auto;
-            }
-            .employee-info {
-                margin-bottom: 20px;
-            }
-            .employee-info p {
-                margin: 5px 0;
-            }
-            .update-section {
-                margin-top: 20px;
-            }
-            input[type="number"] {
-                padding: 10px;
-                width: 100%;
-                margin-bottom: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-            button {
-                padding: 10px 15px;
-                background-color: #28a745;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-            button:hover {
-                background-color: #218838;
-            }
-            .message {
-                margin-top: 10px;
-                padding: 10px;
-                border-radius: 5px;
-                display: none;
-            }
-            .success {
-                background-color: #d4edda;
-                color: #155724;
-            }
-            .error {
-                background-color: #f8d7da;
-                color: #721c24;
-            }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f4ec;
+            margin: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+
+        h1, h2 {
+            color: #ae370f;
+            margin-bottom: 15px;
+        }
+
+        .employee-info {
+            margin-bottom: 20px;
+        }
+
+        .employee-info p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #481502;
+        }
+
+        .employee-info strong {
+            color: #ae370f;
+        }
+
+        .update-section {
+            margin-top: 20px;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #c0bba6;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #ae370f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #481502;
+        }
+
+        .message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
         </style>
     </head>
         <body>

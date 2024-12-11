@@ -2,7 +2,11 @@
     <head>
         <title>List of Patients / Search Patient</title>
         <link rel="stylesheet" href="{{ asset('./css/searchpatient.css') }}">
-
+        <style>
+            .container{
+                margin-top: 50px;
+            }
+        </style>
     </head>
 
     <body>
