@@ -4,6 +4,11 @@
 		<link rel="stylesheet" href="{{ asset('./css/mainstyle.css') }}">
 
         <script src="{{ asset("./js/navigator.js") }}"></script>
+        <style>
+            .container{
+                margin-top: 50px;
+            }
+        </style>
     </head>
 
     <body>

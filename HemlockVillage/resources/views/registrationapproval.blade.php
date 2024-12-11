@@ -6,6 +6,11 @@
     <title>Registration Approval</title>
 
     <link rel="stylesheet" href="{{ asset('./css/mainstyle.css') }}">
+    <style>
+        .container{
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
