@@ -72,7 +72,7 @@
                 </div>
 
                 @php
-                    $accessLevel = Auth::user()->role->accessLevel ?? null;
+                    $accessLevel = Auth::user()->role->access_level ?? null;
                 @endphp
 
 
