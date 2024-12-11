@@ -95,7 +95,7 @@ class ValidationHelper
 	 * Validate the date format. Aborts if not valid
 	 *
 	 * @param string $date
-	 * @param string $return date or datetime
+	 * @param string $return date (Y-m-d format) or datetime
 	 * @return string|DateTime
 	 */
 	public static function validateDateFormat($date, $return = "date")

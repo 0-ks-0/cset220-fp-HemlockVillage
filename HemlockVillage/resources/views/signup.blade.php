@@ -7,6 +7,7 @@
 
 		<title>Sign Up</title>
 		<link rel="stylesheet" href="{{ asset('./css/signup.css') }}">
+		<link rel="stylesheet" href="{{ asset('./css/style.css') }}">
 	</head>
 
 	<body>

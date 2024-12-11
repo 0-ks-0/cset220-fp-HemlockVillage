@@ -5,6 +5,9 @@ namespace App\Helpers;
 use Carbon\Carbon;
 
 use App\Models\Patient;
+use App\Models\Meal;
+
+use Illuminate\Support\Facades\Log;
 
 class UpdaterHelper
 {
@@ -181,6 +184,136 @@ class UpdaterHelper
 		return response()->json([
 			"message" => "The bill has been updated",
 			"patient" => $patient
+		]);
+	}
+
+
+	/**
+	 * Set past meal status to "Missing" if they were still "Pending" if the meal exists. Otherwise, create one with status all "Missing"
+	 * @param boolean $isCreating
+	 */
+	public static function updatePastMeal($mealId = null, $patientId = null, $date = null)
+	{
+		// Attempt to find meal
+		// Need to check if mealId is null because Meal::where("id", $mealId) == null is false for some reason when mealId is null
+		$meal = $mealId ? Meal::where("id", $mealId)->first() : null;
+
+		// TODO validate inputs
+
+		// Meal does not exist and no patientId or date
+		if (!$meal && (!$patientId || !$date)) return;
+
+		// Create new meal in the past if it does not exist
+		if (!$meal)
+		{
+			try
+			{
+				$newMeal = Meal::create([
+					"patient_id" => $patientId,
+					"meal_date" => $date,
+					"breakfast" => "Missing",
+					"lunch" => "Missing",
+					"dinner" => "Missing"
+				]);
+
+				return response()->json([
+					"message" => "Meal has been created",
+					"meal" => $newMeal
+				]);
+			}
+			catch (\Throwable  $e)
+			{
+				Log::error("Failed to create meal: " . $e->getMessage(), [
+					"patient_id" => $patientId,
+					"meal_date" => $date,
+					"error" => $e->getTraceAsString(),  // Add the full error trace for debugging
+				]);
+
+				return response()->json([
+                    "error" => "Failed to create meal. Please try again later."
+                ], 500);
+			}
+		}
+
+		// Otherwise if there is a meal, update
+		$mealTimes = [ "breakfast", "lunch", "dinner" ];
+
+		foreach ($mealTimes as $time)
+		{
+			if ($meal->{$time} === "Pending")
+				$meal->update([ $time => "Missing"]);
+		}
+
+		$meal->refresh();
+
+		return response()->json([
+			"message" => "Meal has been created",
+			"meal" => $meal
+		]);
+	}
+
+	/**
+	 * Create a new meal status for a patient for a date if it does not exist
+	 * @param string|date|Carbon $date The date to insert
+	 * @param string|date|Carbon|null $currentDate The date to act as the current date of inserting. If null, it will be Carbon::today()
+	 */
+	public static function updateMeal($patientId, $date, $currentDate = null)
+	{
+		/**
+		 * Validate date format
+		 */
+		// Carbon parse so it can be used for date comparison later
+		$date = Carbon::parse(ValidationHelper::validateDateFormat($date));
+		$currentDate = $currentDate ? Carbon::parse(ValidationHelper::validateDateFormat($currentDate)) : Carbon::today();
+
+		/**
+		 * Patient id validation
+		 */
+		$patient = Patient::find($patientId);
+
+		if (!$patient)
+		{
+			return response()->json([
+				"patientId" => $patientId,
+				"error" => "Could not find a patient with that ID"
+			], 400);
+		}
+
+		/**
+		 * Meal validation
+		 */
+		$meal = Meal::where("patient_id", $patientId)
+			->whereDate("meal_date", $date)->first();
+
+		// In the past
+		if ($date->lt($currentDate))
+		{
+			// Update all "Pending" to "Missing" or create a new one
+			return self::updatePastMeal($meal->id ?? null, $patientId, $date);
+		}
+
+		// Meal does not exist for current date
+		if (!$meal)
+		{
+			$newMeal = Meal::create([
+				"patient_id" => $patientId,
+				"meal_date" => $date,
+				"breakfast" => "Pending",
+				"lunch" => "Pending",
+				"dinner" => "Pending",
+			]);
+
+
+			return response()->json([
+				"message" => "Meal has been created",
+				"meal" => $newMeal
+			]);
+		}
+
+		// Meal exists for current date
+		return response()->json([
+			"message" => "Meal has been created",
+			"meal" => $meal
 		]);
 	}
 }

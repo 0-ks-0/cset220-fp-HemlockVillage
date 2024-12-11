@@ -54,15 +54,22 @@
             </tbody>
         </table>
 
-        <div class="form-section">
-            <h2>Update Group Number</h2>
-            <form action="{{ route('patients.updateGroupNumber', $patient->id) }}" method="POST">
-                @csrf
-                <label for="group_num">Group Number (1-4):</label>
-                <input type="number" id="group_num" name="group_num" value="{{ $patient->group_num }}" min="1" max="4" required>
-                <button type="submit">Update Group Number</button>
-            </form>
-        </div>
+        @php
+            $accessLevel = Auth::user()->role->access_level ?? null;
+        @endphp
+
+        {{-- Display only if admin or supervisor --}}
+        @if($accessLevel === 1 || $accessLevel === 2)
+            <div class="form-section">
+                <h2>Update Group Number</h2>
+                <form action="{{ route('patients.updateGroupNumber', $patient->id) }}" method="POST">
+                    @csrf
+                    <label for="group_num">Group Number (1-4):</label>
+                    <input type="number" id="group_num" name="group_num" value="{{ $patient->group_num }}" min="1" max="4" required>
+                    <button type="submit">Update Group Number</button>
+                </form>
+            </div>
+        @endif
 
     </div>
     @include('navbar')

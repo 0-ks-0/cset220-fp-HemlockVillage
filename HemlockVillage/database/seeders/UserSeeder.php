@@ -114,8 +114,10 @@ class UserSeeder extends Seeder
         self::insertData("supervisor", "unapproved", "su@example.com", "1990-04-22", "444-555-6666", "supervisor", 2, 0); // 79
         self::insertData("doctor", "unapproved", "du@example.com", "1988-06-13", "555-666-7777", "doctor", 3, 0); // 80
         self::insertData("caregiver", "unapproved", "cu@example.com", "1986-12-03", "666-777-8888", "caregiver", 4, 0); // 81
-        self::insertData("patient", "unapproved", "pu@example.com", "1965-11-30", "777-888-9999", "patient", 5, 0); // 82
+        self::insertData("patient", "unapproved. Reject me", "pu@example.com", "1965-11-30", "777-888-9999", "patient", 5, 0); // 82
         self::insertData("family", "unapproved", "fu@example.com", "1998-08-19", "888-999-0000", "family", 6, 0); // 83
+        self::insertData("patient", "unapproved2. Approve me", "pu2@example.com", "1965-11-30", "777-888-9999", "patient", 5, 0); // 84
+
     }
 
     private static function insertData($firstName, $lastName, $email, $dob, $phone, $password, $roleID, $approved = 0): void
