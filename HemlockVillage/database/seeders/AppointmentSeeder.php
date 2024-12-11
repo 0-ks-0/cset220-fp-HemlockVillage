@@ -23,7 +23,7 @@ class AppointmentSeeder extends Seeder
         self::insertData(Patient::getId(5), date("Y-m-d"), "2025-01-01", 3, "Pending");
 
         self::insertData(Patient::getId(5), '2024-11-05', '2024-11-06', 3, 'Completed', 'test order date', null, null, null, null, null);
-        self::insertData(Patient::getId(5), '2024-11-05', '2024-12-25', 3, 'Completed', 'test ordering of future date. this comment in reality should not be here, but just here to inform its purpose...', null, null, null, null, null);
+        self::insertData(Patient::getId(5), '2024-11-05', '2024-12-25', 3, 'Pending', 'test ordering of future date. this comment in reality should not be here, but just here to inform its purpose...', null, null, null, null, null);
 
         // // Touchable
         // self::insertData(Patient::getId(37), '2024-12-01', '2024-12-10', 25, "Pending", "Back pain", "apply heat therapy", "Take rest", 'morning');
