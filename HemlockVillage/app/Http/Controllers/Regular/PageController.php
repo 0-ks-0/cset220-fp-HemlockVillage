@@ -19,6 +19,7 @@ use App\Models\Roster;
 use App\Helpers\ControllerHelper;
 use App\Helpers\ValidationHelper;
 use App\Http\Controllers\Api\APIController;
+use App\Models\Appointment;
 use Carbon\Carbon;
 
 class PageController extends Controller
@@ -444,13 +445,20 @@ class PageController extends Controller
         if (!$roster)
         {
             // Persist the data
-            session()->flash("appointment_date", $appointmentDate);
-            session()->flash("patient_id", $patient->id);
+            // why is it working now but not earlier
+            // session()->flash("appointment_date", $appointmentDate);
+            // session()->flash("patient_id", $patient->id);
 
             return redirect()->back()
                 ->withErrors([ "No roster created for " . Carbon::parse($appointmentDate)->format("M d, Y") ])
-                ->with("appointmentDate", $appointmentDate)
-                ->with("patientId", $patient->id);
+                ->withInput();
+        }
+
+        if (!$roster->doctor)
+        {
+            return redirect()->back()
+                ->withErrors([ "doctor" => "No doctor scheduled" ])
+                ->withInput();
         }
 
         return view("doctorsappointment")->with([
