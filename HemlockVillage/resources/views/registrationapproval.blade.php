@@ -36,7 +36,7 @@
                     <h3>{{ $user->first_name }} {{ $user->last_name }}</h3>
                     <p>Email: {{ $user->email }}</p>
                     <p>Date of Birth: {{ $user->date_of_birth }}</p>
-                    <p>Role: {{ $user->role_id }}</p>
+                    <p>Role: {{ $user->role }}</p>
                     <p>Phone: {{ $user->phone_number }}</p>
 
                     <div class="action-buttons">

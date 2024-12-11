@@ -107,7 +107,7 @@
                 @endphp
 
                 @if ($accessLevel === 1) {{-- Admin --}}
-                    <li><a href="{{ route('patientsearch') }}">Patients</a></li>
+                    <li><a href="/search/patients">Patients</a></li>
                     <li><a href="{{ route('employeesearch') }}">Employees</a></li>
                     <li><a href="{{ route('registrationapproval.index') }}">Registration Approval</a></li>
                     <li><a href="{{ route('rolecreation.index') }}">Roles</a></li>
@@ -115,7 +115,7 @@
                     <li><a href="/payment">Bills</a></li>
                     <li><a href="/roster/create">Create Roster</a></li>
                 @elseif ($accessLevel === 2) {{-- Supervisor --}}
-                    <li><a href="{{ route('patientsearch') }}">Patients</a></li>
+                    <li><a href="/search/patients">Patients</a></li>
                     <li><a href="{{ route('employeesearch') }}">Employees</a></li>
                     <li><a href="/report">Report</a></li>
                 @elseif ($accessLevel === 3) {{-- Doctor --}}

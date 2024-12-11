@@ -17,6 +17,7 @@ class UserAPI extends Controller
         return DB::table("users")
             ->join("roles", "users.role_id", "roles.id")
             ->select("users.id as id", "users.first_name", "users.last_name", "users.email", "users.phone_number", "users.date_of_birth", "roles.role as role")
+            ->where("approved", 1)
             ->orderBy('id', 'asc')
             ->paginate(10);
     }

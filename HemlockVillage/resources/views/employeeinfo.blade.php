@@ -89,18 +89,26 @@
             <div class="container">
                 <h1>Employee Info</h1>
                 <div class="employee-info">
-                    <p><strong>Name:</strong> {{ $employee->user->first_name }}</p>
+                    <p><strong>Name:</strong> {{ $employee->user->first_name }}  {{ $employee->user->last_name }}</p>
                     <p><strong>Email:</strong> {{ $employee->user->email }}</p>
-                    <p><strong>Role:</strong> {{ $employee->user->role_id }}</p>
+                    <p><strong>Role:</strong> {{ $employee->user->role->role }}</p>
                     <p><strong>Salary:</strong> $<span id="current-salary">{{ $employee->salary }}</span></p>
                 </div>
 
-                <div class="update-section">
-                    <h2>Update Salary</h2>
-                    <input type="number" id="new-salary" placeholder="Enter new salary">
-                    <button onclick="updateSalary({{ $employee->id }})">Update Salary</button>
-                    <div id="message" class="message"></div>
-                </div>
+                @php
+                    $accessLevel = Auth::user()->role->access_level ?? null;
+                @endphp
+
+
+                {{-- Display updating salary if admin --}}
+                @if($accessLevel === 1)
+                    <div class="update-section">
+                        <h2>Update Salary</h2>
+                        <input type="number" id="new-salary" placeholder="Enter new salary">
+                        <button onclick="updateSalary({{ $employee->id }})">Update Salary</button>
+                        <div id="message" class="message"></div>
+                    </div>
+                @endif
             </div>
 
             <script>
