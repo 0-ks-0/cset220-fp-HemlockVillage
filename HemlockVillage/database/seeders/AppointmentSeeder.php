@@ -26,6 +26,7 @@ class AppointmentSeeder extends Seeder
         self::insertData(Patient::getId(5), '2024-11-05', '2024-12-25', 3, 'Pending', 'test ordering of future date. this comment in reality should not be here, but just here to inform its purpose...', null, null, null, null, null);
 
         // // Touchable
+        // Should be inserting prescriptions for each time of day
         // self::insertData(Patient::getId(37), '2024-12-01', '2024-12-10', 25, "Pending", "Back pain", "apply heat therapy", "Take rest", 'morning');
         // self::insertData(Patient::getId(38), '2024-12-05', '2024-12-15', 26, "Completed", "High blood pressure", "reduce salt intake",  "Increase exercise", 'afternoon');
         // self::insertData(Patient::getId(39), '2024-11-28', '2024-12-12', 25, "Pending", "Routine checkup", "general health review",  "Healthy diet", 'night');
