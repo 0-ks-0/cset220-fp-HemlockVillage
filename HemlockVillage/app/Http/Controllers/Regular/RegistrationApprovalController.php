@@ -19,6 +19,8 @@ class RegistrationApprovalController extends Controller
         // Fetch all users who need approval
         $users = DB::table('users')
             ->where('approved', false)
+            ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
+            ->select('users.*', 'roles.role')
             ->get();
 
         return view('registrationapproval', compact('users'));
