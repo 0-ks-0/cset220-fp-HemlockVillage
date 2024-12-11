@@ -146,7 +146,7 @@ class APIController extends Controller
             $patient = $d->user ?? null;
             $doctor = $d->appointments->first()->doctor->user ?? null;
             $appointment = $d->appointments->first() ?? null;
-            $prescriptionStatus = $d->appointments->first()->prescriptions->first() ?? null;
+            $prescriptionStatus = $appointment && $appointment->prescriptions ? $appointment->prescriptions->first() : null;
             $meal = $d->meals->first() ?? null;
 
             return [
