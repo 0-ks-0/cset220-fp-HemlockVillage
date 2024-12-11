@@ -469,4 +469,58 @@ class PageController extends Controller
             "doctorId" => $roster->doctor->id ?? null
         ]);
     }
+
+    public static function storeSchedule(Request $request)
+    {
+        /**
+         * Validation
+         */
+        $validatedData = Validator::make($request->all(), [
+            "appointment_date" => [ "required", "date", "after_or_equal:" . date("Y-m-d") ],
+            "patient_id" => [ "required", "string", "size:16", "exists:patients,id" ],
+            "doctor" => [ "required", "numeric", "exists:employees,id" ]
+        ]);
+
+        // Fail
+        if ($validatedData->fails())
+        {
+            return redirect()->back()->withErrors($validatedData->errors())->withInput();
+        }
+
+        // Format the appointment date if needed
+        $appointmentDate = Carbon::parse(request()->get("appointment_date"))->format("Y-m-d");
+
+        // Don't need to validate since Validator already does that
+        $patient = Patient::find(request()->get("patient_id"));
+
+        // Validate that roster exists for date
+        $roster = Roster::whereDate("date_assigned", $appointmentDate)->first();
+
+        // No roster
+        if (!$roster)
+            return redirect()->back()->withErrors([ "roster" => "No roster created for " . Carbon::parse($appointmentDate)->format("M d, Y") ])->withInput();
+
+        $doctorId = request()->get("doctor");
+
+        // Validate that doctor is on roster
+        if ($roster->doctor_id != $doctorId)
+            return redirect()->back()->withErrors([ "doctor" => "This doctor is not on the roster for" . Carbon::parse($appointmentDate)->format("M d, Y") ])->withInput();
+
+        // Validate that no duplicate value of date and patient for appointment (that is how the database is setup currrently)
+        $duplicateAppointment = Appointment::whereDate("appointment_date", $appointmentDate)
+            ->where("patient_id", $patient->id)->first();
+
+        // Duplicate
+        if ($duplicateAppointment)
+            return redirect()->back()->withErrors([ "duplicate" => "Sorry, at this moment, patients cannot be scheduled for multiple appointments on one day" ])->withInput();
+
+        $appointment = Appointment::create([
+            "patient_id" => $patient->id,
+            "date_scheduled" => Carbon::today()->toDateString(),
+            "appointment_date" => $appointmentDate,
+            "doctor_id" => $doctorId
+        ]);
+
+        return redirect()->back()->with("message", "{$patient->user->first_name} {$patient->user->last_name} { $patient->id } has been scheduled for an appointment for $appointmentDate");
+    }
 }
