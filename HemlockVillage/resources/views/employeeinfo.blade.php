@@ -71,12 +71,20 @@
                     <p><strong>Salary:</strong> $<span id="current-salary">{{ $employee->salary }}</span></p>
                 </div>
 
-                <div class="update-section">
-                    <h2>Update Salary</h2>
-                    <input type="number" id="new-salary" placeholder="Enter new salary">
-                    <button onclick="updateSalary({{ $employee->id }})">Update Salary</button>
-                    <div id="message" class="message"></div>
-                </div>
+                @php
+                    $accessLevel = Auth::user()->role->accessLevel ?? null;
+                @endphp
+
+
+                {{-- Display updating salary if admin --}}
+                @if($accessLevel === 1)
+                    <div class="update-section">
+                        <h2>Update Salary</h2>
+                        <input type="number" id="new-salary" placeholder="Enter new salary">
+                        <button onclick="updateSalary({{ $employee->id }})">Update Salary</button>
+                        <div id="message" class="message"></div>
+                    </div>
+                @endif
             </div>
 
             <script>
