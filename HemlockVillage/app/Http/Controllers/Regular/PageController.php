@@ -448,6 +448,8 @@ class PageController extends Controller
 
         $roster = Roster::with('doctor')->whereDate("date_assigned", $appointmentDate)->first();
 
+        // return $roster;
+
         // No roster found
         if (!$roster)
         {
@@ -457,8 +459,8 @@ class PageController extends Controller
             // session()->flash("patient_id", $patient->id);
 
             return redirect()->back()
-                ->withErrors([ "No roster created for " . Carbon::parse($appointmentDate)->format("M d, Y") ])
-                ->withInput();
+                ->withErrors([ "roster" => "No roster created for " . Carbon::parse($appointmentDate)->format("M d, Y") ])
+                ->with("patient_id", request()->patient_id);
         }
 
         if (!$roster->doctor)
