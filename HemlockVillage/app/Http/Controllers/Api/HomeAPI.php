@@ -278,7 +278,8 @@ class HomeAPI extends Controller
         }
 
         return response()->json([
-            "data" => $data
+            "data" => $data,
+            "groupNum" => $groupNum
         ]);
     }
 

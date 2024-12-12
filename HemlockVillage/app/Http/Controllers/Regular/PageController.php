@@ -91,7 +91,8 @@ class PageController extends Controller
 
                 return view("caregivershome")
                     ->with("data", $jsonDecoded["data"] ?? [])
-                    ->with("date", $date);
+                    ->with("date", $date)
+                    ->with("groupNum", $jsonDecoded["groupNum"]);
 
             case 5: // Patient
                 $patientId = Patient::getId($userId);

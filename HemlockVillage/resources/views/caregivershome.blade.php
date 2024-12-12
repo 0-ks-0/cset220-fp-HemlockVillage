@@ -41,6 +41,11 @@
                 <input type="text" id="date" value="{{ $date ?? ''}}" readonly>
             </div>
 
+            <div class="form-group">
+                <label for="groupNum">Group Number:</label>
+                <input type="text" id="groupNum" value="{{ $groupNum ?? ''}}" readonly>
+            </div>
+
 
             {{-- Error from PUT --}}
             @if ($errors->any())
