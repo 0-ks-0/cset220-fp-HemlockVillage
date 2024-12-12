@@ -339,13 +339,16 @@ class PageController extends Controller
      */
     public static function showDoctorPatient($patientId)
     {
+        // $date = "2024-12-25";
+        $date = Carbon::today();
+
         $doctorId = DB::table("employees")
             ->where("user_id", Auth::user()->id)
             ->first()
             ->id ?? null;
 
         // To test, set date to "2025-01-01"
-        $appointments = APIController::showDoctorPatient($doctorId, $patientId, Carbon::today());
+        $appointments = APIController::showDoctorPatient($doctorId, $patientId, $date);
         $jsonDecoded = json_decode($appointments->getContent(), true);
 
         return view("patientofdoc")->with([
@@ -356,6 +359,7 @@ class PageController extends Controller
             "first_name" => $jsonDecoded["first_name"] ?? null,
             "last_name" => $jsonDecoded["last_name"] ?? null,
             "date_of_birth" => $jsonDecoded["date_of_birth"] ?? null,
+            "date" => $date
         ]);
     }
 

@@ -29,6 +29,10 @@
             <h1>Patient of Doctor</h1>
 
             <div class="form-group">
+                <p>Today: {{ $date ? \Carbon\Carbon::parse($date)->format("M d, Y") : '' }}</p>
+            </div>
+
+            <div class="form-group">
                 <label>Patient ID Number</label>
                 <input type="text" id="patient-id" name="patient_id" readonly
                     value="{{ $patientId ?? '' }}"
@@ -121,6 +125,7 @@
 
                     {{-- Action buttons --}}
                     <div class="form-group">
+                        <button type="button"></button>
                         <button type="submit">Create & Mark as Complete</button>
                         <button type="reset">Cancel</button>
                     </div>
