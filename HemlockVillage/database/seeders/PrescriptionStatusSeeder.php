@@ -28,6 +28,15 @@ class PrescriptionStatusSeeder extends Seeder
         // self::insertData(9, "2024-12-12", "Completed", "Completed", "Pending");
         // self::insertData(10, "2024-12-13", "Missing", "Completed", "Completed");
         // self::insertData(11, "2024-12-09", "Completed", "Missing", "Pending");
+
+        self::insertData(4, '2024-12-12', "Pending", "Pending", null);
+        self::insertData(17, '2024-12-12', "Pending", "Pending", null);
+        self::insertData(18, '2024-12-12', "Pending", "Pending", "Pending");
+        self::insertData(19, '2024-12-12', "Pending", "Pending", "Pending");
+        self::insertData(20, '2024-12-12', "Pending", "Pending", "Pending");
+        self::insertData(21, '2024-12-12', "Pending", null, null);
+        self::insertData(22, '2024-12-12', "Pending", "Pending", null);
+        self::insertData(23, '2024-12-12', "Pending", "Pending", "Pending");
     }
 
     private static function insertData($appointmentId, $date, $morning, $afternoon, $night): void
