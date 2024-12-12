@@ -46,6 +46,9 @@
                 <p>Last Name: {{ $last_name ?? "" }}</p>
                 <p>Date of Birth: {{ $date_of_birth ?? "" }}</p>
             </div>
+            @if(empty($appointments))
+                No past appointments
+            @endif
 
             @foreach($appointments as $a)
                 {{-- Date section --}}
