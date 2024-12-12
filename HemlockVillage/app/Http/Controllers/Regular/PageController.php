@@ -76,19 +76,22 @@ class PageController extends Controller
 
                 // return HomeAPI::showCaregiver($caregiverId, "2024-11-03");
                 // return HomeAPI::showCaregiver($caregiverId, Carbon::today());
+                // $date = "2024-11-03";
+                $date = Carbon::today()->toDateString();
 
-                // $response = HomeAPI::showCaregiver($caregiverId, "2024-11-03");
-                $response = HomeAPI::showCaregiver($caregiverId, Carbon::today());
+                $response = HomeAPI::showCaregiver($caregiverId, $date);
                 $jsonDecoded = json_decode($response->getContent(), true);
 
                 if ($response->getStatusCode() === 201)
                 {
                     return view("caregivershome")
-                        ->with("message", $jsonDecoded["message"] ?? "Could not locate data");
+                        ->with("message", $jsonDecoded["message"] ?? "Could not locate data")
+                        ->with("date", $date);
                 }
 
                 return view("caregivershome")
-                    ->with("data", $jsonDecoded["data"] ?? []);
+                    ->with("data", $jsonDecoded["data"] ?? [])
+                    ->with("date", $date);
 
             case 5: // Patient
                 $patientId = Patient::getId($userId);
