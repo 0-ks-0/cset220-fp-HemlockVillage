@@ -339,8 +339,8 @@ class PageController extends Controller
      */
     public static function showDoctorPatient($patientId)
     {
-        $date = "2024-12-25";
-        // $date = Carbon::today();
+        // $date = "2024-12-25";
+        $date = Carbon::today();
 
         $doctorId = DB::table("employees")
             ->where("user_id", Auth::user()->id)
