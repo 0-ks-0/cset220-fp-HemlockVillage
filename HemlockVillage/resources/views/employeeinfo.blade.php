@@ -89,9 +89,13 @@
             <div class="container">
                 <h1>Employee Info</h1>
                 <div class="employee-info">
-                    <p><strong>Name:</strong> {{ $employee->user->first_name }}  {{ $employee->user->last_name }}</p>
+                    <p><strong>ID:</strong> {{ $employee->id }}</p>
+                    <p><strong>Name:</strong> {{ $employee->user->first_name }} {{ $employee->user->last_name }}</p>
                     <p><strong>Email:</strong> {{ $employee->user->email }}</p>
                     <p><strong>Role:</strong> {{ $employee->user->role->role }}</p>
+                    <p><strong>Date of Birth:</strong> {{ $employee->user->date_of_birth }}</p>
+                    <p><strong>Phone:</strong> {{ $employee->user->phone_number }}</p>
+                    {{-- <p><strong>Joined on:</strong> {{ \Carbon\Carbon::parse($employee->user->updated_at)->format("M d, Y") }}</p> Based on when they were "approved" --}}
                     <p><strong>Salary:</strong> $<span id="current-salary">{{ $employee->salary }}</span></p>
                 </div>
 

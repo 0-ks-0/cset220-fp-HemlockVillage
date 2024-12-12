@@ -73,7 +73,7 @@ public function search(Request $request)
             'employee_id' => $employee->id,
             'user_id' => $employee->user->id,
             'name' => "{$employee->user->first_name} {$employee->user->last_name}",
-            'role' => $employee->user->role_id, // Include role_id from the `users` table
+            'role' => $employee->user->role->role, // Include role name from the `roles` table
             'salary' => $employee->salary,
         ];
     }));

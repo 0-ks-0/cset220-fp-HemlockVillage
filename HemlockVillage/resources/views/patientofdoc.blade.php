@@ -3,6 +3,8 @@
         <title>Patient of Doctor</title>
 
         <link rel="stylesheet" href="{{ asset('./css/mainstyle.css') }}">
+
+        <script src="{{ asset("./js/navigator.js") }}"></script>
     </head>
 
     <body>
@@ -29,6 +31,10 @@
             <h1>Patient of Doctor</h1>
 
             <div class="form-group">
+                <p>Today: {{ $date ? \Carbon\Carbon::parse($date)->format("M d, Y") : '' }}</p>
+            </div>
+
+            <div class="form-group">
                 <label>Patient ID Number</label>
                 <input type="text" id="patient-id" name="patient_id" readonly
                     value="{{ $patientId ?? '' }}"
@@ -49,6 +55,15 @@
                         @isset($a['appointment_date']) value="{{ $a['appointment_date'] }}" @endisset
                     >
                 </div>
+
+                {{-- Status --}}
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <input type="text" id="status" readonly
+                        @isset($a['status']) value="{{ $a['status'] }}" @endisset
+                    >
+                </div>
+
 
                 {{-- Comment section --}}
                 <div class="form-group">
@@ -121,6 +136,7 @@
 
                     {{-- Action buttons --}}
                     <div class="form-group">
+                        <button type="button" onclick="setTop(`/doctor/missing/{{ $pendingAppointment['id'] }}`)">Mark as Missing</button>
                         <button type="submit">Create & Mark as Complete</button>
                         <button type="reset">Cancel</button>
                     </div>
@@ -144,6 +160,5 @@
         @endif
 
         @include('navbar')
-
     </body>
 </html>
