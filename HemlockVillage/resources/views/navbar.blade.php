@@ -107,6 +107,7 @@
                 @endphp
 
                 @if ($accessLevel === 1) {{-- Admin --}}
+                    <li><a href="/users">Users</a></li>
                     <li><a href="/search/patients">Patients</a></li>
                     <li><a href="{{ route('employeesearch') }}">Employees</a></li>
                     <li><a href="{{ route('registrationapproval.index') }}">Registration Approval</a></li>
@@ -114,25 +115,33 @@
                     <li><a href="/report">Report</a></li>
                     <li><a href="/payment">Bills</a></li>
                     <li><a href="/roster/create">Create Roster</a></li>
+                    <li><a href="/schedule">Schedule Appointment</a></li>
+
                 @elseif ($accessLevel === 2) {{-- Supervisor --}}
+                    <li><a href="/users">Users</a></li>
                     <li><a href="/search/patients">Patients</a></li>
                     <li><a href="{{ route('employeesearch') }}">Employees</a></li>
+                    <li><a href="{{ route('registrationapproval.index') }}">Registration Approval</a></li>
                     <li><a href="/report">Report</a></li>
+                    <li><a href="/roster/create">Create Roster</a></li>
+                    <li><a href="/schedule">Schedule Appointment</a></li>
+
                 @elseif ($accessLevel === 3) {{-- Doctor --}}
-                    {{-- <li><a href="{{ route('patientofdoc.index') }}">Patients</a></li> --}}
                     <li><a href="/home">Home</a></li>
+                    <li><a href="/search/patients">Patients</a></li>
+
                 @elseif ($accessLevel === 4) {{-- Caregiver --}}
-                    {{-- <l/i><a href="{{ route('patientofdoc.index') }}">Patients</a></li> --}}
-                    {{-- <li><a href="{{ route('roster.index') }}">Roster</a></li> --}}
                     <li><a href="/home">Home</a></li>
+                    <li><a href="/search/patients">Patients</a></li>
+
                 @elseif ($accessLevel === 5) {{-- Patient --}}
                     <li><a href="/home">Home</a></li>
-                    {{-- <li><a href="{{ route('roster.index') }}">Roster</a></li> --}}
+
                 @elseif ($accessLevel === 6) {{-- Family Member --}}
                     <li><a href="/home">Home</a></li>
-                    {{-- <li><a href="{{ route('roster.index') }}">Roster</a></li> --}}
-                    {{-- <li><a href="/payment">Make Payment</a></li> --}}
+
                 @endif
+
                 <li><a href="{{ route('roster.show') }}">Roster</a></li>
 
                 <li><a href="/logout">Logout</a></li>
