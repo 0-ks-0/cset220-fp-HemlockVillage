@@ -119,6 +119,9 @@ class PageController extends Controller
                     "family_code" => [ "required", "size:16", "exists:patients,family_code" ],
                 ], ValidationHelper::$familyHome);
 
+                // $date = "2024-11-03";
+                $date = Carbon::today()->format("Y-m-d");
+
                 $patientId = request()->get("patient_id");
                 $familyCode = request()->get("family_code");
 
@@ -127,13 +130,13 @@ class PageController extends Controller
 
                 // Fails validation
                 if ($validatedPatient->fails())
-                    return redirect()->back()->withErrors($validatedPatient->errors());
+                    return redirect()->back()->withErrors($validatedPatient->errors())
+                        ->with("date", $date);
 
                 /**
                  * Retrieve response to check if success or failure
                  */
-                // $response = HomeAPI::showFamily($patientId, $familyCode, "2024-11-03");
-                $response = HomeAPI::showFamily($patientId, $familyCode, Carbon::today()->format("Y-m-d"));
+                $response = HomeAPI::showFamily($patientId, $familyCode, $date);
                 $jsonContent = json_decode($response->getContent(), true);
 
                 // Fails Validation
@@ -141,13 +144,15 @@ class PageController extends Controller
                 {
                     $errors = $jsonContent["errors"] ?? ["Invalid input(s). Please try again."];
 
-                    return redirect()->back()->withErrors($errors);
+                    return redirect()->back()->withErrors($errors)
+                        ->with("date", $date);;
                 }
 
                 // Success
                 // return $jsonContent["data"];
 
-                return view("familyhome")->with("data", $jsonContent["data"]);
+                return view("familyhome")->with("data", $jsonContent["data"])
+                    ->with("date", $date);;
 
             case null:
                 return response()->json(['error' => 'Could not find user id or access level'], 404);

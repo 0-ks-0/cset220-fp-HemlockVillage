@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <label for="date">Date:</label>
                     <input type="date" id="date" readonly
-                        value="{{ \Carbon\Carbon::today()->toDateString() }}"
+                        value="{{ $date ?? '' }}"
                     >
                 </div>
 
