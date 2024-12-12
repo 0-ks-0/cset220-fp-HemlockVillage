@@ -56,6 +56,15 @@
                     >
                 </div>
 
+                {{-- Status --}}
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <input type="text" id="status" readonly
+                        @isset($a['status']) value="{{ $a['status'] }}" @endisset
+                    >
+                </div>
+
+
                 {{-- Comment section --}}
                 <div class="form-group">
                     <label for="comment">Comment:</label>

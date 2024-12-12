@@ -388,7 +388,7 @@ class APIController extends Controller
             })
             ->where("doctor_id", $doctorId)
             ->orderBy("appointment_date", "desc")
-            ->select("id", "patient_id", "appointment_date", "comment", "morning", "afternoon", "night")
+            ->select("id", "patient_id", "appointment_date", "status", "comment", "morning", "afternoon", "night")
             ->paginate(1);
 
         $appointmentsData = $appointments->items();  // Actual appointment data as an array
