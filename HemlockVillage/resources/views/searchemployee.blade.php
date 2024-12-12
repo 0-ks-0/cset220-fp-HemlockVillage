@@ -126,16 +126,18 @@
             <div>
                 <label for="role">Search by Role</label>
                 <input type="number" id="role" placeholder="Enter Role ID (1-6)">
-            </div>            
+            </div>
 
             <div>
                 <label for="salary">Search by Salary</label>
                 <input type="text" id="salary" placeholder="Enter Salary">
             </div>
-            
+
 
             <button onclick="searchEmployees()">Search</button>
         </div>
+
+        @include("navbar")
 
         <div id="employee-list"></div>
     </div>
@@ -189,7 +191,7 @@
 }
 
     </script>
-    
+
 
 </body>
 </html>
