@@ -3,6 +3,8 @@
         <title>Patient of Doctor</title>
 
         <link rel="stylesheet" href="{{ asset('./css/mainstyle.css') }}">
+
+        <script src="{{ asset("./js/navigator.js") }}"></script>
     </head>
 
     <body>
@@ -125,7 +127,7 @@
 
                     {{-- Action buttons --}}
                     <div class="form-group">
-                        <button type="button"></button>
+                        <button type="button" onclick="setTop(`/doctor/missing/{{ $pendingAppointment['id'] }}`)">Mark as Missing</button>
                         <button type="submit">Create & Mark as Complete</button>
                         <button type="reset">Cancel</button>
                     </div>
@@ -149,6 +151,5 @@
         @endif
 
         @include('navbar')
-
     </body>
 </html>

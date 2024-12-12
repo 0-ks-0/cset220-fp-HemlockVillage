@@ -38,7 +38,7 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
 
     // Employee search
     Route::get('/searchemployee', fn() => view('searchemployee'))->name('employeesearch'); // Search form
-    Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search'); // Search logic
+    Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search'); // Search logic fetch API
 
     // Employee Info
     Route::get('/employeeinfo/{id}', [EmployeeController::class, 'show'])->name('employeeinfo.show'); // Employee details
@@ -63,7 +63,7 @@ Route::middleware([CheckRole::class . ":1"])->group(function ()
     // Role Creation
     Route::get('/rolecreation', fn() => view('rolecreation'))->name('rolecreation.index');
     Route::post('/create-role', [RoleController::class, 'createRole'])->name('rolecreation.create');
-    Route::get('/roles', [RoleController::class, 'getRoles'])->name('roles.fetch');
+    Route::get('/roles', [RoleController::class, 'getRoles'])->name('roles.fetch'); // Fetch API
 
     // Update salary
     Route::post('/employees/{employeeId}/update-salary', [EmployeeController::class, 'updateSalary'])->name('employees.updateSalary');
@@ -101,6 +101,8 @@ Route::middleware([ CheckRole::class . ":3"])->group( function ()
 {
     Route::get("/doctor/patients/{patientId}", fn($patientId) => PageController::showDoctorPatient($patientId));
     Route::patch("/doctor/patients/{patientId}", fn($patientId) => PageController::updateDoctorPatient(request(), $patientId));
+
+    Route::get("/doctor/missing/{appointmentId}", fn($appointmentId) => PageController::updateMissingAppointment(request(), $appointmentId));
 });
 
 // ======== Caregiver Access ========
@@ -132,7 +134,7 @@ Route::get('/patients', [PatientController::class, 'index'])->name('patientinfo.
 // Route::post('/patients/{patientId}/update-group-num', [PatientController::class, 'updateGroupNumber'])->name('patients.updateGroupNumber');
 
 // this seems to get the data for all patients at least, and then applies the searching. this means that this will dispaly all the patients, even if there are no query parameters
-Route::get('/patients/search', [PatientController::class, 'search'])->name('patients.search'); // Search patient
+// Route::get('/patients/search', [PatientController::class, 'search'])->name('patients.search'); // Search patient
 
 // Nice. I did not connect the two together that you can just return the patients table and use the relation functions to access values
 // I did fix the incorrect column names in the blade file so the name, role, and emergency contact name shows up
@@ -180,7 +182,7 @@ Route::get('/patients/search', [PatientController::class, 'search'])->name('pati
 // Route::get('/caregivershome', [DoctorController::class, 'patients'])->name('caregivershome.index'); // Caregiver's homepage
 
 // ======== Miscellaneous Routes ========
-Route::get('/searchpatient', fn() => view('searchpatient'))->name('patientsearch');
+// Route::get('/searchpatient', fn() => view('searchpatient'))->name('patientsearch');
 
 
 

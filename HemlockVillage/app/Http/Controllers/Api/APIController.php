@@ -383,7 +383,7 @@ class APIController extends Controller
                     ->orWhere(function($query) use ($date) // Include completed appointments for the given date
                     {
                         $query->whereDate("appointment_date", $date)
-                            ->where("status", "Completed");
+                            ->whereIn("status", ["Completed", "Missing"]);
                     });
             })
             ->where("doctor_id", $doctorId)
@@ -603,6 +603,38 @@ class APIController extends Controller
             "message" => "Appointment updated successfully",
             "appointment" => $appointment
         ]);
+    }
+
+    public static function updateMissingAppointment(Request $request, $doctorId, $appointmentId)
+    {
+        $appointment = Appointment::find($appointmentId);
+
+        if (!$appointment)
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Appointment could not be found",
+                "errors" => [ "Could not update the appointment status" ]
+            ], 400);
+        }
+
+         // Validate that the doctor is the one for the appointment
+         if ($appointment->doctor_id !== $doctorId)
+         {
+             return response()->json([
+                 "success" => false,
+                 "message" => "Doctor id for appointment does not match the logged in doctor",
+                 "errors" => [ "Could not update the comment and prescriptions" ]
+             ], 400);
+         }
+
+         $appointment->update([ "status" => "Missing" ]);
+
+         return response()->json([
+            "success" => true,
+            "message" => "Updated successfully",
+            "appointment" => $appointment
+         ]);
     }
 
     public static function updateCaregiverHome(Request $request, $caregiverId, $patientId, $date)

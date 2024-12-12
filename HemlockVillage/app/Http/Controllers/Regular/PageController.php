@@ -339,8 +339,8 @@ class PageController extends Controller
      */
     public static function showDoctorPatient($patientId)
     {
-        // $date = "2024-12-25";
-        $date = Carbon::today();
+        $date = "2024-12-25";
+        // $date = Carbon::today();
 
         $doctorId = DB::table("employees")
             ->where("user_id", Auth::user()->id)
@@ -378,6 +378,27 @@ class PageController extends Controller
         {
             return redirect()->back()
                 ->withErrors($jsonDecoded["errors"] ?? [ "Invalid input(s)" ]);
+        }
+
+        return redirect()->back()
+            ->with("message", $jsonDecoded["message"] ?? "Appointment updated successfully");
+    }
+
+    public static function updateMissingAppointment(Request $request, $appointmentId)
+    {
+         // Used to validate correct doctor for appointment
+         $doctorId = DB::table("employees")
+            ->where("user_id", Auth::user()->id)
+            ->first()
+            ->id ?? null;
+
+        $response = APIController::updateMissingAppointment($request, $doctorId, $appointmentId);
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        if ($response->getStatusCode() !== 200)
+        {
+            return redirect()->back()
+                ->withErrors($jsonDecoded["errors"] ?? [ "Error with updating" ]);
         }
 
         return redirect()->back()
