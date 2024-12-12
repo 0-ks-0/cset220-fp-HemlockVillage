@@ -17,7 +17,7 @@
             <form action="/report" method="get">
                 <div class="form-group">
                     <label for="date">Date:</label>
-                    <input type="date" id="date" name="date" value="{{ $date ?? '' }}">
+                    <input type="date" id="date" name="date" value="{{ $date ?? \Carbon\Carbon::today()->toDateString() ?? '' }}">
                 </div>
 
                 <div class="form-group">
