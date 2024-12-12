@@ -159,17 +159,22 @@ class APIController extends Controller
             /**
              * Get prescriptions for date
              */
-
-            // select id from appointments where patient_id = "CzBCOehNSm5MyRSw" and id = (select appointment_id from prescription_statuses where prescription_date = "2024-11-03" );
-
+            // Get all appointment_ids for that date and find the one in appointments table that matches the patient
+            $appointmentIds = DB::table("prescription_statuses")->where("prescription_date", $date)->pluck("appointment_id");
+            $appointment = DB::table("appointments")->where("patient_id", $d->id)->whereIn("id", $appointmentIds)->first();
 
             return [
+                "date" => $date,
                 "patient_name" => $patientUser ? "{$patientUser->first_name} {$patientUser->last_name}" : null,
-                "doctor_name" => $appointment["doctor_name"] ?? null,
-                "appointment_status" => $appointment["status"] ?? null,
+                "doctor_name" => $currentAppointment["doctor_name"] ?? null,
+                "appointment_status" => $currentAppointment["status"] ?? null,
                 "caregiver_name" => ControllerHelper::getPatientCaregiverByDate($d->id, $date)["caregiver_name"],
-                "prescriptions" => [],
-                "prescription_status" => [],
+                "prescriptions" => [
+                    "morning" => $appointment->morning ?? null,
+                    "afternoon" => $appointment->afternoon ?? null,
+                    "night" => $appointment->night ?? null,
+                ],
+                "prescription_status" => ControllerHelper::getSimplePatientPrescriptionStatusByDate($appointment->id ?? null, $date),
                 "meal_status" => ControllerHelper::getPatientMealStatusByDate($d->id, $date)["status_data"]
             ];
         });

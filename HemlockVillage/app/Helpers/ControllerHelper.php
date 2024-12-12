@@ -133,12 +133,24 @@ class ControllerHelper
 		return [
 			"appointment_id" => $appointment->id ?? null,
 			"doctor_id" => $appointment->doctor_id ?? null,
-			"doctor_name" => $appointment  ? "{$appointment->doctor->user->first_name} {$appointment->doctor->user->first_name}" : null,
+			"doctor_name" => $appointment  ? "{$appointment->doctor->user->first_name} {$appointment->doctor->user->last_name}" : null,
 			"status" => $appointment->status ?? null,
 			"comment" => $appointment->comment ?? null,
 			"morning" => $appointment->morning ?? null,
 			"afternoon" => $appointment->afternoon ?? null,
 			"night" => $appointment->night ?? null,
+		];
+	}
+
+	public static function getSimplePatientPrescriptionStatusByDate($appointmentId, $date)
+	{
+		$prescriptionStatus = PrescriptionStatus::where("appointment_id", $appointmentId)
+			->whereDate("prescription_date", $date)->first();
+
+		return [
+			"morning" => $prescriptionStatus->morning ?? null,
+			"afternoon" => $prescriptionStatus->afternoon ?? null,
+			"night" => $prescriptionStatus->night ?? null,
 		];
 	}
 

@@ -198,11 +198,14 @@ class PageController extends Controller
     {
         // return APIController::getReport(Carbon::today());
         // return APIController::getReport("2024-11-01");
+        // return APIController::getReportNew("2024-11-01");
+        // return APIController::getReportNew("2024-12-11");
 
         // TODO pagiante in APIController::getReport
 
         // return view("adminreport")->with("data", APIController::getReport("2024-11-03"));
-        return view("adminreport")->with("data", APIController::getReport(Carbon::today()));
+        // return view("adminreport")->with("data", APIController::getReportNew("2024-12-11"));
+        return view("adminreport")->with("data", APIController::getReportNew(Carbon::today()));
     }
 
     /*
