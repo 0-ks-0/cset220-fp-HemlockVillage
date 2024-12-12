@@ -98,11 +98,11 @@ class APIController extends Controller
         //
     }
 
-    public static function getReportNew($date)
+    public static function getReportNew($date, $status)
     {
         ValidationHelper::validateDateFormat($date);
 
-        $status = "Missing";
+        // $status = "Missing";
 
         $data = Patient::with([
             "user" => fn($q) => $q->select("id", "first_name", "last_name"),
@@ -121,7 +121,7 @@ class APIController extends Controller
         ])
         ->whereHas("appointments", function ($q) use ($date, $status)
         {
-            $q->where("status", $status)
+            $q->whereIn("status", $status)
                 ->whereDate("appointment_date", $date);
         })
         ->orWhereHas("meals", function ($q) use ($date, $status)
@@ -129,9 +129,9 @@ class APIController extends Controller
             $q->whereDate("meal_date", $date)
                 ->where( function ($q) use ($status)
                 {
-                    $q->where("breakfast", $status)
-                        ->orWhere("lunch", $status)
-                        ->orWhere("dinner", $status);
+                    $q->whereIn("breakfast", $status)
+                        ->orWhereIn("lunch", $status)
+                        ->orWhereIn("dinner", $status);
                 });
         })
         ->orWhereHas("appointments.prescriptions", function ($q) use ($date, $status)
@@ -139,9 +139,9 @@ class APIController extends Controller
             $q->whereDate("prescription_date", $date)
                 ->where( function ($q) use ($status)
                 {
-                    $q->where("morning", $status)
-                        ->orWhere("afternoon", $status)
-                        ->orWhere("night", $status);
+                    $q->whereIn("morning", $status)
+                        ->orWhereIn("afternoon", $status)
+                        ->orWhereIn("night", $status);
                 });
         })
         ->get();
@@ -383,12 +383,12 @@ class APIController extends Controller
                     ->orWhere(function($query) use ($date) // Include completed appointments for the given date
                     {
                         $query->whereDate("appointment_date", $date)
-                            ->where("status", "Completed");
+                            ->whereIn("status", ["Completed", "Missing"]);
                     });
             })
             ->where("doctor_id", $doctorId)
             ->orderBy("appointment_date", "desc")
-            ->select("id", "patient_id", "appointment_date", "comment", "morning", "afternoon", "night")
+            ->select("id", "patient_id", "appointment_date", "status", "comment", "morning", "afternoon", "night")
             ->paginate(1);
 
         $appointmentsData = $appointments->items();  // Actual appointment data as an array
@@ -603,6 +603,38 @@ class APIController extends Controller
             "message" => "Appointment updated successfully",
             "appointment" => $appointment
         ]);
+    }
+
+    public static function updateMissingAppointment(Request $request, $doctorId, $appointmentId)
+    {
+        $appointment = Appointment::find($appointmentId);
+
+        if (!$appointment)
+        {
+            return response()->json([
+                "success" => false,
+                "message" => "Appointment could not be found",
+                "errors" => [ "Could not update the appointment status" ]
+            ], 400);
+        }
+
+         // Validate that the doctor is the one for the appointment
+         if ($appointment->doctor_id !== $doctorId)
+         {
+             return response()->json([
+                 "success" => false,
+                 "message" => "Doctor id for appointment does not match the logged in doctor",
+                 "errors" => [ "Could not update the comment and prescriptions" ]
+             ], 400);
+         }
+
+         $appointment->update([ "status" => "Missing" ]);
+
+         return response()->json([
+            "success" => true,
+            "message" => "Updated successfully",
+            "appointment" => $appointment
+         ]);
     }
 
     public static function updateCaregiverHome(Request $request, $caregiverId, $patientId, $date)

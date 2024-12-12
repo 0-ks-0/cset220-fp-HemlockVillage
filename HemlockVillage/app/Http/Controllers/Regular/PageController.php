@@ -76,19 +76,23 @@ class PageController extends Controller
 
                 // return HomeAPI::showCaregiver($caregiverId, "2024-11-03");
                 // return HomeAPI::showCaregiver($caregiverId, Carbon::today());
+                // $date = "2024-11-03";
+                $date = Carbon::today()->toDateString();
 
-                // $response = HomeAPI::showCaregiver($caregiverId, "2024-11-03");
-                $response = HomeAPI::showCaregiver($caregiverId, Carbon::today());
+                $response = HomeAPI::showCaregiver($caregiverId, $date);
                 $jsonDecoded = json_decode($response->getContent(), true);
 
                 if ($response->getStatusCode() === 201)
                 {
                     return view("caregivershome")
-                        ->with("message", $jsonDecoded["message"] ?? "Could not locate data");
+                        ->with("message", $jsonDecoded["message"] ?? "Could not locate data")
+                        ->with("date", $date);
                 }
 
                 return view("caregivershome")
-                    ->with("data", $jsonDecoded["data"] ?? []);
+                    ->with("data", $jsonDecoded["data"] ?? [])
+                    ->with("date", $date)
+                    ->with("groupNum", $jsonDecoded["groupNum"]);
 
             case 5: // Patient
                 $patientId = Patient::getId($userId);
@@ -116,6 +120,9 @@ class PageController extends Controller
                     "family_code" => [ "required", "size:16", "exists:patients,family_code" ],
                 ], ValidationHelper::$familyHome);
 
+                // $date = "2024-11-03";
+                $date = Carbon::today()->format("Y-m-d");
+
                 $patientId = request()->get("patient_id");
                 $familyCode = request()->get("family_code");
 
@@ -124,13 +131,13 @@ class PageController extends Controller
 
                 // Fails validation
                 if ($validatedPatient->fails())
-                    return redirect()->back()->withErrors($validatedPatient->errors());
+                    return redirect()->back()->withErrors($validatedPatient->errors())
+                        ->with("date", $date);
 
                 /**
                  * Retrieve response to check if success or failure
                  */
-                // $response = HomeAPI::showFamily($patientId, $familyCode, "2024-11-03");
-                $response = HomeAPI::showFamily($patientId, $familyCode, Carbon::today()->format("Y-m-d"));
+                $response = HomeAPI::showFamily($patientId, $familyCode, $date);
                 $jsonContent = json_decode($response->getContent(), true);
 
                 // Fails Validation
@@ -138,13 +145,15 @@ class PageController extends Controller
                 {
                     $errors = $jsonContent["errors"] ?? ["Invalid input(s). Please try again."];
 
-                    return redirect()->back()->withErrors($errors);
+                    return redirect()->back()->withErrors($errors)
+                        ->with("date", $date);;
                 }
 
                 // Success
                 // return $jsonContent["data"];
 
-                return view("familyhome")->with("data", $jsonContent["data"]);
+                return view("familyhome")->with("data", $jsonContent["data"])
+                    ->with("date", $date);;
 
             case null:
                 return response()->json(['error' => 'Could not find user id or access level'], 404);
@@ -204,8 +213,12 @@ class PageController extends Controller
         // TODO pagiante in APIController::getReport
 
         // return view("adminreport")->with("data", APIController::getReport("2024-11-03"));
-        // return view("adminreport")->with("data", APIController::getReportNew("2024-12-11"));
-        return view("adminreport")->with("data", APIController::getReportNew(Carbon::today()));
+        // return view("adminreport")->with("data", APIController::getReportNew("2024-12-11", [ "Missing", "Pending" ]));
+
+        if (request()->has("date"))
+            return view("adminreport")->with("data", APIController::getReportNew(request()->date, [ "Pending", "Missing" ]))->with("date", request()->date);
+
+        return view("adminreport")->with("data", APIController::getReportNew(Carbon::today(), [ "Pending", "Missing" ]));
     }
 
     /*
@@ -327,13 +340,16 @@ class PageController extends Controller
      */
     public static function showDoctorPatient($patientId)
     {
+        // $date = "2024-12-25";
+        $date = Carbon::today();
+
         $doctorId = DB::table("employees")
             ->where("user_id", Auth::user()->id)
             ->first()
             ->id ?? null;
 
         // To test, set date to "2025-01-01"
-        $appointments = APIController::showDoctorPatient($doctorId, $patientId, Carbon::today());
+        $appointments = APIController::showDoctorPatient($doctorId, $patientId, $date);
         $jsonDecoded = json_decode($appointments->getContent(), true);
 
         return view("patientofdoc")->with([
@@ -344,6 +360,7 @@ class PageController extends Controller
             "first_name" => $jsonDecoded["first_name"] ?? null,
             "last_name" => $jsonDecoded["last_name"] ?? null,
             "date_of_birth" => $jsonDecoded["date_of_birth"] ?? null,
+            "date" => $date
         ]);
     }
 
@@ -362,6 +379,27 @@ class PageController extends Controller
         {
             return redirect()->back()
                 ->withErrors($jsonDecoded["errors"] ?? [ "Invalid input(s)" ]);
+        }
+
+        return redirect()->back()
+            ->with("message", $jsonDecoded["message"] ?? "Appointment updated successfully");
+    }
+
+    public static function updateMissingAppointment(Request $request, $appointmentId)
+    {
+         // Used to validate correct doctor for appointment
+         $doctorId = DB::table("employees")
+            ->where("user_id", Auth::user()->id)
+            ->first()
+            ->id ?? null;
+
+        $response = APIController::updateMissingAppointment($request, $doctorId, $appointmentId);
+        $jsonDecoded = json_decode($response->getContent(), true);
+
+        if ($response->getStatusCode() !== 200)
+        {
+            return redirect()->back()
+                ->withErrors($jsonDecoded["errors"] ?? [ "Error with updating" ]);
         }
 
         return redirect()->back()
@@ -444,6 +482,8 @@ class PageController extends Controller
 
         $roster = Roster::with('doctor')->whereDate("date_assigned", $appointmentDate)->first();
 
+        // return $roster;
+
         // No roster found
         if (!$roster)
         {
@@ -453,8 +493,8 @@ class PageController extends Controller
             // session()->flash("patient_id", $patient->id);
 
             return redirect()->back()
-                ->withErrors([ "No roster created for " . Carbon::parse($appointmentDate)->format("M d, Y") ])
-                ->withInput();
+                ->withErrors([ "roster" => "No roster created for " . Carbon::parse($appointmentDate)->format("M d, Y") ])
+                ->with("patient_id", request()->patient_id);
         }
 
         if (!$roster->doctor)

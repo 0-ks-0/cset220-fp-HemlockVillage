@@ -38,7 +38,8 @@ Route::middleware([CheckRole::class . ':1,2'])->group(function () {
 
     // Employee search
     Route::get('/searchemployee', fn() => view('searchemployee'))->name('employeesearch'); // Search form
-    Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search'); // Search logic
+    Route::get('/employees/search', [EmployeeController::class, 'search'])->name('employees.search'); // Search logic fetch API
+    Route::get('/employees', [EmployeeController::class, 'index'])->name('employeeinfo.index'); // Employee list
 
     // Employee Info
     Route::get('/employeeinfo/{id}', [EmployeeController::class, 'show'])->name('employeeinfo.show'); // Employee details
@@ -63,7 +64,7 @@ Route::middleware([CheckRole::class . ":1"])->group(function ()
     // Role Creation
     Route::get('/rolecreation', fn() => view('rolecreation'))->name('rolecreation.index');
     Route::post('/create-role', [RoleController::class, 'createRole'])->name('rolecreation.create');
-    Route::get('/roles', [RoleController::class, 'getRoles'])->name('roles.fetch');
+    Route::get('/roles', [RoleController::class, 'getRoles'])->name('roles.fetch'); // Fetch API
 
     // Update salary
     Route::post('/employees/{employeeId}/update-salary', [EmployeeController::class, 'updateSalary'])->name('employees.updateSalary');
@@ -84,6 +85,7 @@ Route::middleware([CheckRole::class . ":1,2,3,4"])->group(function ()
 {
     // Search
     Route::get("/search/patients", fn() => PageController::searchPatients(request()));
+    Route::get('/patients', [PatientController::class, 'index'])->name('patientinfo.index'); // Patient list
 
     // Patient info
     Route::get('/patients/{id}', [PatientController::class, 'show'])->name('patients.show'); // View patient info
@@ -101,6 +103,8 @@ Route::middleware([ CheckRole::class . ":3"])->group( function ()
 {
     Route::get("/doctor/patients/{patientId}", fn($patientId) => PageController::showDoctorPatient($patientId));
     Route::patch("/doctor/patients/{patientId}", fn($patientId) => PageController::updateDoctorPatient(request(), $patientId));
+
+    Route::get("/doctor/missing/{appointmentId}", fn($appointmentId) => PageController::updateMissingAppointment(request(), $appointmentId));
 });
 
 // ======== Caregiver Access ========
@@ -111,7 +115,7 @@ Route::middleware([ CheckRole::class . ":4"])->group( function ()
 // ======== Employee Routes ========
 // ***** Undefined variable $employee.
 // ***** Property [user] does not exist on this collection instance. This is because you are not looping through all the employees in the blade file so it is trying to find a key called `user` in the INDEX array
-Route::get('/employees', [EmployeeController::class, 'index'])->name('employeeinfo.index'); // Employee list
+// Route::get('/employees', [EmployeeController::class, 'index'])->name('employeeinfo.index'); // Employee list
 
 // Interesting... ideally, you would have the same route names for GET with search parameters (the things after the `?` in the url) since it should be the same page, hence the same url
 // Don't bother rn. need to get back end done ASAP
@@ -128,11 +132,11 @@ Route::get('/employees', [EmployeeController::class, 'index'])->name('employeein
 // you can maybe change `$patients = collect();` to `$patients = Patients::with("users");`. this will then appear to be the same function as your searching either way.
 // I didn't check how you coded and connected the code to the view, if it was through JS with fetch API, so double check this
 // what you can do is change `/patients/search` to `/patients` and change this function from `index` to `search`. Make sure to change the url for fetch API if you do change
-Route::get('/patients', [PatientController::class, 'index'])->name('patientinfo.index'); // Patient list
+// Route::get('/patients', [PatientController::class, 'index'])->name('patientinfo.index'); // Patient list
 // Route::post('/patients/{patientId}/update-group-num', [PatientController::class, 'updateGroupNumber'])->name('patients.updateGroupNumber');
 
 // this seems to get the data for all patients at least, and then applies the searching. this means that this will dispaly all the patients, even if there are no query parameters
-Route::get('/patients/search', [PatientController::class, 'search'])->name('patients.search'); // Search patient
+// Route::get('/patients/search', [PatientController::class, 'search'])->name('patients.search'); // Search patient
 
 // Nice. I did not connect the two together that you can just return the patients table and use the relation functions to access values
 // I did fix the incorrect column names in the blade file so the name, role, and emergency contact name shows up
@@ -180,7 +184,7 @@ Route::get('/patients/search', [PatientController::class, 'search'])->name('pati
 // Route::get('/caregivershome', [DoctorController::class, 'patients'])->name('caregivershome.index'); // Caregiver's homepage
 
 // ======== Miscellaneous Routes ========
-Route::get('/searchpatient', fn() => view('searchpatient'))->name('patientsearch');
+// Route::get('/searchpatient', fn() => view('searchpatient'))->name('patientsearch');
 
 
 

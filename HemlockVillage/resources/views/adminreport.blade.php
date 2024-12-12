@@ -14,15 +14,16 @@
         <div class="container">
             <h1>Admin Report</h1>
 
-            <div class="form-group">
-                <label for="date">Date:</label>
-                <input type="date" id="date"  readonly>
-            </div>
+            <form action="/report" method="get">
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" value="{{ $date ?? \Carbon\Carbon::today()->toDateString() ?? '' }}">
+                </div>
 
-            <div class="form-group">
-                <button type="button">Generate Report</button>
-                <button type="button" class="btn-secondary">Dashboard</button>
-            </div>
+                <div class="form-group">
+                    <button type="submit">Generate Report</button>
+                </div>
+            </form>
 
             <h2>Missed Patient Activity</h2>
 
