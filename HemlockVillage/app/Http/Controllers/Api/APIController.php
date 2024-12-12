@@ -154,14 +154,11 @@ class APIController extends Controller
         return $data->map(function ($d) use ($date)
         {
             $patientUser = $d->user ?? null;
-            $appointment = ControllerHelper::getPatientAppointmentByDate($d->id, $date);
+            $currentAppointment = ControllerHelper::getPatientAppointmentByDate($d->id, $date);
 
-            // $prescriptionStatus = DB::table("appointments")
-            //     ->where("patient_id", $d->id)
-            //     ->where(function ($q)
-            //     {
-
-            //     });
+            /**
+             * Get prescriptions for date
+             */
 
             // select id from appointments where patient_id = "CzBCOehNSm5MyRSw" and id = (select appointment_id from prescription_statuses where prescription_date = "2024-11-03" );
 
@@ -171,11 +168,7 @@ class APIController extends Controller
                 "doctor_name" => $appointment["doctor_name"] ?? null,
                 "appointment_status" => $appointment["status"] ?? null,
                 "caregiver_name" => ControllerHelper::getPatientCaregiverByDate($d->id, $date)["caregiver_name"],
-                "prescriptions" => [
-                    "morning" => $appointment["morning"],
-                    "afternoon" => $appointment["afternoon"],
-                    "night" => $appointment["night"],
-                    ],
+                "prescriptions" => [],
                 "prescription_status" => [],
                 "meal_status" => ControllerHelper::getPatientMealStatusByDate($d->id, $date)["status_data"]
             ];
