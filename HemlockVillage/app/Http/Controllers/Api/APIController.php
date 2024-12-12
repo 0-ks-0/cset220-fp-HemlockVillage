@@ -98,11 +98,11 @@ class APIController extends Controller
         //
     }
 
-    public static function getReportNew($date)
+    public static function getReportNew($date, $status)
     {
         ValidationHelper::validateDateFormat($date);
 
-        $status = "Missing";
+        // $status = "Missing";
 
         $data = Patient::with([
             "user" => fn($q) => $q->select("id", "first_name", "last_name"),
@@ -121,7 +121,7 @@ class APIController extends Controller
         ])
         ->whereHas("appointments", function ($q) use ($date, $status)
         {
-            $q->where("status", $status)
+            $q->whereIn("status", $status)
                 ->whereDate("appointment_date", $date);
         })
         ->orWhereHas("meals", function ($q) use ($date, $status)
@@ -129,9 +129,9 @@ class APIController extends Controller
             $q->whereDate("meal_date", $date)
                 ->where( function ($q) use ($status)
                 {
-                    $q->where("breakfast", $status)
-                        ->orWhere("lunch", $status)
-                        ->orWhere("dinner", $status);
+                    $q->whereIn("breakfast", $status)
+                        ->orWhereIn("lunch", $status)
+                        ->orWhereIn("dinner", $status);
                 });
         })
         ->orWhereHas("appointments.prescriptions", function ($q) use ($date, $status)
@@ -139,9 +139,9 @@ class APIController extends Controller
             $q->whereDate("prescription_date", $date)
                 ->where( function ($q) use ($status)
                 {
-                    $q->where("morning", $status)
-                        ->orWhere("afternoon", $status)
-                        ->orWhere("night", $status);
+                    $q->whereIn("morning", $status)
+                        ->orWhereIn("afternoon", $status)
+                        ->orWhereIn("night", $status);
                 });
         })
         ->get();

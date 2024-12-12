@@ -22,8 +22,10 @@ class AppointmentSeeder extends Seeder
         self::insertData(Patient::getId(5), "2024-11-02", "2024-12-03", 3, "Completed", "slightly low on iron", "take 6mg iron supplement", null, null);
         self::insertData(Patient::getId(5), date("Y-m-d"), "2025-01-01", 3, "Pending");
 
-        self::insertData(Patient::getId(5), '2024-11-05', '2024-11-06', 3, 'Completed', 'test order date', null, null, null, null, null);
+        self::insertData(Patient::getId(5), '2024-11-05', '2024-11-06', 3, 'Completed', 'test order date', null, null, null);
         self::insertData(Patient::getId(5), '2024-11-05', '2024-12-25', 3, 'Pending', 'test ordering of future date. this comment in reality should not be here, but just here to inform its purpose...', null, null, null, null, null);
+
+        self::insertData(Patient::getId(5), "2024-12-10", "2024-12-11", 25, "Missing", null, null, null, null);
 
         // // Touchable
         // Should be inserting prescriptions for each time of day

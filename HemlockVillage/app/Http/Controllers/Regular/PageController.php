@@ -204,8 +204,12 @@ class PageController extends Controller
         // TODO pagiante in APIController::getReport
 
         // return view("adminreport")->with("data", APIController::getReport("2024-11-03"));
-        // return view("adminreport")->with("data", APIController::getReportNew("2024-12-11"));
-        return view("adminreport")->with("data", APIController::getReportNew(Carbon::today()));
+        // return view("adminreport")->with("data", APIController::getReportNew("2024-12-11", [ "Missing", "Pending" ]));
+
+        if (request()->has("date"))
+            return view("adminreport")->with("data", APIController::getReportNew(request()->date, [ "Pending", "Missing" ]))->with("date", request()->date);
+
+        return view("adminreport")->with("data", APIController::getReportNew(Carbon::today(), [ "Pending", "Missing" ]));
     }
 
     /*
