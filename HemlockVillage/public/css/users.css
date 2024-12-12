@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     background-color:#f7f4ec;
-    color: #481502; 
+    color: #481502;
     margin: 0;
     padding: 0;
     display: flex;
@@ -24,7 +24,7 @@ table {
     width: 80%;
     margin-top: 20px;
     font-size: 16px;
-    background-color: #fff; 
+    background-color: #fff;
     border-collapse: collapse;
     margin-left: auto;
     margin-right: auto;
@@ -36,7 +36,7 @@ th, td {
 }
 
 th {
-    background-color: #ae370f; 
+    background-color: #ae370f;
     color: white;
     font-weight: bold;
 }
@@ -50,7 +50,7 @@ tr:nth-child(even) td {
 }
 
 tr:hover td {
-    background-color: #eaeaea; 
+    background-color: #eaeaea;
 }
 
 .pagination {
@@ -90,5 +90,3 @@ tr:hover td {
     padding: 8px 12px;
     cursor: default;
 }
-
-

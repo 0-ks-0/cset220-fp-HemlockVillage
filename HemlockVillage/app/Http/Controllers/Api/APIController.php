@@ -98,6 +98,88 @@ class APIController extends Controller
         //
     }
 
+    public static function getReportNew($date)
+    {
+        ValidationHelper::validateDateFormat($date);
+
+        $status = "Missing";
+
+        $data = Patient::with([
+            "user" => fn($q) => $q->select("id", "first_name", "last_name"),
+
+            "appointments" => fn($q) => $q->select("id", "appointment_date", "patient_id", "doctor_id", "status", "morning", "afternoon", "night", "appointment_date")
+                ->whereDate('appointment_date', $date), // Need the date to filter correctly to the appointment date. The problem is that you lose the id to connect to prescription status if prescription status has "Missing" but Appointment is not "Missing", so you won't get the prescription data and status data
+
+            "appointments.doctor" => fn($q) => $q->select("id", "user_id"),
+            "appointments.doctor.user" => fn($q) => $q->select("id", "first_name", "last_name"),
+
+            "appointments.prescriptions" => fn($q) => $q->select("id", "appointment_id", "prescription_date", "morning", "afternoon", "night")
+                ->whereDate('prescription_date', $date),
+
+            "meals" => fn($q) => $q->select("id", "patient_id", "meal_date", "breakfast", "lunch", "dinner", "meal_date")
+                ->whereDate('meal_date', $date)
+        ])
+        ->whereHas("appointments", function ($q) use ($date, $status)
+        {
+            $q->where("status", $status)
+                ->whereDate("appointment_date", $date);
+        })
+        ->orWhereHas("meals", function ($q) use ($date, $status)
+        {
+            $q->whereDate("meal_date", $date)
+                ->where( function ($q) use ($status)
+                {
+                    $q->where("breakfast", $status)
+                        ->orWhere("lunch", $status)
+                        ->orWhere("dinner", $status);
+                });
+        })
+        ->orWhereHas("appointments.prescriptions", function ($q) use ($date, $status)
+        {
+            $q->whereDate("prescription_date", $date)
+                ->where( function ($q) use ($status)
+                {
+                    $q->where("morning", $status)
+                        ->orWhere("afternoon", $status)
+                        ->orWhere("night", $status);
+                });
+        })
+        ->get();
+
+        // return $data;
+
+        // how to map with LengthAwarePaginator...
+
+        // Mapping the paginated results
+        return $data->map(function ($d) use ($date)
+        {
+            $patientUser = $d->user ?? null;
+            $currentAppointment = ControllerHelper::getPatientAppointmentByDate($d->id, $date);
+
+            /**
+             * Get prescriptions for date
+             */
+            // Get all appointment_ids for that date and find the one in appointments table that matches the patient
+            $appointmentIds = DB::table("prescription_statuses")->where("prescription_date", $date)->pluck("appointment_id");
+            $appointment = DB::table("appointments")->where("patient_id", $d->id)->whereIn("id", $appointmentIds)->first();
+
+            return [
+                "date" => $date,
+                "patient_name" => $patientUser ? "{$patientUser->first_name} {$patientUser->last_name}" : null,
+                "doctor_name" => $currentAppointment["doctor_name"] ?? null,
+                "appointment_status" => $currentAppointment["status"] ?? null,
+                "caregiver_name" => ControllerHelper::getPatientCaregiverByDate($d->id, $date)["caregiver_name"],
+                "prescriptions" => [
+                    "morning" => $appointment->morning ?? null,
+                    "afternoon" => $appointment->afternoon ?? null,
+                    "night" => $appointment->night ?? null,
+                ],
+                "prescription_status" => ControllerHelper::getSimplePatientPrescriptionStatusByDate($appointment->id ?? null, $date),
+                "meal_status" => ControllerHelper::getPatientMealStatusByDate($d->id, $date)["status_data"]
+            ];
+        });
+    }
+
     public static function getReport($date)
     {
         ValidationHelper::validateDateFormat($date);
@@ -146,7 +228,7 @@ class APIController extends Controller
             $patient = $d->user ?? null;
             $doctor = $d->appointments->first()->doctor->user ?? null;
             $appointment = $d->appointments->first() ?? null;
-            $prescriptionStatus = $d->appointments->first()->prescriptions->first() ?? null;
+            $prescriptionStatus = $appointment && $appointment->prescriptions ? $appointment->prescriptions->first() : null;
             $meal = $d->meals->first() ?? null;
 
             return [
