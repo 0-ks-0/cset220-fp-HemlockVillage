@@ -78,7 +78,7 @@
                             </thead>
                             <tbody>
                                 @isset($upcoming)
-                                    @if($upcoming->isEmpty())
+                                    @if(empty($upcoming))
                                         <p>No upcoming appointments up to that date.</p>
 
                                     @else

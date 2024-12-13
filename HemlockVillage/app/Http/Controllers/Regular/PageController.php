@@ -78,6 +78,7 @@ class PageController extends Controller
                 // return HomeAPI::showCaregiver($caregiverId, Carbon::today());
                 // $date = "2024-11-03";
                 $date = Carbon::today()->toDateString();
+                // $date = "2025-01-10";
 
                 $response = HomeAPI::showCaregiver($caregiverId, $date);
                 $jsonDecoded = json_decode($response->getContent(), true);
@@ -92,7 +93,7 @@ class PageController extends Controller
                 return view("caregivershome")
                     ->with("data", $jsonDecoded["data"] ?? [])
                     ->with("date", $date)
-                    ->with("groupNum", $jsonDecoded["groupNum"]);
+                    ->with("groupNum", $jsonDecoded["groupNum"] ?? '');
 
             case 5: // Patient
                 $patientId = Patient::getId($userId);
