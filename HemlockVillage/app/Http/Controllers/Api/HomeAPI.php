@@ -93,9 +93,9 @@ class HomeAPI extends Controller
         /**
          * Validation
          */
-        // Doctor does not exist
+        // Doctor does not exist in appointments table (no appointments)
         if (!Appointment::where("doctor_id", $doctorId)->first())
-			abort(400, "Doctor does not exist");
+            return [];
 
         // Invalid date format
         if (!strtotime($date))
